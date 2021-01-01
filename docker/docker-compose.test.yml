@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  postgres_test:
+    container_name: movies_test_pg
+    image: postgres:12.3
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: movies_db_test
+volumes:
+  postgres_test:
