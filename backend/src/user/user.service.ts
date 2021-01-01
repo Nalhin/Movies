@@ -6,8 +6,19 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private readonly usersRepository: UserRepository) {}
 
-  async saveOne(user: User): Promise<User> {
-    const userEntity = await this.usersRepository.create({ ...user });
-    return this.usersRepository.save(userEntity);
+  public async save(user: Partial<User>): Promise<User> {
+    const preparedUser = this.usersRepository.create({ ...user });
+    return this.usersRepository.save(preparedUser);
+  }
+
+  public async findOneByUsername(username: string): Promise<User> {
+    return this.usersRepository.findOne({ username });
+  }
+
+  public async existsByEmailOrUsername(
+    email: string,
+    username: string,
+  ): Promise<boolean> {
+    return this.usersRepository.existsByEmailOrUsername(email, username);
   }
 }

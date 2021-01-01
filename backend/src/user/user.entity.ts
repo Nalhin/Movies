@@ -4,23 +4,23 @@ import * as bcrypt from 'bcrypt';
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
-  public id: number;
+  id: number;
 
   @Column({ unique: true })
-  public username: string;
+  username: string;
 
   @Column({ unique: true })
-  public email: string;
+  email: string;
 
   @Column()
-  public password: string;
+  password: string;
 
   @BeforeInsert()
-  async hashPassword() {
+  public async hashPassword(): Promise<void> {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  async comparePassword(password: string) {
-    return await bcrypt.compare(password, this.password);
+  public async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 }
