@@ -1,9 +1,4 @@
-import {
-  CacheModule,
-  Module,
-  OnModuleInit,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typerom.config';
 import { UserModule } from './user/user.module';
@@ -14,6 +9,8 @@ import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ExcludePropertiesClassSerializerInterceptor } from './common/interceptors/exclude-properties-class-serializer-interceptor.service';
 import { TmdbModule } from './tmdb/tmdb.module';
+import { MovieModule } from './movie/movie.module';
+import { HttpCacheModule } from './http-cache/http-cache.module';
 
 @Module({
   imports: [
@@ -28,6 +25,8 @@ import { TmdbModule } from './tmdb/tmdb.module';
     UserModule,
     AuthModule,
     TmdbModule,
+    MovieModule,
+    HttpCacheModule,
   ],
   controllers: [],
   providers: [

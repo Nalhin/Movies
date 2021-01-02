@@ -8,15 +8,15 @@ import { Observable } from 'rxjs';
 export class TmdbClientService {
   constructor(private readonly httpService: HttpService) {}
 
-  searchMovies(query: string): Observable<MovieSearchResponse> {
+  searchMovies(query: string, page: number): Observable<MovieSearchResponse> {
     return this.httpService
       .get<MovieSearchResponse>('/search/movie', {
-        params: { query },
+        params: { query, page },
       })
       .pipe(map((resp) => resp.data));
   }
 
-  getById(movieId: number): Observable<MovieDetailsResponse> {
+  getMovieById(movieId: number): Observable<MovieDetailsResponse> {
     return this.httpService
       .get<MovieDetailsResponse>(`/movie/${movieId}`)
       .pipe(map((resp) => resp.data));

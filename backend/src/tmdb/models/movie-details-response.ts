@@ -1,19 +1,19 @@
 export interface MovieDetailsResponse {
   adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: null;
+  backdropPath: string;
+  belongsToCollection: null;
   budget: number;
   genres: Genre[];
   homepage: string | null;
   id: number;
-  imdb_id: string;
-  original_language: string;
-  original_title: string;
+  imdbId: string;
+  originalLanguage: string;
+  originalTitle: string;
   overview: string;
   popularity: number;
-  poster_path: string | null;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
+  posterPath: string | null;
+  productionCompanies: ProductionCompany[];
+  productionCountries: ProductionCountry[];
   releaseDate: string;
   revenue: number;
   runtime: number | null;
