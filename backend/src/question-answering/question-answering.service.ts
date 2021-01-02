@@ -12,9 +12,9 @@ export class QuestionAnsweringService implements OnModuleInit {
 
   public async answerQuestion(
     question: string,
-    test: string,
+    text: string,
   ): Promise<string | null> {
-    const answers = await this.model.findAnswers(question, test);
+    const answers = await this.model.findAnswers(question, text);
 
     return answers.length > 0 ? answers[0].text : null;
   }

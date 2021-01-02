@@ -8,9 +8,7 @@ import { jwtConfig } from './config/jwt.config';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ExcludePropertiesClassSerializerInterceptor } from './common/interceptors/exclude-properties-class-serializer-interceptor.service';
-import { TmdbModule } from './tmdb/tmdb.module';
 import { MovieModule } from './movie/movie.module';
-import { HttpCacheModule } from './http-cache/http-cache.module';
 
 @Module({
   imports: [

@@ -3,10 +3,15 @@ import { Cache } from 'cache-manager';
 import { AxiosRequestConfig } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import { CachedAxiosResponse } from './types/cached-axios-response';
+import qs from 'query-string';
 
 @Injectable()
 export class HttpCacheService {
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
+
+  private getKey({ baseURL = '', params = {}, url = '' }) {
+    return qs.stringifyUrl({ url: baseURL + url, query: params });
+  }
 
   public async onRequest(
     request: AxiosRequestConfig,
@@ -15,7 +20,7 @@ export class HttpCacheService {
       return request;
     }
 
-    const cached = await this.cacheManager.get(request.baseURL + request.url);
+    const cached = await this.cacheManager.get(this.getKey(request));
     if (!cached) {
       return request;
     }
@@ -39,13 +44,9 @@ export class HttpCacheService {
     response.data = camelcaseKeys(response.data, { deep: true });
 
     if (response.status === HttpStatus.OK) {
-      await this.cacheManager.set(
-        response.config.baseURL + response.config.url,
-        response.data,
-        {
-          ttl: 10000,
-        },
-      );
+      await this.cacheManager.set(this.getKey(response.config), response.data, {
+        ttl: 10000,
+      });
     }
 
     return response;
