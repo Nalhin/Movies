@@ -8,17 +8,21 @@ import { jwtConfig } from './config/jwt.config';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ExcludePropertiesClassSerializerInterceptor } from './common/interceptors/exclude-properties-class-serializer-interceptor.service';
+import { TmdbModule } from './tmdb/tmdb.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [jwtConfig],
+      envFilePath: '.env',
+      ignoreEnvFile: !!process.env.CI,
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
     UserModule,
     AuthModule,
+    TmdbModule,
   ],
   controllers: [],
   providers: [

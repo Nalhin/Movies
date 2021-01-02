@@ -117,6 +117,8 @@ jobs:
   backend-e2e-tests:
     name: Backend e2e tests
     runs-on: ubuntu-20.04
+    env:
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v2
