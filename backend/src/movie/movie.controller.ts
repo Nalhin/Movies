@@ -22,4 +22,9 @@ export class MovieController {
       .getMovies(search, page)
       .pipe(map((movies) => plainToClass(MovieResponseDto, movies.results)));
   }
+
+  @Get('/:id/answer-question')
+  answerQuestion(@Param('id') id: number, @Query('question') question: string) {
+    return this.movieService.answerQuestion(id, question);
+  }
 }

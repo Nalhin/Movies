@@ -24,9 +24,7 @@ import { HttpCacheModule } from './http-cache/http-cache.module';
     }),
     UserModule,
     AuthModule,
-    TmdbModule,
     MovieModule,
-    HttpCacheModule,
   ],
   controllers: [],
   providers: [
