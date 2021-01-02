@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class TmdbClientService {
-  constructor(private httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) {}
 
   searchMovies(query: string): Observable<MovieSearchResponse> {
     return this.httpService

@@ -10,5 +10,10 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: movies_db_test
+  redis:
+    container_name: movies_test_redis
+    image: redis:6.0.9-alpine
+    ports:
+      - "6379:6379"
 volumes:
   postgres_test:
