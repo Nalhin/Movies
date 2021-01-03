@@ -1,12 +1,12 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { load, QuestionAndAnswer } from '@tensorflow-models/qna';
-import '@tensorflow/tfjs-node';
 
 @Injectable()
 export class QuestionAnsweringService implements OnModuleInit {
   private model: QuestionAndAnswer;
 
   public async onModuleInit(): Promise<void> {
+    await require('@tensorflow/tfjs-node');
     this.model = await load();
   }
 
