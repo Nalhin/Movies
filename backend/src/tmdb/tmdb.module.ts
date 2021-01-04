@@ -1,8 +1,8 @@
 import { HttpModule, HttpService, Module, OnModuleInit } from '@nestjs/common';
 import { TmdbClientService } from './tmdb-client.service';
 import { TmbdHttpConfigService } from './tmdb-http-config.service';
-import { HttpCacheService } from '../http-cache/http-cache.service';
-import { HttpCacheModule } from '../http-cache/http-cache.module';
+import { HttpCacheService } from '../core/http-cache/http-cache.service';
+import { HttpCacheModule } from '../core/http-cache/http-cache.module';
 
 @Module({
   imports: [
@@ -19,12 +19,6 @@ export class TmdbModule implements OnModuleInit {
   ) {}
 
   onModuleInit(): void {
-    this.httpService.axiosRef.interceptors.response.use((res) =>
-      this.httpCacheService.onResponse(res),
-    );
-    this.httpService.axiosRef.interceptors.request.use(
-      (res) => this.httpCacheService.onRequest(res),
-      (error) => Promise.reject(error),
-    );
+    this.httpCacheService.applyToAxios(this.httpService.axiosRef);
   }
 }

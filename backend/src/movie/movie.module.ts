@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
-import { MovieController } from './movie.controller';
-import { MovieService } from './movie.service';
+import { MovieController } from './adapter/in/web/movie.controller';
 import { TmdbModule } from '../tmdb/tmdb.module';
-import { QuestionAnsweringModule } from '../question-answering/question-answering.module';
-import { WikipediaModule } from '../wikipedia/wikipedia.module';
+import { QuestionAnsweringModule } from './adapter/out/machine-learning/question-answering/question-answering.module';
+import { WikipediaPlotDetailsModule } from './adapter/out/http/wikipedia-plot-details/wikipedia-plot-details.module';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
-  imports: [TmdbModule, QuestionAnsweringModule, WikipediaModule],
+  imports: [
+    TmdbModule,
+    QuestionAnsweringModule,
+    WikipediaPlotDetailsModule,
+    CqrsModule,
+  ],
   controllers: [MovieController],
-  providers: [MovieService],
+  providers: [],
 })
 export class MovieModule {}

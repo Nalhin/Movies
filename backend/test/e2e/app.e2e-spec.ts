@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../src/app.module';
-import { TypeOrmConfigService } from '../../src/config/typerom.config';
+import { TypeOrmConfigService } from '../../src/core/config/typerom.config';
 import { TypeormTestConfig } from '../config/typeorm-test.config';
 
 describe('AppController (e2e)', () => {
