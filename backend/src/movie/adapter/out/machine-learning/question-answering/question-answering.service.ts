@@ -1,10 +1,10 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { load, QuestionAndAnswer } from '@tensorflow-models/qna';
-import { QuestionAnsweringAdapter } from '../../../../application/port/out/question-answering.adapter';
+import { QuestionAnsweringPort } from '../../../../application/port/out/question-answering.port';
 
 @Injectable()
 export class QuestionAnsweringService
-  implements OnModuleInit, QuestionAnsweringAdapter {
+  implements OnModuleInit, QuestionAnsweringPort {
   private model: QuestionAndAnswer;
 
   public async onModuleInit(): Promise<void> {

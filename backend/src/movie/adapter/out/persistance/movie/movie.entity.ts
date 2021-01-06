@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { User } from '../../../../../user/user.entity';
-import { MovieRating } from '../movie-rating/movie-rating.entity';
+import { MovieRatingEntity } from '../movie-rating/movie-rating.entity';
 
 @Entity({ name: 'movie' })
 export class MovieEntity {
@@ -10,8 +10,8 @@ export class MovieEntity {
   @Column()
   imdbId: string;
 
-  @ManyToOne(() => MovieRating)
-  ratings: MovieRating[];
+  @ManyToOne(() => MovieRatingEntity)
+  ratings: MovieRatingEntity[];
 
   @ManyToMany(() => User)
   favouriteBy: User[];

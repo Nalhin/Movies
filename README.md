@@ -19,6 +19,16 @@
 
 ## Description
 
+Nest.js hexagonal architecture implementation based on "Get Your Hands Dirty on Clean Architecture" by Tom Hombergs
+and "Clean architecture" by Robert C. Martin.
+
+The main (movie) "hexagon" has multiple output ports namely:
+
+* TMBD movie REST API
+* Live Wikipedia web scrapping
+* NLP question answering model
+* Persistence and a singular REST API input port.
+
 ## Features
 
 ## Presentation

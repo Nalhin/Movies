@@ -2,10 +2,10 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import cheerio from 'cheerio';
 import { of } from 'rxjs';
-import { PlotDetailsAdapter } from '../../../../application/port/out/plot-details.adapter';
+import { GetPlotDetailsPort } from '../../../../application/port/out/get-plot-details.port';
 
 @Injectable()
-export class WikipediaPlotDetailsService implements PlotDetailsAdapter {
+export class WikipediaPlotDetailsService implements GetPlotDetailsPort {
   constructor(private readonly httpClient: HttpService) {}
 
   private getWikiPage(imdbId: string) {

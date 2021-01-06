@@ -1,3 +1,3 @@
-export interface QuestionAnsweringAdapter {
+export interface QuestionAnsweringPort {
   answerQuestion(question: string, text: string): Promise<string | null>;
 }

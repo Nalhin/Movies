@@ -1,6 +1,6 @@
 import { Movie } from '../../../domain/movie.domain';
 import { Observable } from 'rxjs';
 
-export interface MovieDetailsAdapter {
+export interface GetMovieDetailsPort {
   getMovieById(id: number): Observable<Movie>;
 }
