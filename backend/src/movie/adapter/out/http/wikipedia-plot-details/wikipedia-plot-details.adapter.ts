@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { GetPlotDetailsPort } from '../../../../application/port/out/get-plot-details.port';
 
 @Injectable()
-export class WikipediaPlotDetailsService implements GetPlotDetailsPort {
+export class WikipediaPlotDetailsAdapter implements GetPlotDetailsPort {
   constructor(private readonly httpClient: HttpService) {}
 
   private getWikiPage(imdbId: string) {

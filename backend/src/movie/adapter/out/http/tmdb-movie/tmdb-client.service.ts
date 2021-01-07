@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class TmdbClientService {
   constructor(private readonly httpService: HttpService) {}
 
-  searchMovies(query: string, page: number): Observable<MovieSearchResponse> {
+  queryMovies(query: string, page: number): Observable<MovieSearchResponse> {
     return this.httpService
       .get<MovieSearchResponse>('/search/movie', {
         params: { query, page },

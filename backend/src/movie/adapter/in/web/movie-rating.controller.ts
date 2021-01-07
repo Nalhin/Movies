@@ -6,11 +6,11 @@ import { User } from '../../../../user/user.entity';
 import {
   RateMovieUseCase,
   RATE_MOVIE_USE_CASE,
-} from '../../../application/port/in/rate-movie.use-case';
+} from '../../../application/port/in/command/rate-movie.use-case';
 import {
   REMOVE_MOVIE_RATING_USE_CASE,
   RemoveMovieRatingUseCase,
-} from '../../../application/port/in/remove-movie-rating.use-case';
+} from '../../../application/port/in/command/remove-movie-rating.use-case';
 
 @Controller()
 export class MovieRatingController {

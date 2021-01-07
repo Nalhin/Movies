@@ -3,7 +3,7 @@ import { load, QuestionAndAnswer } from '@tensorflow-models/qna';
 import { QuestionAnsweringPort } from '../../../../application/port/out/question-answering.port';
 
 @Injectable()
-export class QuestionAnsweringService
+export class QuestionAnsweringAdapter
   implements OnModuleInit, QuestionAnsweringPort {
   private model: QuestionAndAnswer;
 

@@ -6,6 +6,8 @@
 
 # Movies
 
+Movie data aggregator with hexagonal architecture.
+
 ## Table of contents
 
 * [Description](#description)

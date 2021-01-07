@@ -5,9 +5,9 @@ import { User } from '../../../../user/user.entity';
 import {
   ADD_FAVOURITE_MOVIE_USE_CASE,
   AddFavouriteMovieUseCase,
-} from '../../../application/port/in/add-favourite-movie.use-case';
-import { RemoveFavouriteMovieUseCase } from '../../../application/port/in/remove-favourite-movie.use-case';
-import { RATE_MOVIE_USE_CASE } from '../../../application/port/in/rate-movie.use-case';
+} from '../../../application/port/in/command/add-favourite-movie.use-case';
+import { RemoveFavouriteMovieUseCase } from '../../../application/port/in/command/remove-favourite-movie.use-case';
+import { RATE_MOVIE_USE_CASE } from '../../../application/port/in/command/rate-movie.use-case';
 
 @Controller()
 export class FavouriteMovieController {

@@ -1,6 +1,7 @@
-import { Movie } from '../../../domain/movie.domain';
-import { Observable } from 'rxjs';
+import { Movie } from '../../../domain/movie.domain-model';
 
 export interface GetMovieDetailsPort {
-  getMovieById(id: number): Observable<Movie>;
+  getMovieById(id: number): Promise<Movie>;
 }
+
+export const GET_MOVIE_DETAILS = Symbol('GET_MOVE_DETAILS');

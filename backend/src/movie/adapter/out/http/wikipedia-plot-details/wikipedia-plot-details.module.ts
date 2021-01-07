@@ -1,5 +1,5 @@
 import { HttpModule, HttpService, Module, OnModuleInit } from '@nestjs/common';
-import { WikipediaPlotDetailsService } from './wikipedia-plot-details.service';
+import { WikipediaPlotDetailsAdapter } from './wikipedia-plot-details.adapter';
 import { HttpCacheModule } from '../../../../../core/http-cache/http-cache.module';
 import { HttpCacheService } from '../../../../../core/http-cache/http-cache.service';
 
@@ -11,8 +11,8 @@ import { HttpCacheService } from '../../../../../core/http-cache/http-cache.serv
     }),
     HttpCacheModule,
   ],
-  providers: [WikipediaPlotDetailsService],
-  exports: [WikipediaPlotDetailsService],
+  providers: [WikipediaPlotDetailsAdapter],
+  exports: [WikipediaPlotDetailsAdapter],
 })
 export class WikipediaPlotDetailsModule implements OnModuleInit {
   constructor(

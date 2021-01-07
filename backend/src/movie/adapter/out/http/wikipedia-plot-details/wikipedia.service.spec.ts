@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WikipediaPlotDetailsService } from './wikipedia-plot-details.service';
+import { WikipediaPlotDetailsAdapter } from './wikipedia-plot-details.adapter';
 import { HttpModule } from '@nestjs/common';
 
 describe('WikipediaService', () => {
-  let service: WikipediaPlotDetailsService;
+  let service: WikipediaPlotDetailsAdapter;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
-      providers: [WikipediaPlotDetailsService],
+      providers: [WikipediaPlotDetailsAdapter],
     }).compile();
 
-    service = module.get<WikipediaPlotDetailsService>(
-      WikipediaPlotDetailsService,
+    service = module.get<WikipediaPlotDetailsAdapter>(
+      WikipediaPlotDetailsAdapter,
     );
   });
 

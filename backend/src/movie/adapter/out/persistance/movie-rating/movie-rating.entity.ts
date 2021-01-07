@@ -1,18 +1,28 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { User } from '../../../../../user/user.entity';
 import { MovieEntity } from '../movie/movie.entity';
 
-@Entity({ name: 'movie_rating' })
+@Entity({ name: 'movies_ratings' })
+@Unique(['movie', 'author'])
 export class MovieRatingEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
-  @Column()
-  score: number;
+  @Column({ name: 'rating', nullable: false })
+  rating: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: false })
+  @JoinColumn({ name: 'author_id' })
   author: User;
 
-  @ManyToOne(() => MovieEntity)
+  @ManyToOne(() => MovieEntity, (movie) => movie.ratings, { nullable: false })
+  @JoinColumn({ name: 'movie_id' })
   movie: MovieEntity;
 }

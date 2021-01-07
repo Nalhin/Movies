@@ -1,18 +1,28 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { User } from '../../../../../user/user.entity';
 import { MovieRatingEntity } from '../movie-rating/movie-rating.entity';
 
-@Entity({ name: 'movie' })
+@Entity({ name: 'movies' })
 export class MovieEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ name: 'id' })
   id: number;
 
-  @Column()
+  @Column({ name: 'imdb_id', nullable: false })
   imdbId: string;
 
-  @ManyToOne(() => MovieRatingEntity)
+  @OneToMany(() => MovieRatingEntity, (rating) => rating.movie, {
+    cascade: ['insert', 'update'],
+  })
   ratings: MovieRatingEntity[];
 
   @ManyToMany(() => User)
+  @JoinTable({ name: 'movies_favourite_by_users' })
   favouriteBy: User[];
 }

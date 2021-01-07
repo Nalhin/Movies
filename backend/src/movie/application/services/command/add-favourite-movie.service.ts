@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { LOAD_MOVIE_PORT, LoadMoviePort } from '../port/out/load-movie.port';
+import { LOAD_MOVIE_PORT, LoadMoviePort } from '../../port/out/load-movie.port';
 import {
   UPDATE_MOVIE_PORT,
   UpdateMoviePort,
-} from '../port/out/update-movie.port';
-import { AddFavouriteMovieUseCase } from '../port/in/add-favourite-movie.use-case';
+} from '../../port/out/update-movie.port';
+import { AddFavouriteMovieUseCase } from '../../port/in/command/add-favourite-movie.use-case';
 
 @Injectable()
 export class AddFavouriteMovieService implements AddFavouriteMovieUseCase {
@@ -17,10 +17,6 @@ export class AddFavouriteMovieService implements AddFavouriteMovieUseCase {
 
   async addFavourite(movieId: number, userId: number): Promise<void> {
     const movie = await this.loadMoviePort.loadById(movieId, userId);
-    if (movie.isFavourite) {
-      throw new Error();
-    }
-    movie.isFavourite = false;
-    await this.updateMoviePort.updateMovie(movie, userId);
+    await this.updateMoviePort.updateMovie(movie.markAsFavourite(), userId);
   }
 }

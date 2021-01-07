@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { QuestionAnsweringService } from './question-answering.service';
+import { QuestionAnsweringAdapter } from './question-answering.adapter';
 
 @Module({
-  providers: [QuestionAnsweringService],
-  exports: [QuestionAnsweringService],
+  providers: [QuestionAnsweringAdapter],
+  exports: [QuestionAnsweringAdapter],
 })
 export class QuestionAnsweringModule {}

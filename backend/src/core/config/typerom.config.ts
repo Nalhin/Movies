@@ -13,6 +13,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       password: 'password',
       database: 'movies_db',
       synchronize: true,
+      logging: true,
       entities: getMetadataArgsStorage().tables.map((t) => t.target),
     };
   }
