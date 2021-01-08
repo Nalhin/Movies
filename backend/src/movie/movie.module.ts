@@ -22,6 +22,16 @@ import { GET_PLOT_DETAILS } from './application/port/out/get-plot-details.port';
 import { WikipediaPlotDetailsAdapter } from './adapter/out/http/wikipedia-plot-details/wikipedia-plot-details.adapter';
 import { QUESTION_ANSWERING } from './application/port/out/question-answering.port';
 import { QuestionAnsweringAdapter } from './adapter/out/machine-learning/question-answering/question-answering.adapter';
+import { GET_MOVIES_USE_CASE } from './application/port/in/query/get-movies-use-case';
+import { GetMoviesService } from './application/services/query/get-movies.service';
+import { GET_MOVIES } from './application/port/out/get-movies.port';
+import { MovieQueryPersistenceAdapter } from './adapter/out/persistance/movie-persistance-query.adapter';
+import { MovieController } from './adapter/in/web/movie.controller';
+import { ASK_PLOT_QUESTION_USE_CASE } from './application/port/in/query/ask-plot-question.use-case';
+import { AskPlotQuestionService } from './application/services/query/ask-plot-question.service';
+import { GET_MOVIE_DETAILS } from './application/port/out/get-movie-details.port';
+import { GET_MOVIE_DETAILS_USE_CASE } from './application/port/in/query/get-movie-details.use-case';
+import { GetMovieDetailsService } from './application/services/query/get-movie-details.service';
 
 @Module({
   imports: [
@@ -31,7 +41,11 @@ import { QuestionAnsweringAdapter } from './adapter/out/machine-learning/questio
     WikipediaPlotDetailsModule,
     TypeOrmModule.forFeature([MovieRepository, MovieRatingRepository]),
   ],
-  controllers: [MovieRatingController, FavouriteMovieController],
+  controllers: [
+    MovieRatingController,
+    FavouriteMovieController,
+    MovieController,
+  ],
   providers: [
     {
       provide: ADD_FAVOURITE_MOVIE_USE_CASE,
@@ -64,6 +78,26 @@ import { QuestionAnsweringAdapter } from './adapter/out/machine-learning/questio
     {
       provide: QUESTION_ANSWERING,
       useClass: QuestionAnsweringAdapter,
+    },
+    {
+      provide: ASK_PLOT_QUESTION_USE_CASE,
+      useClass: AskPlotQuestionService,
+    },
+    {
+      provide: GET_MOVIES_USE_CASE,
+      useClass: GetMoviesService,
+    },
+    {
+      provide: GET_MOVIES,
+      useClass: MovieQueryPersistenceAdapter,
+    },
+    {
+      provide: GET_MOVIE_DETAILS_USE_CASE,
+      useClass: GetMovieDetailsService,
+    },
+    {
+      provide: GET_MOVIE_DETAILS,
+      useClass: MovieCommandPersistenceAdapter,
     },
   ],
 })

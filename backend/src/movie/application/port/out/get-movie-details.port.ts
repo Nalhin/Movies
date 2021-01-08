@@ -4,4 +4,4 @@ export interface GetMovieDetailsPort {
   getMovieById(id: number): Promise<Movie>;
 }
 
-export const GET_MOVIE_DETAILS = Symbol('GET_MOVE_DETAILS');
+export const GET_MOVIE_DETAILS = Symbol('GET_MOVIE_DETAILS');

@@ -5,7 +5,9 @@ export class Movie {
     public readonly title: string,
     public readonly userRating: number | null,
     public readonly isFavourite: boolean,
-  ) {}
+  ) {
+    console.log(this.isFavourite);
+  }
 
   public addUserRating(rating: number) {
     return new Movie(
@@ -30,6 +32,6 @@ export class Movie {
       throw new Error('Movie is not marked as favourite');
     }
 
-    return new Movie(this.id, this.imdbId, this.title, this.userRating, true);
+    return new Movie(this.id, this.imdbId, this.title, this.userRating, false);
   }
 }

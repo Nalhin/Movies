@@ -26,7 +26,7 @@ export class MovieCommandPersistenceAdapter
       movieExternal.id,
       movieExternal.imdbId,
       movieExternal.title,
-      moviePersisted.userRating ?? null,
+      moviePersisted?.userRating ?? null,
       moviePersisted?.isFavourite ?? false,
     );
   }
@@ -44,7 +44,12 @@ export class MovieCommandPersistenceAdapter
         author: { id: userId },
         movie: { id: movie.id },
       });
-      await this.ratingRepository.save({ ...rating, rating: movie.userRating });
+      await this.ratingRepository.save({
+        ...rating,
+        rating: movie.userRating,
+        author: { id: userId },
+        movie: { id: movie.id },
+      });
     }
   }
 }

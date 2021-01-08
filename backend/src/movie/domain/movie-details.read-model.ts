@@ -1,4 +1,4 @@
-class MovieDetailsReadModel {
+export class MovieDetailsReadModel {
   adult: boolean;
   backdropPath: string;
   budget: number;
@@ -15,6 +15,13 @@ class MovieDetailsReadModel {
   tagline: string | null;
   title: string;
   video: boolean;
+  isFavourite: boolean;
+  userRating: number | null;
+  averageRating: number | null;
   voteAverage: number;
   voteCount: number;
+
+  constructor(partial?: Partial<MovieDetailsReadModel>) {
+    Object.assign(this, partial);
+  }
 }

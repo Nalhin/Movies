@@ -24,6 +24,11 @@ Movie data aggregator with hexagonal architecture.
 Nest.js hexagonal architecture implementation based on "Get Your Hands Dirty on Clean Architecture" by Tom Hombergs
 and "Clean architecture" by Robert C. Martin.
 
+The API consists of two boundary contexts:
+
+* user boundary context is responsible for authentication and authorization
+* movie is responsible for movie data aggregation
+
 The main (movie) "hexagon" has multiple output ports namely:
 
 * TMBD movie REST API

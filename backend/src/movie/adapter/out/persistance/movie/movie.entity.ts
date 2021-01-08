@@ -23,6 +23,10 @@ export class MovieEntity {
   ratings: MovieRatingEntity[];
 
   @ManyToMany(() => User)
-  @JoinTable({ name: 'movies_favourite_by_users' })
+  @JoinTable({
+    name: 'movies_favourite_by_users',
+    joinColumn: { name: 'movie_id' },
+    inverseJoinColumn: { name: 'user_id' },
+  })
   favouriteBy: User[];
 }
