@@ -9,6 +9,7 @@ import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ExcludePropertiesClassSerializerInterceptor } from './common/interceptors/exclude-properties-class-serializer-interceptor.service';
 import { MovieModule } from './movie/movie.module';
+import { RequireAuthGuard } from './common/guards/require-auth.guard';
 
 @Module({
   imports: [
@@ -39,6 +40,10 @@ import { MovieModule } from './movie/movie.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RequireAuthGuard,
     },
   ],
 })

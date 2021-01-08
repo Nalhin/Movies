@@ -15,7 +15,7 @@ import {
 } from '../../../application/port/in/query/get-movies-use-case';
 import { plainToClass } from 'class-transformer';
 import { MovieListResponseDto } from './dto/movie-list-response.dto';
-import { AuthRequired } from '../../../../common/decorators/auth-required.decorator';
+import { AuthOptional } from '../../../../common/decorators/auth-optional.decorator';
 
 @Controller()
 export class MovieController {
@@ -41,7 +41,7 @@ export class MovieController {
     return this.getMovieDetailsUseCase.getMovieDetails(movieId, user.id);
   }
 
-  @AuthRequired()
+  @AuthOptional()
   @Get('/movies')
   async getMovies(
     @Query('page') page: number,

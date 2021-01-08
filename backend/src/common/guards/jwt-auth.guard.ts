@@ -1,20 +1,20 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { AUTH_REQUIRED_KEY } from '../decorators/auth-required.decorator';
+import { AUTH_OPTIONAL_KEY } from '../decorators/auth-optional.decorator';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector) {
+  constructor(private readonly reflector: Reflector) {
     super();
   }
 
   canActivate(context: ExecutionContext) {
-    const isAuthRequired = this.reflector.getAllAndOverride<boolean>(
-      AUTH_REQUIRED_KEY,
+    const isAuthOptional = this.reflector.getAllAndOverride<boolean>(
+      AUTH_OPTIONAL_KEY,
       [context.getHandler(), context.getClass()],
     );
-    if (!isAuthRequired) {
+    if (!isAuthOptional) {
       return true;
     }
     return super.canActivate(context);

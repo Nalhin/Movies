@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { MovieRepository } from './movie/movie.repository';
 import { TmdbClientService } from '../http/tmdb-movie/tmdb-client.service';
 import { GetMoviesPort } from '../../../application/port/out/get-movies.port';
-import { MovieListReadModel } from 'src/movie/domain/movie-list.read-model';
+import { MovieDetailsReadModel } from '../../../domain/movie-details.read-model';
+import { MovieListReadModel } from '../../../domain/movie-list.read-model';
 
 @Injectable()
 export class MovieQueryPersistenceAdapter implements GetMoviesPort {
