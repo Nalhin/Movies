@@ -4,27 +4,28 @@ import { TmdbClientService } from '../http/tmdb-movie/tmdb-client.service';
 import { GetMoviesPort } from '../../../application/port/out/get-movies.port';
 import { MovieDetailsReadModel } from '../../../domain/movie-details.read-model';
 import { MovieListReadModel } from '../../../domain/movie-list.read-model';
+import { GetMovieDetailsPort } from '../../../application/port/out/get-movie-details.port';
 
 @Injectable()
-export class MovieQueryPersistenceAdapter implements GetMoviesPort {
+export class MovieQueryPersistenceAdapter
+  implements GetMoviesPort, GetMovieDetailsPort {
   constructor(
     private readonly movieRepository: MovieRepository,
     private readonly movieClient: TmdbClientService,
   ) {}
 
-  async getDetails(
+  async getMovieById(
     movieId: number,
-    userId: number,
+    userId?: number,
   ): Promise<MovieDetailsReadModel> {
     const [movieExternal, moviePersisted] = await Promise.all([
       this.movieClient.getMovieById(movieId).toPromise(),
       this.movieRepository.getPersonalMovieDetails(movieId, userId),
     ]);
-
     return new MovieDetailsReadModel({
       ...movieExternal,
-      userRating: moviePersisted.userRating,
-      isFavourite: moviePersisted.isFavourite,
+      userRating: moviePersisted?.userRating ?? null,
+      isFavourite: moviePersisted?.isFavourite ?? false,
     });
   }
 

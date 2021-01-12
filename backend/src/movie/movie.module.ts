@@ -97,7 +97,7 @@ import { GetMovieDetailsService } from './application/services/query/get-movie-d
     },
     {
       provide: GET_MOVIE_DETAILS,
-      useClass: MovieCommandPersistenceAdapter,
+      useClass: MovieQueryPersistenceAdapter,
     },
   ],
 })

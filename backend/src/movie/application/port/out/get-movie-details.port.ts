@@ -1,7 +1,7 @@
-import { Movie } from '../../../domain/movie.domain-model';
+import { MovieDetailsReadModel } from '../../../domain/movie-details.read-model';
 
 export interface GetMovieDetailsPort {
-  getMovieById(id: number): Promise<Movie>;
+  getMovieById(id: number, userId?: number): Promise<MovieDetailsReadModel>;
 }
 
 export const GET_MOVIE_DETAILS = Symbol('GET_MOVIE_DETAILS');

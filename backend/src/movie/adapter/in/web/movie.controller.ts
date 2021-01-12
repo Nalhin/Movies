@@ -16,6 +16,7 @@ import {
 import { plainToClass } from 'class-transformer';
 import { MovieListResponseDto } from './dto/movie-list-response.dto';
 import { AuthOptional } from '../../../../common/decorators/auth-optional.decorator';
+import { MovieDetailsResponseDto } from './dto/movie-details-response.dto';
 
 @Controller()
 export class MovieController {
@@ -36,9 +37,13 @@ export class MovieController {
     return this.askPlotQuestionUseCase.askPlotQuestion(movieId, question);
   }
 
+  @AuthOptional()
   @Get('/movies/:id')
-  getMovieById(@Param('id') movieId: number, @CurrentUser() user: User) {
-    return this.getMovieDetailsUseCase.getMovieDetails(movieId, user.id);
+  async getMovieById(@Param('id') movieId: number, @CurrentUser() user?: User) {
+    return plainToClass(
+      MovieDetailsResponseDto,
+      await this.getMovieDetailsUseCase.getMovieDetails(movieId, user?.id),
+    );
   }
 
   @AuthOptional()
@@ -46,9 +51,11 @@ export class MovieController {
   async getMovies(
     @Query('page') page: number,
     @Query('search') search: string,
-    @CurrentUser() user: User,
+    @CurrentUser() user?: User,
   ) {
-    const resp = await this.getMoviesUseCase.getMovies(search, page, user?.id);
-    return plainToClass(MovieListResponseDto, resp);
+    return plainToClass(
+      MovieListResponseDto,
+      await this.getMoviesUseCase.getMovies(search, page, user?.id),
+    );
   }
 }

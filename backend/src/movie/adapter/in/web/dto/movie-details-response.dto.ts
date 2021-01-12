@@ -8,8 +8,6 @@ export class MovieDetailsResponseDto {
   @Expose()
   budget: number;
   @Expose()
-  homepage?: string;
-  @Expose()
   id: number;
   @Expose()
   imdbId: string;
@@ -22,5 +20,27 @@ export class MovieDetailsResponseDto {
   @Expose()
   popularity: number;
   @Expose()
-  posterPath?: string;
+  posterPath: string | null;
+  @Expose()
+  releaseDate: string;
+  @Expose()
+  revenue: number;
+  @Expose()
+  runtime: number | null;
+  @Expose()
+  tagline: string | null;
+  @Expose()
+  title: string;
+  @Expose()
+  video: boolean;
+  @Expose()
+  isFavourite: boolean;
+  @Expose()
+  userRating: number | null;
+  @Expose()
+  averageRating: number | null;
+  @Expose()
+  voteAverage: number;
+  @Expose()
+  voteCount: number;
 }

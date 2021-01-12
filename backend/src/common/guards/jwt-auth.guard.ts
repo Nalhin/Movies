@@ -14,7 +14,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       AUTH_OPTIONAL_KEY,
       [context.getHandler(), context.getClass()],
     );
-    if (!isAuthOptional) {
+    if (isAuthOptional) {
       return true;
     }
     return super.canActivate(context);

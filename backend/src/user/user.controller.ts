@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AuthRequired } from '../common/decorators/auth-required.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { User } from './user.entity';
@@ -11,10 +11,5 @@ export class UserController {
   @AuthRequired()
   me(@CurrentUser() user: User): UserResponseDto {
     return plainToClass(UserResponseDto, user);
-  }
-
-  @Post('/me/upload-avatar')
-  uploadAvatar() {
-    return null;
   }
 }
