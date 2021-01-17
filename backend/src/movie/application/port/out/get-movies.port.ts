@@ -1,10 +1,10 @@
-import { MovieListReadModel } from '../../../domain/movie-list.read-model';
+import { MovieListReadModel } from '../../../domain/read-models/movie-list.read-model';
 
 export interface GetMoviesPort {
   getMovies(
     search: string,
     page: number,
-    userId: number,
+    userId?: number,
   ): Promise<MovieListReadModel[]>;
 }
 

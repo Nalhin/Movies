@@ -17,6 +17,14 @@ import { plainToClass } from 'class-transformer';
 import { MovieListResponseDto } from './dto/movie-list-response.dto';
 import { AuthOptional } from '../../../../common/decorators/auth-optional.decorator';
 import { MovieDetailsResponseDto } from './dto/movie-details-response.dto';
+import {
+  GET_POPULAR_MOVIES_USE_CASE,
+  GetPopularMoviesUseCase,
+} from '../../../application/port/in/query/get-popular-movies.use-case';
+import {
+  GET_SIMILAR_MOVIES_USE_CASE,
+  GetSimilarMoviesUseCase,
+} from '../../../application/port/in/query/get-similar-movies.use-case';
 
 @Controller()
 export class MovieController {
@@ -27,6 +35,10 @@ export class MovieController {
     private readonly getMovieDetailsUseCase: GetMovieDetailsUseCase,
     @Inject(GET_MOVIES_USE_CASE)
     private readonly getMoviesUseCase: GetMoviesUseCase,
+    @Inject(GET_POPULAR_MOVIES_USE_CASE)
+    private readonly getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    @Inject(GET_SIMILAR_MOVIES_USE_CASE)
+    private readonly getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
   ) {}
 
   @Get('/movies/:id/plot-question')
@@ -56,6 +68,27 @@ export class MovieController {
     return plainToClass(
       MovieListResponseDto,
       await this.getMoviesUseCase.getMovies(search, page, user?.id),
+    );
+  }
+
+  @AuthOptional()
+  @Get('/movies/popular')
+  async getPopularMovies(@CurrentUser() user?: User) {
+    return plainToClass(
+      MovieListResponseDto,
+      await this.getPopularMoviesUseCase.getPopularMovies(user?.id),
+    );
+  }
+
+  @AuthOptional()
+  @Get('/movies/:id/similar')
+  async getSimilarMovies(
+    @Param('id') movieId: number,
+    @CurrentUser() user?: User,
+  ) {
+    return plainToClass(
+      MovieListResponseDto,
+      await this.getSimilarMoviesUseCase.getSimilarMovies(movieId, user?.id),
     );
   }
 }

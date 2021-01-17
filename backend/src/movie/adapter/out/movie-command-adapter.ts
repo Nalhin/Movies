@@ -1,14 +1,13 @@
-import { LoadMoviePort } from '../../../application/port/out/load-movie.port';
-import { UpdateMoviePort } from '../../../application/port/out/update-movie.port';
-import { Movie } from '../../../domain/movie.domain-model';
-import { MovieRepository } from './movie/movie.repository';
-import { MovieRatingRepository } from './movie-rating/movie-rating.repository';
+import { LoadMoviePort } from '../../application/port/out/load-movie.port';
+import { UpdateMoviePort } from '../../application/port/out/update-movie.port';
+import { Movie } from '../../domain/models/movie.domain-model';
+import { MovieRepository } from './persistance/movie/movie.repository';
+import { MovieRatingRepository } from './persistance/movie-rating/movie-rating.repository';
 import { Injectable } from '@nestjs/common';
-import { TmdbClientService } from '../http/tmdb-movie/tmdb-client.service';
+import { TmdbClientService } from './http/tmdb-movie/tmdb-client.service';
 
 @Injectable()
-export class MovieCommandPersistenceAdapter
-  implements LoadMoviePort, UpdateMoviePort {
+export class MovieCommandAdapter implements LoadMoviePort, UpdateMoviePort {
   constructor(
     private readonly movieRepository: MovieRepository,
     private readonly ratingRepository: MovieRatingRepository,

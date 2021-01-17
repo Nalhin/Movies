@@ -1,4 +1,4 @@
-export interface MovieDetailsResponse {
+export interface MovieDetailsResponseDto {
   adult: boolean;
   backdropPath: string;
   belongsToCollection: null;

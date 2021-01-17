@@ -1,4 +1,4 @@
-import { MovieListReadModel } from '../../../../domain/movie-list.read-model';
+import { MovieListReadModel } from '../../../../domain/read-models/movie-list.read-model';
 
 export interface GetMoviesUseCase {
   getMovies(

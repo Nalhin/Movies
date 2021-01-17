@@ -1,4 +1,4 @@
-export interface MovieSearchResponse {
+export interface MovieListResponseDto {
   page: number;
   results: MovieItemResponse[];
   totalResults: number;

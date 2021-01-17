@@ -5,9 +5,7 @@ export class Movie {
     public readonly title: string,
     public readonly userRating: number | null,
     public readonly isFavourite: boolean,
-  ) {
-    console.log(this.isFavourite);
-  }
+  ) {}
 
   public addUserRating(rating: number) {
     return new Movie(
