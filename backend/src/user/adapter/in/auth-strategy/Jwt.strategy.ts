@@ -2,7 +2,6 @@ import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable } from '@nestjs/common';
 import { jwtConfig, JwtConfig } from '../../../../core/config/jwt.config';
-import { JwtPayload } from '../../../../../dist/auth/models/jwt-payload.model';
 import {
   GET_USER_BY_USERNAME_USE_CASE,
   GetByUsernameUseCase,
@@ -11,6 +10,7 @@ import {
   AnonymousUser,
   AuthenticatedUser,
 } from '../../../../common/model/app-user.model';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: JwtPayload, done: VerifiedCallback) {
+  async validate(payload: JwtPayloadDto, done: VerifiedCallback) {
     if (!payload.username) {
       return done(null, new AnonymousUser());
     }
