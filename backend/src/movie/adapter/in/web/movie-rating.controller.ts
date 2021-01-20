@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Inject, Param, Post } from '@nestjs/common';
 import { AuthRequired } from '../../../../common/decorators/auth-required.decorator';
 import { RateMovieRequestDto } from './dto/rate-movie-request.dto';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
-import { User } from '../../../../user/user.entity';
 import {
   RateMovieUseCase,
   RATE_MOVIE_USE_CASE,
@@ -11,8 +10,11 @@ import {
   REMOVE_MOVIE_RATING_USE_CASE,
   RemoveMovieRatingUseCase,
 } from '../../../application/port/in/command/remove-movie-rating.use-case';
+import { ApiTags } from '@nestjs/swagger';
+import { AuthenticatedUser } from '../../../../common/model/app-user.model';
 
 @Controller()
+@ApiTags('movie')
 export class MovieRatingController {
   constructor(
     @Inject(RATE_MOVIE_USE_CASE)
@@ -26,14 +28,17 @@ export class MovieRatingController {
   async rateMovie(
     @Param('id') movieId: number,
     @Body() requestBody: RateMovieRequestDto,
-    @CurrentUser() user: User,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.rateMovieUseCase.rateMovie(movieId, requestBody.score, user.id);
   }
 
   @AuthRequired()
   @Delete('/movies/:id/rating')
-  async deleteRating(@Param('id') movieId: number, @CurrentUser() user: User) {
+  async deleteRating(
+    @Param('id') movieId: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.removeRatingUseCase.removeRating(movieId, user.id);
   }
 }

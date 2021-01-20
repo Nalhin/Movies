@@ -10,7 +10,7 @@ import {
   GetPlotDetailsPort,
 } from '../../port/out/get-plot-details.port';
 import {
-  QUESTION_ANSWERING,
+  QUESTION_ANSWERING_PORT,
   QuestionAnsweringPort,
 } from '../../port/out/question-answering.port';
 import { mergeMap } from 'rxjs/operators';
@@ -22,7 +22,7 @@ export class AskPlotQuestionService implements AskPlotQuestionUseCase {
     private readonly movieDetailsProvider: GetMovieDetailsPort,
     @Inject(GET_PLOT_DETAILS)
     private readonly plotDetailsProvider: GetPlotDetailsPort,
-    @Inject(QUESTION_ANSWERING)
+    @Inject(QUESTION_ANSWERING_PORT)
     private readonly questionAnswerProvider: QuestionAnsweringPort,
   ) {}
 

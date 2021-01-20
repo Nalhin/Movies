@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { User } from '../../../../../user/user.entity';
+import { UserEntity } from '../../../../../user/adapter/out/persistance/database/user.entity';
 import { MovieEntity } from '../movie/movie.entity';
 
 @Entity({ name: 'movies_ratings' })
@@ -18,9 +18,9 @@ export class MovieRatingEntity {
   @Column({ name: 'rating', nullable: false })
   rating: number;
 
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'author_id' })
-  author: User;
+  author: UserEntity;
 
   @ManyToOne(() => MovieEntity, (movie) => movie.ratings, { nullable: false })
   @JoinColumn({ name: 'movie_id' })

@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { load, QuestionAndAnswer } from '@tensorflow-models/qna';
 import { QuestionAnsweringPort } from '../../../../application/port/out/question-answering.port';
+import { QuestionAndAnswer } from '@tensorflow-models/qna';
 
 @Injectable()
 export class QuestionAnsweringAdapter
@@ -8,8 +8,11 @@ export class QuestionAnsweringAdapter
   private model: QuestionAndAnswer;
 
   public async onModuleInit(): Promise<void> {
-    await require('@tensorflow/tfjs-node');
-    this.model = await load();
+    if (process.env.NODE_ENV !== 'test') {
+      await require('@tensorflow/tfjs-node');
+      const { load } = await require('@tensorflow-models/qna');
+      this.model = await load();
+    }
   }
 
   public async answerQuestion(

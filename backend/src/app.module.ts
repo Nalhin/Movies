@@ -2,7 +2,6 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './core/config/typerom.config';
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { jwtConfig } from './core/config/jwt.config';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
@@ -22,7 +21,6 @@ import { RequireAuthGuard } from './common/guards/require-auth.guard';
       useClass: TypeOrmConfigService,
     }),
     UserModule,
-    AuthModule,
     MovieModule,
   ],
   controllers: [],

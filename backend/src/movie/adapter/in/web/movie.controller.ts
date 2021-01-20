@@ -7,7 +7,6 @@ import {
   GET_MOVIE_DETAILS_USE_CASE,
   GetMovieDetailsUseCase,
 } from '../../../application/port/in/query/get-movie-details.use-case';
-import { User } from '../../../../user/user.entity';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
 import {
   GET_MOVIES_USE_CASE,
@@ -25,8 +24,11 @@ import {
   GET_SIMILAR_MOVIES_USE_CASE,
   GetSimilarMoviesUseCase,
 } from '../../../application/port/in/query/get-similar-movies.use-case';
+import { ApiTags } from '@nestjs/swagger';
+import { AppUser } from '../../../../common/model/app-user.model';
 
 @Controller()
+@ApiTags('movie')
 export class MovieController {
   constructor(
     @Inject(ASK_PLOT_QUESTION_USE_CASE)
@@ -51,7 +53,10 @@ export class MovieController {
 
   @AuthOptional()
   @Get('/movies/:id')
-  async getMovieById(@Param('id') movieId: number, @CurrentUser() user?: User) {
+  async getMovieById(
+    @Param('id') movieId: number,
+    @CurrentUser() user?: AppUser,
+  ) {
     return plainToClass(
       MovieDetailsResponseDto,
       await this.getMovieDetailsUseCase.getMovieDetails(movieId, user?.id),
@@ -63,7 +68,7 @@ export class MovieController {
   async getMovies(
     @Query('page') page: number,
     @Query('search') search: string,
-    @CurrentUser() user?: User,
+    @CurrentUser() user?: AppUser,
   ) {
     return plainToClass(
       MovieListResponseDto,
@@ -73,7 +78,7 @@ export class MovieController {
 
   @AuthOptional()
   @Get('/movies/popular')
-  async getPopularMovies(@CurrentUser() user?: User) {
+  async getPopularMovies(@CurrentUser() user?: AppUser) {
     return plainToClass(
       MovieListResponseDto,
       await this.getPopularMoviesUseCase.getPopularMovies(user?.id),
@@ -84,7 +89,7 @@ export class MovieController {
   @Get('/movies/:id/similar')
   async getSimilarMovies(
     @Param('id') movieId: number,
-    @CurrentUser() user?: User,
+    @CurrentUser() user?: AppUser,
   ) {
     return plainToClass(
       MovieListResponseDto,

@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../src/app.module';
 import { TypeOrmConfigService } from '../../src/core/config/typerom.config';
 import { TypeormTestConfig } from '../config/typeorm-test.config';
-import { QUESTION_ANSWERING } from '../../dist/movie/application/port/out/question-answering.port';
+import { QUESTION_ANSWERING_PORT } from '../../src/movie/application/port/out/question-answering.port';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -14,7 +14,7 @@ describe('AppController (e2e)', () => {
     })
       .overrideProvider(TypeOrmConfigService)
       .useClass(TypeormTestConfig)
-      .overrideProvider(QUESTION_ANSWERING)
+      .overrideProvider(QUESTION_ANSWERING_PORT)
       .useValue({})
       .compile();
 

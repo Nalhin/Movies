@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
-import { User } from '../../../../../user/user.entity';
+import { UserEntity } from '../../../../../user/adapter/out/persistance/database/user.entity';
 import { MovieRatingEntity } from '../movie-rating/movie-rating.entity';
 
 @Entity({ name: 'movies' })
@@ -22,11 +22,11 @@ export class MovieEntity {
   })
   ratings: MovieRatingEntity[];
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => UserEntity)
   @JoinTable({
     name: 'movies_favourite_by_users',
     joinColumn: { name: 'movie_id' },
     inverseJoinColumn: { name: 'user_id' },
   })
-  favouriteBy: User[];
+  favouriteBy: UserEntity[];
 }

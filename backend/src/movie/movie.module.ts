@@ -20,7 +20,7 @@ import { MovieRatingRepository } from './adapter/out/persistance/movie-rating/mo
 import { MovieRepository } from './adapter/out/persistance/movie/movie.repository';
 import { GET_PLOT_DETAILS } from './application/port/out/get-plot-details.port';
 import { WikipediaPlotDetailsAdapter } from './adapter/out/http/wikipedia-plot-details/wikipedia-plot-details.adapter';
-import { QUESTION_ANSWERING } from './application/port/out/question-answering.port';
+import { QUESTION_ANSWERING_PORT } from './application/port/out/question-answering.port';
 import { QuestionAnsweringAdapter } from './adapter/out/machine-learning/question-answering/question-answering.adapter';
 import { GET_MOVIES_USE_CASE } from './application/port/in/query/get-movies-use-case';
 import { GetMoviesService } from './application/services/query/get-movies.service';
@@ -85,7 +85,7 @@ import { GET_MOVIE_CAST_PORT } from './application/port/out/get-movie-cast.port'
       useClass: WikipediaPlotDetailsAdapter,
     },
     {
-      provide: QUESTION_ANSWERING,
+      provide: QUESTION_ANSWERING_PORT,
       useClass: QuestionAnsweringAdapter,
     },
     {
