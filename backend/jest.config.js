@@ -4,6 +4,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
+  reporters: ['default', 'jest-sonar'],
   projects: [
     {
       displayName: 'unit',
