@@ -1,41 +1,46 @@
 import {
   SignUpUserCommand,
+  SignUpUserErrors,
   SignUpUserUseCase,
 } from '../../port/in/command/sign-up-user.use-case';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '../../../domain/models/user.domain-model';
 import {
   SAVE_USER_PORT,
   SaveUserPort,
 } from '../../port/out/command/save-user.port';
-import { ExistsByUsernameOrEmailPort } from '../../port/out/query/exists-by-username-or-email.port';
+import {
+  EXISTS_BY_USERNAME_OR_EMAIL_PORT,
+  ExistsByUsernameOrEmailPort,
+} from '../../port/out/query/exists-by-username-or-email.port';
 import { Inject } from '@nestjs/common/decorators/core';
 import {
   TOKEN_PROVIDER_PORT,
   TokenProviderPort,
 } from '../../port/out/query/token-provider.port';
+import * as E from 'fp-ts/Either';
 
 @Injectable()
 export class SignUpUserService implements SignUpUserUseCase {
   constructor(
     @Inject(SAVE_USER_PORT)
-    private readonly saveUserProvider: SaveUserPort,
-    @Inject(TOKEN_PROVIDER_PORT)
-    private readonly existsProvider: ExistsByUsernameOrEmailPort,
+    private readonly userSaver: SaveUserPort,
+    @Inject(EXISTS_BY_USERNAME_OR_EMAIL_PORT)
+    private readonly existsUser: ExistsByUsernameOrEmailPort,
     @Inject(TOKEN_PROVIDER_PORT)
     private readonly tokenProvider: TokenProviderPort,
   ) {}
 
   public async signUp(
     command: SignUpUserCommand,
-  ): Promise<{ user: User; token: string }> {
+  ): Promise<E.Either<SignUpUserErrors, { user: User; token: string }>> {
     if (
-      await this.existsProvider.existsByUsernameOrEmail(
-        command.email,
+      await this.existsUser.existsByUsernameOrEmail(
         command.username,
+        command.email,
       )
     ) {
-      throw new UnprocessableEntityException('Username or email taken');
+      return E.left(SignUpUserErrors.UsernameOrEmailTaken);
     }
     const user = new User(
       null,
@@ -43,12 +48,12 @@ export class SignUpUserService implements SignUpUserUseCase {
       command.email,
       command.password,
     );
-    const savedUser = await this.saveUserProvider.save(
-      await user.hashPassword(),
-    );
-    return {
+
+    const savedUser = await this.userSaver.save(await user.hashPassword());
+
+    return E.right({
       user: savedUser,
       token: this.tokenProvider.signToken(savedUser.id, savedUser.username),
-    };
+    });
   }
 }

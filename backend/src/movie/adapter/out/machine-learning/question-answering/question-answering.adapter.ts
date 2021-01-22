@@ -8,7 +8,7 @@ export class QuestionAnsweringAdapter
   private model: QuestionAndAnswer;
 
   public async onModuleInit(): Promise<void> {
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV === 'production') {
       await require('@tensorflow/tfjs-node');
       const { load } = await require('@tensorflow-models/qna');
       this.model = await load();
