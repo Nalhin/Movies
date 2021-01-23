@@ -12,8 +12,10 @@ export class TypeormTestConfig implements TypeOrmOptionsFactory {
       username: 'user',
       password: 'password',
       database: 'movies_db_test',
-      synchronize: true,
       entities: getMetadataArgsStorage().tables.map((t) => t.target),
+      keepConnectionAlive: true,
+      dropSchema: true,
+      synchronize: true,
     };
   }
 }

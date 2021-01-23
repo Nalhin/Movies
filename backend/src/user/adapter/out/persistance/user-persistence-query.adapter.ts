@@ -19,6 +19,6 @@ export class UserPersistenceQueryAdapter
     if (!user) {
       return O.none;
     }
-    return O.of(new User(user.id, user.username, user.email, user.password));
+    return O.some(new User(user.id, user.username, user.email, user.password));
   }
 }

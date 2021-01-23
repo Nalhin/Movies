@@ -10,12 +10,14 @@ import {
 import { plainToClass } from 'class-transformer';
 import {
   SIGN_UP_USER_USE_CASE,
+  SignUpUserCommand,
   SignUpUserErrors,
   SignUpUserUseCase,
 } from '../../../application/port/in/command/sign-up-user.use-case';
 import { Inject } from '@nestjs/common/decorators/core';
 import {
   LOGIN_USER_USE_CASE,
+  LoginUserCommand,
   LoginUserErrors,
   LoginUserUseCase,
 } from '../../../application/port/in/command/login-user.use-case';
@@ -38,9 +40,11 @@ export class AuthController {
 
   @Post('/login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginUserDto: LoginRequestDto): Promise<AuthResponseDto> {
+  async login(@Body() request: LoginRequestDto): Promise<AuthResponseDto> {
     return pipe(
-      await this.loginUseCase.login(loginUserDto),
+      await this.loginUseCase.login(
+        new LoginUserCommand(request.username, request.password),
+      ),
       E.fold(
         (error) => {
           switch (error) {
@@ -55,11 +59,15 @@ export class AuthController {
 
   @Post('/sign-up')
   @HttpCode(HttpStatus.OK)
-  async signUp(
-    @Body() registerUserDto: SignUpRequestDto,
-  ): Promise<AuthResponseDto> {
+  async signUp(@Body() request: SignUpRequestDto): Promise<AuthResponseDto> {
     return pipe(
-      await this.signUpUseCase.signUp(registerUserDto),
+      await this.signUpUseCase.signUp(
+        new SignUpUserCommand(
+          request.username,
+          request.email,
+          request.password,
+        ),
+      ),
       E.fold(
         (error) => {
           switch (error) {
