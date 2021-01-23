@@ -19,7 +19,7 @@ import { ConfigModule } from '@nestjs/config';
 import { jwtConfig } from '../core/config/jwt.config';
 import { JwtStrategy } from './adapter/in/auth/strategies/jwt.strategy';
 import { FIND_USER_BY_USERNAME_USE_CASE } from './application/port/in/query/find-user-by-username-use.case';
-import { FindUserByUsername } from './application/services/query/find-user-by-username';
+import { FindUserByUsernameService } from './application/services/query/find-user-by-username.service';
 
 @Module({
   imports: [
@@ -55,7 +55,7 @@ import { FindUserByUsername } from './application/services/query/find-user-by-us
     },
     {
       provide: FIND_USER_BY_USERNAME_USE_CASE,
-      useClass: FindUserByUsername,
+      useClass: FindUserByUsernameService,
     },
     JwtStrategy,
   ],

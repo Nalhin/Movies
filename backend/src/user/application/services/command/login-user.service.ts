@@ -38,7 +38,7 @@ export class LoginUserService implements LoginUserUseCase {
     }
 
     const presentUser = user.value;
-    if (await presentUser.canLogin(command.password)) {
+    if (!(await presentUser.canLogin(command.password))) {
       return E.left(LoginUserErrors.InvalidCredentials);
     }
 

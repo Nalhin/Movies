@@ -85,7 +85,7 @@ jobs:
         run: yarn run lint
         working-directory: ./backend
   backend-tests:
-    name: Backend unit tests
+    name: Backend tests
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout

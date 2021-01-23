@@ -6,15 +6,16 @@ import {
   GetUserByUsernamePort,
 } from '../../port/out/query/get-user-by-username.port';
 import { Option } from 'fp-ts/Option';
+import { FindUserByUsernameUseCase } from '../../port/in/query/find-user-by-username-use.case';
 
 @Injectable()
-export class FindUserByUsername implements FindUserByUsername {
+export class FindUserByUsernameService implements FindUserByUsernameUseCase {
   constructor(
     @Inject(GET_USER_BY_USERNAME_PORT)
     private readonly users: GetUserByUsernamePort,
   ) {}
 
-  getByUsername(username: string): Promise<Option<User>> {
+  findByUsername(username: string): Promise<Option<User>> {
     return this.users.getByUsername(username);
   }
 }

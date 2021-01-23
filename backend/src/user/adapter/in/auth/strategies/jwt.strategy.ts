@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     @Inject(jwtConfig.KEY)
     private readonly jwtConf: JwtConfig,
     @Inject(FIND_USER_BY_USERNAME_USE_CASE)
-    private readonly getUserByUsername: FindUserByUsernameUseCase,
+    private readonly findUser: FindUserByUsernameUseCase,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -36,7 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       return new AnonymousUser();
     }
     return pipe(
-      await this.getUserByUsername.getByUsername(payload.username),
+      await this.findUser.findByUsername(payload.username),
       O.fold(
         () => new AnonymousUser(),
         (u) => new AuthenticatedUser(u.username, u.id),
