@@ -1,4 +1,4 @@
-import { SelfValidationError } from '../../dist/common/self-validating/self-validaiton.exception';
+import { SelfValidationError } from '../../src/common/self-validating/self-validating';
 
 export function toThrowSelfValidationErrorContainingAllFields(
   received,
