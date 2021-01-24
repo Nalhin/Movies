@@ -1,7 +1,7 @@
-import { SignUpRequestDto } from '../../../dist/user/adapter/in/web/dto/request/sign-up-request.dto';
 import { signUpRequestFactory } from '../../factories/user';
 import request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { SignUpRequestDto } from '../../../src/user/adapter/in/web/dto/request/sign-up-request.dto';
 
 export const authenticate = async (
   app: INestApplication,

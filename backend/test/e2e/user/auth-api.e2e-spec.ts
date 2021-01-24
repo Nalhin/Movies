@@ -28,16 +28,16 @@ describe('Auth API', () => {
         .expect(422);
     });
 
-    it('should return 400 (BAD_REQUEST) status code when request body is invalid', async () => {
-      const requestBody = signUpRequestFactory.buildOne({ email: 'fake' });
+    it('should return 400 (BAD_REQUEST) status code when email is invalid', async () => {
+      const requestBody = signUpRequestFactory.buildOne({ email: 'invalid' });
 
       const response = await request(e2eTest.app.getHttpServer())
         .post('/auth/sign-up')
         .send(requestBody)
         .expect(400);
 
-      expect(response.body.message).toContainEqual(
-        expect.stringContaining('email'),
+      expect(response.body.errors).toContainEqual(
+        expect.objectContaining({ field: 'email' }),
       );
     });
 

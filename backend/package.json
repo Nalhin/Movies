@@ -14,7 +14,7 @@
     "test": "jest --selectProjects unit",
     "test:watch": "jest --selectProjects unit --watch",
     "test:cov": "jest --selectProjects unit --coverage",
-    "test:e2e": "jest --selectProjects e2e --runInBand --forceExit",
+    "test:e2e": "jest --selectProjects e2e --runInBand",
     "test:e2e:cov": "jest --selectProjects e2e --coverage --runInBand"
   },
   "husky": {

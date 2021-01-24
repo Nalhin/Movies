@@ -3,7 +3,10 @@ import { AppModule } from '../../../src/app.module';
 import { TypeOrmConfigService } from '../../../src/core/config/typerom.config';
 import { TypeormTestConfig } from '../../config/typeorm-test.config';
 import { TypeOrmTestUtils } from './typeorm-test.utils';
-import { INestApplication } from '@nestjs/common';
+import { CACHE_MANAGER, INestApplication } from '@nestjs/common';
+import { CacheConfigService } from '../../../dist/core/config/cache.config';
+import { Cache } from 'cache-manager';
+import { CacheTestConfigService } from '../../config/cache-test.config';
 
 export interface E2EApp {
   app: INestApplication;
@@ -16,12 +19,17 @@ export async function initializeApp() {
     imports: [AppModule],
     providers: [TypeOrmTestUtils],
   })
+    .overrideProvider(CacheConfigService)
+    .useClass(CacheTestConfigService)
     .overrideProvider(TypeOrmConfigService)
     .useClass(TypeormTestConfig)
     .compile();
 
   const app = moduleFixture.createNestApplication();
   await app.init();
+
+  const cache = await app.get<Cache>(CACHE_MANAGER);
+  cache.reset();
 
   const dbTestUtils = app.get(TypeOrmTestUtils);
   await dbTestUtils.startServer();

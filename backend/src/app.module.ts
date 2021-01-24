@@ -4,11 +4,13 @@ import { TypeOrmConfigService } from './core/config/typerom.config';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { jwtConfig } from './core/config/jwt.config';
-import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ExcludePropertiesClassSerializerInterceptor } from './common/interceptors/exclude-properties-class-serializer-interceptor.service';
 import { MovieModule } from './movie/movie.module';
 import { RequireAuthGuard } from './common/guards/require-auth.guard';
+import { SelfValidationErrorFilter } from './common/filter/self-validation-error.filter';
+import { SelfValidationError } from './common/self-validating/self-validating';
 
 @Module({
   imports: [
@@ -29,6 +31,9 @@ import { RequireAuthGuard } from './common/guards/require-auth.guard';
       provide: APP_PIPE,
       useValue: new ValidationPipe({
         transform: true,
+        exceptionFactory: (errors) => {
+          throw SelfValidationError.fromValidationError(errors);
+        },
       }),
     },
     {
@@ -42,6 +47,10 @@ import { RequireAuthGuard } from './common/guards/require-auth.guard';
     {
       provide: APP_GUARD,
       useClass: RequireAuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: SelfValidationErrorFilter,
     },
   ],
 })
