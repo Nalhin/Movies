@@ -19,7 +19,7 @@ module.exports = {
       displayName: 'e2e',
       testRegex: 'test/.*\\.e2e-spec\\.ts$',
       transform: {
-        '^.+\\.(t|j)s$': 'ts-jest',
+        '^.+\\.ts$': 'ts-jest',
       },
       setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
     },

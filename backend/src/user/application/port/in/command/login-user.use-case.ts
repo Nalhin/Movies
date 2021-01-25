@@ -1,6 +1,6 @@
 import { User } from '../../../../domain/models/user.domain-model';
 import * as E from 'fp-ts/Either';
-import { MaxLength, MinLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 import { SelfValidating } from '../../../../../common/self-validating/self-validating';
 
 export interface LoginUserUseCase {
@@ -18,10 +18,12 @@ export const LOGIN_USER_USE_CASE = Symbol('LOGIN_USER_USE_CASE');
 export class LoginUserCommand extends SelfValidating {
   @MinLength(2)
   @MaxLength(50)
+  @IsString()
   readonly username: string;
 
   @MinLength(6)
   @MaxLength(50)
+  @IsString()
   readonly password: string;
 
   constructor(username: string, password: string) {

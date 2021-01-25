@@ -42,12 +42,14 @@ describe('LoginUserService', () => {
     it('should return invalid credentials error when user is not found', async () => {
       getUserByUsernamePort.getByUsername.mockResolvedValueOnce(O.none);
 
-      const actualResult = (await service.login(
+      const actualResult = await service.login(
         new LoginUserCommand('username', 'password'),
-      )) as E.Left<LoginUserErrors>;
+      );
 
       expect(E.isLeft(actualResult)).toBeTrue();
-      expect(actualResult.left).toBe(LoginUserErrors.InvalidCredentials);
+      expect(actualResult).toStrictEqual(
+        E.left(LoginUserErrors.InvalidCredentials),
+      );
     });
 
     it('should return invalid credentials error when passwords are not equal', async () => {
@@ -57,12 +59,14 @@ describe('LoginUserService', () => {
         ),
       );
 
-      const actualResult = (await service.login(
+      const actualResult = await service.login(
         new LoginUserCommand('username', 'password'),
-      )) as E.Left<LoginUserErrors>;
+      );
 
       expect(E.isLeft(actualResult)).toBeTrue();
-      expect(actualResult.left).toBe(LoginUserErrors.InvalidCredentials);
+      expect(actualResult).toStrictEqual(
+        E.left(LoginUserErrors.InvalidCredentials),
+      );
     });
 
     it('should return user and token', async () => {
@@ -75,12 +79,12 @@ describe('LoginUserService', () => {
       getUserByUsernamePort.getByUsername.mockResolvedValueOnce(O.some(user));
       tokenProviderPort.signToken.mockReturnValue('token');
 
-      const actualResult = (await service.login(
+      const actualResult = await service.login(
         new LoginUserCommand('username', 'password'),
-      )) as E.Right<{ user: User; token: string }>;
+      );
 
       expect(E.isRight(actualResult)).toBeTrue();
-      expect(actualResult.right).toStrictEqual({ user, token: 'token' });
+      expect(actualResult).toStrictEqual(E.right({ user, token: 'token' }));
       expect(tokenProviderPort.signToken).toBeCalledWith(1, 'username');
     });
   });

@@ -4,9 +4,9 @@ import { TypeOrmConfigService } from '../../../src/core/config/typerom.config';
 import { TypeormTestConfig } from '../../config/typeorm-test.config';
 import { TypeOrmTestUtils } from './typeorm-test.utils';
 import { CACHE_MANAGER, INestApplication } from '@nestjs/common';
-import { CacheConfigService } from '../../../dist/core/config/cache.config';
 import { Cache } from 'cache-manager';
 import { CacheTestConfigService } from '../../config/cache-test.config';
+import { CacheConfigService } from '../../../src/core/config/cache.config';
 
 export interface E2EApp {
   app: INestApplication;

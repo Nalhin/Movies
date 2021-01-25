@@ -3,10 +3,11 @@ import {
   GetMovieCastUseCase,
 } from '../../../application/port/in/query/get-movie-cast.use-case';
 import { Inject } from '@nestjs/common/decorators/core';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { MovieCastListResponseDto } from './dto/movie-cast-list-response.dto';
+import { MovieCastListResponseDto } from './dto/response/movie-cast-list-response.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Id } from '../../../../common/params/id';
 
 @Controller()
 @ApiTags('movie')
@@ -17,7 +18,7 @@ export class MovieCastController {
   ) {}
 
   @Get('/movies/:id/cast')
-  async getMovieCast(@Param('id') movieId: number) {
+  async getMovieCast(@Id() movieId: number) {
     return plainToClass(
       MovieCastListResponseDto,
       this.getMovieCastUseCase.getMovieCast(movieId),

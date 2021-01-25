@@ -31,9 +31,9 @@ describe('SignUpUserUseCase', () => {
       ).toThrowSelfValidationErrorContainingAllFields(['password']);
     });
 
-    it('should not allow username shorter than 6 characters', () => {
+    it('should not allow username shorter than 2 characters', () => {
       expect(
-        () => new SignUpUserCommand('short', 'email@gmail.com', 'password'),
+        () => new SignUpUserCommand('s', 'email@gmail.com', 'password'),
       ).toThrowSelfValidationErrorContainingAllFields(['username']);
     });
 

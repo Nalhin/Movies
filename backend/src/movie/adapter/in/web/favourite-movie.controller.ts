@@ -1,14 +1,31 @@
-import { Controller, Delete, Inject, Param, Post } from '@nestjs/common';
+import {
+  ConflictException,
+  Controller,
+  Delete,
+  Inject,
+  InternalServerErrorException,
+  NotFoundException,
+  Post,
+} from '@nestjs/common';
 import { AuthRequired } from '../../../../common/decorators/auth-required.decorator';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
 import {
   ADD_FAVOURITE_MOVIE_USE_CASE,
   AddFavouriteMovieUseCase,
+  AddFavouriteMovieCommand,
+  AddFavouriteMovieErrors,
 } from '../../../application/port/in/command/add-favourite-movie.use-case';
-import { RemoveFavouriteMovieUseCase } from '../../../application/port/in/command/remove-favourite-movie.use-case';
+import {
+  RemoveFavouriteMovieCommand,
+  RemoveFavouriteMovieErrors,
+  RemoveFavouriteMovieUseCase,
+} from '../../../application/port/in/command/remove-favourite-movie.use-case';
 import { RATE_MOVIE_USE_CASE } from '../../../application/port/in/command/rate-movie.use-case';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthenticatedUser } from '../../../../common/model/app-user.model';
+import { Id } from '../../../../common/params/id';
+import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 
 @Controller()
 @ApiTags('movie')
@@ -23,18 +40,46 @@ export class FavouriteMovieController {
   @AuthRequired()
   @Post('/movies/:id/favourite')
   async addFavouriteMovie(
-    @Param('id') movieId: number,
+    @Id() movieId: number,
     @CurrentUser() user: AuthenticatedUser,
-  ) {
-    return this.addFavouriteMovieUseCase.addFavourite(movieId, user.id);
+  ): Promise<void> {
+    return pipe(
+      await this.addFavouriteMovieUseCase.addFavourite(
+        new AddFavouriteMovieCommand(movieId, user.id),
+      ),
+      E.getOrElse((error) => {
+        switch (error) {
+          case AddFavouriteMovieErrors.MovieNotFound:
+            throw new NotFoundException('Movie was not found');
+          case AddFavouriteMovieErrors.MovieAlreadyFavourite:
+            throw new ConflictException('Movie is already marked as favourite');
+          case AddFavouriteMovieErrors.PersistenceError:
+            throw new InternalServerErrorException();
+        }
+      }),
+    );
   }
 
   @AuthRequired()
   @Delete('/movies/:id/favourite')
   async removeFavouriteMovie(
-    @Param('id') movieId: number,
+    @Id() movieId: number,
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.removeFavouriteMovieUseCase.removeFavourite(movieId, user.id);
+    return pipe(
+      await this.removeFavouriteMovieUseCase.removeFavourite(
+        new RemoveFavouriteMovieCommand(movieId, user.id),
+      ),
+      E.getOrElse((error) => {
+        switch (error) {
+          case RemoveFavouriteMovieErrors.MovieNotFound:
+            throw new NotFoundException('Movie was not found');
+          case RemoveFavouriteMovieErrors.MovieNotFavourite:
+            throw new ConflictException('Movie is not marked as favourite');
+          case RemoveFavouriteMovieErrors.PersistenceError:
+            throw new InternalServerErrorException();
+        }
+      }),
+    );
   }
 }

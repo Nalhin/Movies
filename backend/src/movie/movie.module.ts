@@ -12,7 +12,7 @@ import { RATE_MOVIE_USE_CASE } from './application/port/in/command/rate-movie.us
 import { RateMovieService } from './application/services/command/rate-movie.service';
 import { RemoveMovieRatingService } from './application/services/command/remove-movie-rating.service';
 import { REMOVE_MOVIE_RATING_USE_CASE } from './application/port/in/command/remove-movie-rating.use-case';
-import { LOAD_MOVIE_PORT } from './application/port/out/load-movie.port';
+import { FIND_MOVIE_PORT } from './application/port/out/find-movie.port';
 import { MovieCommandAdapter } from './adapter/out/movie-command-adapter';
 import { UPDATE_MOVIE_PORT } from './application/port/out/update-movie.port';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -73,7 +73,7 @@ import { GET_MOVIE_CAST_PORT } from './application/port/out/get-movie-cast.port'
       useClass: RemoveMovieRatingService,
     },
     {
-      provide: LOAD_MOVIE_PORT,
+      provide: FIND_MOVIE_PORT,
       useClass: MovieCommandAdapter,
     },
     {

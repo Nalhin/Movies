@@ -1,26 +1,46 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RateMovieUseCase } from '../../port/in/command/rate-movie.use-case';
-import { LOAD_MOVIE_PORT, LoadMoviePort } from '../../port/out/load-movie.port';
+import { FIND_MOVIE_PORT, FindMoviePort } from '../../port/out/find-movie.port';
 import {
   UPDATE_MOVIE_PORT,
   UpdateMoviePort,
 } from '../../port/out/update-movie.port';
+import {
+  RemoveMovieRatingCommand,
+  RemoveMovieRatingErrors,
+  RemoveMovieRatingUseCase,
+} from '../../port/in/command/remove-movie-rating.use-case';
+import { pipe } from 'fp-ts/function';
+import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 
 @Injectable()
-export class RemoveMovieRatingService implements RateMovieUseCase {
+export class RemoveMovieRatingService implements RemoveMovieRatingUseCase {
   constructor(
-    @Inject(LOAD_MOVIE_PORT)
-    private readonly loadMoviePort: LoadMoviePort,
+    @Inject(FIND_MOVIE_PORT)
+    private readonly findMoviePort: FindMoviePort,
     @Inject(UPDATE_MOVIE_PORT)
     private readonly updateMoviePort: UpdateMoviePort,
   ) {}
 
-  async rateMovie(
-    movieId: number,
-    rating: number,
-    userId: number,
-  ): Promise<void> {
-    const movie = await this.loadMoviePort.loadById(movieId, userId);
-    await this.updateMoviePort.updateMovie(movie.addUserRating(rating), userId);
+  async removeRating(
+    command: RemoveMovieRatingCommand,
+  ): Promise<E.Either<RemoveMovieRatingErrors, void>> {
+    return await pipe(
+      await this.findMoviePort.findById(command.movieId, command.userId),
+      TE.fromOption(() => RemoveMovieRatingErrors.MovieNotFound),
+      TE.chain((movie) =>
+        pipe(
+          movie.removeRating(),
+          TE.fromOption(() => RemoveMovieRatingErrors.MovieNotRated),
+        ),
+      ),
+      TE.map((updatedMovie) =>
+        TE.tryCatch(
+          () => this.updateMoviePort.updateMovie(updatedMovie, command.userId),
+          () => RemoveMovieRatingErrors.PersistenceError,
+        ),
+      ),
+      TE.flatten,
+    )();
   }
 }

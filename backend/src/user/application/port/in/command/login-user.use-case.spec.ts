@@ -20,9 +20,9 @@ describe('LoginUserUseCase', () => {
       ).toThrowSelfValidationErrorContainingAllFields(['password']);
     });
 
-    it('should not allow username shorter than 6 characters', () => {
+    it('should not allow username shorter than 2 characters', () => {
       expect(
-        () => new LoginUserCommand('short', 'password'),
+        () => new LoginUserCommand('s', 'password'),
       ).toThrowSelfValidationErrorContainingAllFields(['username']);
     });
 

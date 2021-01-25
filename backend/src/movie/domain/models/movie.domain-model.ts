@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+
 export class Movie {
   constructor(
     public readonly id: number,
@@ -7,29 +9,42 @@ export class Movie {
     public readonly isFavourite: boolean,
   ) {}
 
-  public addUserRating(rating: number) {
-    return new Movie(
-      this.id,
-      this.imdbId,
-      this.title,
-      rating,
-      this.isFavourite,
+  public rate(rating: number): O.Option<Movie> {
+    if (this.userRating) {
+      return O.none;
+    }
+
+    return O.some(
+      new Movie(this.id, this.imdbId, this.title, rating, this.isFavourite),
     );
   }
 
-  public markAsFavourite() {
-    if (this.isFavourite) {
-      throw new Error('Movie is already marked as favourite');
+  public removeRating(): O.Option<Movie> {
+    if (!this.userRating) {
+      return O.none;
     }
-
-    return new Movie(this.id, this.imdbId, this.title, this.userRating, true);
+    return O.some(
+      new Movie(this.id, this.imdbId, this.title, null, this.isFavourite),
+    );
   }
 
-  public removeFromFavourites() {
-    if (!this.isFavourite) {
-      throw new Error('Movie is not marked as favourite');
+  public markAsFavourite(): O.Option<Movie> {
+    if (this.isFavourite) {
+      return O.none;
     }
 
-    return new Movie(this.id, this.imdbId, this.title, this.userRating, false);
+    return O.some(
+      new Movie(this.id, this.imdbId, this.title, this.userRating, true),
+    );
+  }
+
+  public removeFromFavourites(): O.Option<Movie> {
+    if (!this.isFavourite) {
+      return O.none;
+    }
+
+    return O.some(
+      new Movie(this.id, this.imdbId, this.title, this.userRating, false),
+    );
   }
 }

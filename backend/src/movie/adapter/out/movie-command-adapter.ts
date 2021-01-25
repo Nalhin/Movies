@@ -1,13 +1,14 @@
-import { LoadMoviePort } from '../../application/port/out/load-movie.port';
+import { FindMoviePort } from '../../application/port/out/find-movie.port';
 import { UpdateMoviePort } from '../../application/port/out/update-movie.port';
 import { Movie } from '../../domain/models/movie.domain-model';
 import { MovieRepository } from './persistance/movie/movie.repository';
 import { MovieRatingRepository } from './persistance/movie-rating/movie-rating.repository';
 import { Injectable } from '@nestjs/common';
 import { TmdbClientService } from './http/tmdb-movie/tmdb-client.service';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
-export class MovieCommandAdapter implements LoadMoviePort, UpdateMoviePort {
+export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
   constructor(
     private readonly movieRepository: MovieRepository,
     private readonly ratingRepository: MovieRatingRepository,
@@ -15,18 +16,20 @@ export class MovieCommandAdapter implements LoadMoviePort, UpdateMoviePort {
     private readonly movieClient: TmdbClientService,
   ) {}
 
-  async loadById(movieId: number, userId: number): Promise<Movie> {
+  async findById(movieId: number, userId: number): Promise<O.Option<Movie>> {
     const [movieExternal, moviePersisted] = await Promise.all([
       this.movieClient.getMovieById(movieId).toPromise(),
       this.movieRepository.getPersonalMovieDetails(movieId, userId),
     ]);
 
-    return new Movie(
-      movieExternal.id,
-      movieExternal.imdbId,
-      movieExternal.title,
-      moviePersisted?.userRating ?? null,
-      moviePersisted?.isFavourite ?? false,
+    return O.some(
+      new Movie(
+        movieExternal.id,
+        movieExternal.imdbId,
+        movieExternal.title,
+        moviePersisted?.userRating ?? null,
+        moviePersisted?.isFavourite ?? false,
+      ),
     );
   }
 

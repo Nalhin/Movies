@@ -54,12 +54,14 @@ describe('SignUpUserService', () => {
         true,
       );
 
-      const actualResult = (await service.signUp(
+      const actualResult = await service.signUp(
         new SignUpUserCommand('username', 'email@email.com', 'password'),
-      )) as E.Left<SignUpUserErrors>;
+      );
 
       expect(E.isLeft(actualResult)).toBeTrue();
-      expect(actualResult.left).toBe(SignUpUserErrors.UsernameOrEmailTaken);
+      expect(actualResult).toStrictEqual(
+        E.left(SignUpUserErrors.UsernameOrEmailTaken),
+      );
       expect(
         existsByUsernameOrEmailPort.existsByUsernameOrEmail,
       ).toBeCalledWith('username', 'email@email.com');
