@@ -1,9 +1,9 @@
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
-  collectCoverageFrom: ['src/**/*.(t|j)s'],
+  rootDir: '.',
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.spec.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules', '<rootDir>/dist'],
-  coverageDirectory: '../coverage',
+  coverageDirectory: './coverage',
   testEnvironment: 'node',
   reporters: ['default', 'jest-sonar'],
   projects: [
