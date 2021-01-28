@@ -1,6 +1,7 @@
 import { E2EApp, initializeApp } from '../utils/initialize-app';
 import { authenticate } from '../utils/authenticate';
 import request from 'supertest';
+import { HttpStatus } from '@nestjs/common';
 
 describe('User API', () => {
   let e2eTest: E2EApp;
@@ -15,7 +16,9 @@ describe('User API', () => {
 
   describe('GET /me', () => {
     it('should return 403 (FORBIDDEN) status code when user is not authenticated', async () => {
-      return request(e2eTest.app.getHttpServer()).get('/me').expect(403);
+      return request(e2eTest.app.getHttpServer())
+        .get('/me')
+        .expect(HttpStatus.FORBIDDEN);
     });
 
     it('should return 200 (OK) status code and user data', async () => {
@@ -23,7 +26,9 @@ describe('User API', () => {
         username: 'username',
       });
 
-      const response = await authenticatedRequest.get('/me').expect(200);
+      const response = await authenticatedRequest
+        .get('/me')
+        .expect(HttpStatus.OK);
 
       expect(response.body.username).toBe('username');
     });

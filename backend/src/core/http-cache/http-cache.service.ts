@@ -54,9 +54,6 @@ export class HttpCacheService {
 
   public applyToAxios(axiosInstance: AxiosInstance): void {
     axiosInstance.interceptors.response.use((res) => this.onResponse(res));
-    axiosInstance.interceptors.request.use(
-      (res) => this.onRequest(res),
-      (error) => Promise.reject(error),
-    );
+    axiosInstance.interceptors.request.use((res) => this.onRequest(res));
   }
 }

@@ -6,6 +6,7 @@ import { MovieRatingRepository } from './persistance/movie-rating/movie-rating.r
 import { Injectable } from '@nestjs/common';
 import { TmdbClientService } from './http/tmdb-movie/tmdb-client.service';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 
 @Injectable()
 export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
@@ -22,13 +23,17 @@ export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
       this.movieRepository.getPersonalMovieDetails(movieId, userId),
     ]);
 
-    return O.some(
-      new Movie(
-        movieExternal.id,
-        movieExternal.imdbId,
-        movieExternal.title,
-        moviePersisted?.userRating ?? null,
-        moviePersisted?.isFavourite ?? false,
+    return pipe(
+      movieExternal,
+      O.map(
+        (movie) =>
+          new Movie(
+            movie.id,
+            movie.imdbId,
+            movie.title,
+            moviePersisted?.userRating ?? null,
+            moviePersisted?.isFavourite ?? false,
+          ),
       ),
     );
   }
@@ -41,17 +46,22 @@ export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
     });
     await this.movieRepository.save(movieToSave);
 
-    if (movie.userRating) {
-      const rating = await this.movieRating.findOne({
-        author: { id: userId },
-        movie: { id: movie.id },
-      });
+    const rating = await this.movieRating.findOne({
+      author: { id: userId },
+      movie: { id: movie.id },
+    });
+
+    if (movie.userRating && !rating) {
       await this.ratingRepository.save({
         ...rating,
         rating: movie.userRating,
         author: { id: userId },
         movie: { id: movie.id },
       });
+    }
+
+    if (!movie.userRating && rating) {
+      await this.ratingRepository.remove(rating);
     }
   }
 }

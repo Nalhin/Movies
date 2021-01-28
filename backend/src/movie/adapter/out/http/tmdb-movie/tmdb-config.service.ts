@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 @Injectable()
-export class TmbdHttpConfigService implements HttpModuleOptionsFactory {
+export class TmbdConfigService implements HttpModuleOptionsFactory {
   createHttpOptions(): HttpModuleOptions {
     return {
       timeout: 5000,

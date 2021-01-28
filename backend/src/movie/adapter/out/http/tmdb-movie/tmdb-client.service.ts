@@ -1,9 +1,10 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { MovieListResponseDto } from './dto/movie-list-response.dto';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { MovieDetailsResponseDto } from './dto/movie-details-response.dto';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MovieCastResponseDto } from './dto/movie-cast-response.dto';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class TmdbClientService {
@@ -17,10 +18,13 @@ export class TmdbClientService {
       .pipe(map((resp) => resp.data));
   }
 
-  getMovieById(movieId: number): Observable<MovieDetailsResponseDto> {
+  getMovieById(movieId: number): Observable<O.Option<MovieDetailsResponseDto>> {
     return this.httpService
       .get<MovieDetailsResponseDto>(`/movie/${movieId}`)
-      .pipe(map((resp) => resp.data));
+      .pipe(
+        map((resp) => O.some(resp.data)),
+        catchError(() => of(O.none)),
+      );
   }
 
   getSimilarMovies(movieId: number): Observable<MovieListResponseDto> {

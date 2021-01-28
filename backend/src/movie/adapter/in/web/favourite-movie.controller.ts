@@ -2,6 +2,8 @@ import {
   ConflictException,
   Controller,
   Delete,
+  HttpCode,
+  HttpStatus,
   Inject,
   InternalServerErrorException,
   NotFoundException,
@@ -16,11 +18,11 @@ import {
   AddFavouriteMovieErrors,
 } from '../../../application/port/in/command/add-favourite-movie.use-case';
 import {
+  REMOVE_FAVOURITE_MOVIE_USE_CASE,
   RemoveFavouriteMovieCommand,
   RemoveFavouriteMovieErrors,
   RemoveFavouriteMovieUseCase,
 } from '../../../application/port/in/command/remove-favourite-movie.use-case';
-import { RATE_MOVIE_USE_CASE } from '../../../application/port/in/command/rate-movie.use-case';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthenticatedUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
@@ -33,11 +35,12 @@ export class FavouriteMovieController {
   constructor(
     @Inject(ADD_FAVOURITE_MOVIE_USE_CASE)
     private readonly addFavouriteMovieUseCase: AddFavouriteMovieUseCase,
-    @Inject(RATE_MOVIE_USE_CASE)
+    @Inject(REMOVE_FAVOURITE_MOVIE_USE_CASE)
     private readonly removeFavouriteMovieUseCase: RemoveFavouriteMovieUseCase,
   ) {}
 
   @AuthRequired()
+  @HttpCode(HttpStatus.OK)
   @Post('/movies/:id/favourite')
   async addFavouriteMovie(
     @Id() movieId: number,
@@ -61,6 +64,7 @@ export class FavouriteMovieController {
   }
 
   @AuthRequired()
+  @HttpCode(HttpStatus.OK)
   @Delete('/movies/:id/favourite')
   async removeFavouriteMovie(
     @Id() movieId: number,

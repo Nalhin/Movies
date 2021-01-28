@@ -7,6 +7,8 @@ import { CACHE_MANAGER, INestApplication } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { CacheTestConfigService } from '../../config/cache-test.config';
 import { CacheConfigService } from '../../../src/core/config/cache.config';
+import { TmbdConfigService } from '../../../src/movie/adapter/out/http/tmdb-movie/tmdb-config.service';
+import { TmbdTestConfigService } from '../../config/tmdb-test.config';
 
 export interface E2EApp {
   app: INestApplication;
@@ -23,6 +25,8 @@ export async function initializeApp() {
     .useClass(CacheTestConfigService)
     .overrideProvider(TypeOrmConfigService)
     .useClass(TypeormTestConfig)
+    .overrideProvider(TmbdConfigService)
+    .useClass(TmbdTestConfigService)
     .compile();
 
   const app = moduleFixture.createNestApplication();

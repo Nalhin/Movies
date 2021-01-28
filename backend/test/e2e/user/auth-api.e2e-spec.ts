@@ -5,6 +5,7 @@ import {
 } from '../../factories/user';
 import { E2EApp, initializeApp } from '../utils/initialize-app';
 import { authenticate } from '../utils/authenticate';
+import { HttpStatus } from '@nestjs/common';
 
 describe('Auth API', () => {
   let e2eTest: E2EApp;
@@ -25,7 +26,7 @@ describe('Auth API', () => {
       return request(e2eTest.app.getHttpServer())
         .post('/auth/sign-up')
         .send(requestBody)
-        .expect(422);
+        .expect(HttpStatus.UNPROCESSABLE_ENTITY);
     });
 
     it('should return 400 (BAD_REQUEST) status code when email is invalid', async () => {
@@ -34,7 +35,7 @@ describe('Auth API', () => {
       const response = await request(e2eTest.app.getHttpServer())
         .post('/auth/sign-up')
         .send(requestBody)
-        .expect(400);
+        .expect(HttpStatus.BAD_REQUEST);
 
       expect(response.body.errors).toContainEqual(
         expect.objectContaining({ field: 'email' }),
@@ -47,7 +48,7 @@ describe('Auth API', () => {
       const response = await request(e2eTest.app.getHttpServer())
         .post('/auth/sign-up')
         .send(requestBody)
-        .expect(200);
+        .expect(HttpStatus.OK);
 
       expect(response.body.user.username).toBe(requestBody.username);
     });
@@ -61,7 +62,7 @@ describe('Auth API', () => {
       return request(e2eTest.app.getHttpServer())
         .post('/auth/login')
         .send(requestBody)
-        .expect(403);
+        .expect(HttpStatus.FORBIDDEN);
     });
 
     it('should return 200 (OK) status code with user data and valid token', async () => {
@@ -71,7 +72,7 @@ describe('Auth API', () => {
       const response = await request(e2eTest.app.getHttpServer())
         .post('/auth/login')
         .send(requestBody)
-        .expect(200);
+        .expect(HttpStatus.OK);
 
       expect(response.body.user.username).toBe(requestBody.username);
       expect(response.body.token).toBeString();
