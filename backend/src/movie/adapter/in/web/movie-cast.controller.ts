@@ -3,11 +3,13 @@ import {
   GetMovieCastUseCase,
 } from '../../../application/port/in/query/get-movie-cast.use-case';
 import { Inject } from '@nestjs/common/decorators/core';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { MovieCastListResponseDto } from './dto/response/movie-cast-list-response.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Id } from '../../../../common/params/id';
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 
 @Controller()
 @ApiTags('movie')
@@ -19,9 +21,12 @@ export class MovieCastController {
 
   @Get('/movies/:id/cast')
   async getMovieCast(@Id() movieId: number) {
-    return plainToClass(
-      MovieCastListResponseDto,
-      this.getMovieCastUseCase.getMovieCast(movieId),
+    return pipe(
+      await this.getMovieCastUseCase.getMovieCast(movieId),
+      O.map((cast) => plainToClass(MovieCastListResponseDto, cast)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Movie not found');
+      }),
     );
   }
 }

@@ -11,6 +11,8 @@ import { GetPopularMoviesPort } from '../../application/port/out/get-popular-mov
 import { MovieCastReadModel } from '../../domain/read-models/movie-cast.read-model';
 import { map } from 'rxjs/operators';
 import { GetMovieCastPort } from '../../application/port/out/get-movie-cast.port';
+import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class MovieQueryAdapter
@@ -89,19 +91,24 @@ export class MovieQueryAdapter
     );
   }
 
-  getMovieCast(movieId: number): Promise<MovieCastReadModel[]> {
+  getMovieCast(movieId: number): Promise<O.Option<MovieCastReadModel[]>> {
     return this.movieClient
       .getMovieCast(movieId)
       .pipe(
         map((cast) =>
-          cast.map(
-            (val) =>
-              new MovieCastReadModel(
-                val.id,
-                val.name,
-                val.character,
-                String(val.profilePath),
+          pipe(
+            cast,
+            O.map((cast) =>
+              cast.map(
+                (val) =>
+                  new MovieCastReadModel(
+                    val.id,
+                    val.name,
+                    val.character,
+                    String(val.profilePath),
+                  ),
               ),
+            ),
           ),
         ),
       )

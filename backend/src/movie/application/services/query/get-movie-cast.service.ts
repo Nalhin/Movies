@@ -5,6 +5,7 @@ import {
   GET_MOVIE_CAST_PORT,
 } from '../../port/out/get-movie-cast.port';
 import { MovieCastReadModel } from '../../../domain/read-models/movie-cast.read-model';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class GetMovieCastService implements GetMovieCastUseCase {
@@ -13,7 +14,7 @@ export class GetMovieCastService implements GetMovieCastUseCase {
     private readonly getCast: GetMovieCastPort,
   ) {}
 
-  getMovieCast(movieId: number): Promise<MovieCastReadModel[]> {
+  getMovieCast(movieId: number): Promise<O.Option<MovieCastReadModel[]>> {
     return this.getCast.getMovieCast(movieId);
   }
 }

@@ -1,4 +1,4 @@
-export interface MovieCastResponseDto {
+export interface MovieCastListResponseDto {
   adult: boolean;
   gender: number | null;
   id: number;
@@ -6,9 +6,13 @@ export interface MovieCastResponseDto {
   name: string;
   originalName: string;
   popularity: number;
-  profilePath: number;
+  profilePath: string;
   castId: number;
   character: string;
   creditId: string;
   order: number;
+}
+
+export interface MovieCastResponseDto {
+  cast: MovieCastListResponseDto[];
 }

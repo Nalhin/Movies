@@ -41,6 +41,7 @@ import { GET_POPULAR_MOVIES_PORT } from './application/port/out/get-popular-movi
 import { GET_MOVIE_CAST_USE_CASE } from './application/port/in/query/get-movie-cast.use-case';
 import { GetMovieCastService } from './application/services/query/get-movie-cast.service';
 import { GET_MOVIE_CAST_PORT } from './application/port/out/get-movie-cast.port';
+import { MovieCastController } from './adapter/in/web/movie-cast.controller';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { GET_MOVIE_CAST_PORT } from './application/port/out/get-movie-cast.port'
     MovieRatingController,
     FavouriteMovieController,
     MovieController,
+    MovieCastController,
   ],
   providers: [
     {

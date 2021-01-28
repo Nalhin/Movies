@@ -3,7 +3,10 @@ import { MovieListResponseDto } from './dto/movie-list-response.dto';
 import { catchError, map } from 'rxjs/operators';
 import { MovieDetailsResponseDto } from './dto/movie-details-response.dto';
 import { Observable, of } from 'rxjs';
-import { MovieCastResponseDto } from './dto/movie-cast-response.dto';
+import {
+  MovieCastListResponseDto,
+  MovieCastResponseDto,
+} from './dto/movie-cast-list-response.dto';
 import * as O from 'fp-ts/Option';
 
 @Injectable()
@@ -39,9 +42,14 @@ export class TmdbClientService {
       .pipe(map((resp) => resp.data));
   }
 
-  getMovieCast(movieId: number): Observable<MovieCastResponseDto[]> {
+  getMovieCast(
+    movieId: number,
+  ): Observable<O.Option<MovieCastListResponseDto[]>> {
     return this.httpService
-      .get<{ cast: MovieCastResponseDto[] }>(`/movie/${movieId}/credits`)
-      .pipe(map((resp) => resp.data.cast));
+      .get<MovieCastResponseDto>(`/movie/${movieId}/credits`)
+      .pipe(
+        map((resp) => O.some(resp.data.cast)),
+        catchError(() => of(O.none)),
+      );
   }
 }
