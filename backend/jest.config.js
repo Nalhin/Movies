@@ -3,7 +3,6 @@ module.exports = {
   rootDir: '.',
   collectCoverageFrom: ['src/**/*.ts', '!src/**/*.spec.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules', '<rootDir>/dist'],
-  coverageDirectory: './coverage',
   testEnvironment: 'node',
   reporters: ['default', 'jest-sonar'],
   projects: [

@@ -15,7 +15,7 @@
     "test:watch": "jest --selectProjects unit --watch",
     "test:cov": "jest --selectProjects unit --coverage",
     "test:e2e": "jest --selectProjects e2e --runInBand",
-    "test:e2e:cov": "jest --selectProjects e2e --coverage --runInBand"
+    "test:e2e:cov": "jest --selectProjects e2e --coverage --runInBand --coverageDirectory=coverage-e2e"
   },
   "husky": {
     "hooks": {
