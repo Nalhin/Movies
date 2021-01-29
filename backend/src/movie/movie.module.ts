@@ -42,6 +42,8 @@ import { GET_MOVIE_CAST_USE_CASE } from './application/port/in/query/get-movie-c
 import { GetMovieCastService } from './application/services/query/get-movie-cast.service';
 import { GET_MOVIE_CAST_PORT } from './application/port/out/get-movie-cast.port';
 import { MovieCastController } from './adapter/in/web/movie-cast.controller';
+import { MovieCastQueryAdapter } from './adapter/out/movie-cast-query.adapter';
+import { MoviePlotQuestionController } from './adapter/in/web/movie-plot-question.controller';
 
 @Module({
   imports: [
@@ -56,6 +58,7 @@ import { MovieCastController } from './adapter/in/web/movie-cast.controller';
     FavouriteMovieController,
     MovieController,
     MovieCastController,
+    MoviePlotQuestionController,
   ],
   providers: [
     {
@@ -132,7 +135,7 @@ import { MovieCastController } from './adapter/in/web/movie-cast.controller';
     },
     {
       provide: GET_MOVIE_CAST_PORT,
-      useClass: MovieQueryAdapter,
+      useClass: MovieCastQueryAdapter,
     },
   ],
 })

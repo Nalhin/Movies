@@ -29,6 +29,8 @@ export class AskPlotQuestionService implements AskPlotQuestionUseCase {
   askPlotQuestion(movieId: number, question: string): Observable<string> {
     return from(this.movieDetailsProvider.getMovieById(movieId)).pipe(
       mergeMap((movie) =>
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         this.plotDetailsProvider.getPlotDetails(movie.imdbId, movie.title),
       ),
       mergeMap((plotDetails) =>

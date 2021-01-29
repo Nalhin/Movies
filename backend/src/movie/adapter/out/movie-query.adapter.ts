@@ -8,11 +8,9 @@ import { GetMovieDetailsPort } from '../../application/port/out/get-movie-detail
 import { GetSimilarMoviesPort } from '../../application/port/out/get-similar-movies.port';
 import { MovieItemResponse } from './http/tmdb-movie/dto/movie-list-response.dto';
 import { GetPopularMoviesPort } from '../../application/port/out/get-popular-movies.port';
-import { MovieCastReadModel } from '../../domain/read-models/movie-cast.read-model';
-import { map } from 'rxjs/operators';
-import { GetMovieCastPort } from '../../application/port/out/get-movie-cast.port';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import { PaginatedReadModel } from '../../domain/read-models/paginated.read-model';
 
 @Injectable()
 export class MovieQueryAdapter
@@ -20,8 +18,7 @@ export class MovieQueryAdapter
     GetMoviesPort,
     GetMovieDetailsPort,
     GetSimilarMoviesPort,
-    GetPopularMoviesPort,
-    GetMovieCastPort {
+    GetPopularMoviesPort {
   constructor(
     private readonly movieRepository: MovieRepository,
     private readonly movieClient: TmdbClientService,
@@ -30,47 +27,89 @@ export class MovieQueryAdapter
   async getMovieById(
     movieId: number,
     userId?: number,
-  ): Promise<MovieDetailsReadModel> {
+  ): Promise<O.Option<MovieDetailsReadModel>> {
     const [movieExternal, moviePersisted] = await Promise.all([
       this.movieClient.getMovieById(movieId).toPromise(),
       this.movieRepository.getPersonalMovieDetails(movieId, userId),
     ]);
-    return new MovieDetailsReadModel({
-      ...movieExternal,
-      userRating: moviePersisted?.userRating ?? null,
-      isFavourite: moviePersisted?.isFavourite ?? false,
-    });
+
+    return pipe(
+      movieExternal,
+      O.map(
+        (movie) =>
+          new MovieDetailsReadModel({
+            ...movie,
+            ...moviePersisted,
+          }),
+      ),
+    );
   }
 
   async getMovies(
     search: string,
     page: number,
     userId?: number,
-  ): Promise<MovieListReadModel[]> {
+  ): Promise<O.Option<PaginatedReadModel<MovieListReadModel[]>>> {
     const externalMovies = await this.movieClient
       .queryMovies(search, page)
       .toPromise();
 
-    return this.joinWithDbData(externalMovies.results, userId);
+    if (O.isNone(externalMovies)) {
+      return O.none;
+    }
+
+    const joined = await this.joinWithDbData(
+      externalMovies.value.results,
+      userId,
+    );
+
+    return O.some(
+      new PaginatedReadModel(joined, {
+        page: externalMovies.value.page,
+        totalPages: externalMovies.value.totalPages,
+      }),
+    );
   }
 
   async getSimilarMovies(
     movieId: number,
     userId?: number,
-  ): Promise<MovieListReadModel[]> {
+  ): Promise<O.Option<MovieListReadModel[]>> {
     const externalMovies = await this.movieClient
       .getSimilarMovies(movieId)
       .toPromise();
 
-    return this.joinWithDbData(externalMovies.results, userId);
+    if (O.isNone(externalMovies)) {
+      return O.none;
+    }
+
+    const joined = await this.joinWithDbData(externalMovies.value, userId);
+    return O.some(joined);
   }
 
-  async getPopularMovies(userId?: number): Promise<MovieListReadModel[]> {
+  async getPopularMovies(
+    page: number,
+    userId?: number,
+  ): Promise<O.Option<PaginatedReadModel<MovieListReadModel[]>>> {
     const externalMovies = await this.movieClient
-      .getPopularMovies()
+      .getPopularMovies(page)
       .toPromise();
 
-    return this.joinWithDbData(externalMovies.results, userId);
+    if (O.isNone(externalMovies)) {
+      return O.none;
+    }
+
+    const joined = await this.joinWithDbData(
+      externalMovies.value.results,
+      userId,
+    );
+
+    return O.some(
+      new PaginatedReadModel(joined, {
+        page: externalMovies.value.page,
+        totalPages: externalMovies.value.totalPages,
+      }),
+    );
   }
 
   private async joinWithDbData(
@@ -81,7 +120,6 @@ export class MovieQueryAdapter
       apiMovies.map((result) => result.id),
       userId,
     );
-
     return apiMovies.map(
       (result) =>
         new MovieListReadModel({
@@ -89,29 +127,5 @@ export class MovieQueryAdapter
           ...moviesPersisted.find((movie) => movie.id === result.id),
         }),
     );
-  }
-
-  getMovieCast(movieId: number): Promise<O.Option<MovieCastReadModel[]>> {
-    return this.movieClient
-      .getMovieCast(movieId)
-      .pipe(
-        map((cast) =>
-          pipe(
-            cast,
-            O.map((cast) =>
-              cast.map(
-                (val) =>
-                  new MovieCastReadModel(
-                    val.id,
-                    val.name,
-                    val.character,
-                    String(val.profilePath),
-                  ),
-              ),
-            ),
-          ),
-        ),
-      )
-      .toPromise();
   }
 }

@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { Paginated } from '../../../../../../common/http/paginated';
 
 export class MovieListResponseDto {
   @Expose()
@@ -31,3 +32,7 @@ export class MovieListResponseDto {
   @Expose()
   averageRating: number | null;
 }
+
+export class PaginatedMovieListResponseDto extends Paginated<MovieListResponseDto>(
+  MovieListResponseDto,
+) {}

@@ -31,8 +31,8 @@ export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
             movie.id,
             movie.imdbId,
             movie.title,
-            moviePersisted?.userRating ?? null,
-            moviePersisted?.isFavourite ?? false,
+            moviePersisted.userRating,
+            moviePersisted.isFavourite,
           ),
       ),
     );

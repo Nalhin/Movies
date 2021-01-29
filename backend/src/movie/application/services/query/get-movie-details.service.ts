@@ -5,6 +5,7 @@ import {
 } from '../../port/out/get-movie-details.port';
 import { GetMovieDetailsUseCase } from '../../port/in/query/get-movie-details.use-case';
 import { MovieDetailsReadModel } from '../../../domain/read-models/movie-details.read-model';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class GetMovieDetailsService implements GetMovieDetailsUseCase {
@@ -16,7 +17,7 @@ export class GetMovieDetailsService implements GetMovieDetailsUseCase {
   getMovieDetails(
     movieId: number,
     userId: number,
-  ): Promise<MovieDetailsReadModel> {
+  ): Promise<O.Option<MovieDetailsReadModel>> {
     return this.movieDetailsProvider.getMovieById(movieId, userId);
   }
 }

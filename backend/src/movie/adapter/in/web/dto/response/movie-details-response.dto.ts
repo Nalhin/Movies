@@ -33,12 +33,14 @@ export class MovieDetailsResponseDto {
   title: string;
   @Expose()
   video: boolean;
+
   @Expose()
   isFavourite: boolean;
   @Expose()
   userRating: number | null;
   @Expose()
   averageRating: number | null;
+
   @Expose()
   voteAverage: number;
   @Expose()

@@ -25,7 +25,7 @@ import { ApiTags } from '@nestjs/swagger';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { LoginRequestDto } from './dto/request/login-request.dto';
-import { AuthResponseDto } from './dto/request/auth-response.dto';
+import { AuthResponseDto } from './dto/response/auth-response.dto';
 import { SignUpRequestDto } from './dto/request/sign-up-request.dto';
 
 @Controller('auth')

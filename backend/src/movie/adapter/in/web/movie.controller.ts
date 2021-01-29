@@ -1,8 +1,10 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common';
 import {
-  ASK_PLOT_QUESTION_USE_CASE,
-  AskPlotQuestionUseCase,
-} from '../../../application/port/in/query/ask-plot-question.use-case';
+  Controller,
+  Get,
+  Inject,
+  NotFoundException,
+  Query,
+} from '@nestjs/common';
 import {
   GET_MOVIE_DETAILS_USE_CASE,
   GetMovieDetailsUseCase,
@@ -13,7 +15,10 @@ import {
   GetMoviesUseCase,
 } from '../../../application/port/in/query/get-movies-use-case';
 import { plainToClass } from 'class-transformer';
-import { MovieListResponseDto } from './dto/response/movie-list-response.dto';
+import {
+  MovieListResponseDto,
+  PaginatedMovieListResponseDto,
+} from './dto/response/movie-list-response.dto';
 import { AuthOptional } from '../../../../common/decorators/auth-optional.decorator';
 import { MovieDetailsResponseDto } from './dto/response/movie-details-response.dto';
 import {
@@ -27,13 +32,13 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { AppUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
+import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 
 @Controller()
 @ApiTags('movie')
 export class MovieController {
   constructor(
-    @Inject(ASK_PLOT_QUESTION_USE_CASE)
-    private readonly askPlotQuestionUseCase: AskPlotQuestionUseCase,
     @Inject(GET_MOVIE_DETAILS_USE_CASE)
     private readonly getMovieDetailsUseCase: GetMovieDetailsUseCase,
     @Inject(GET_MOVIES_USE_CASE)
@@ -44,17 +49,15 @@ export class MovieController {
     private readonly getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
   ) {}
 
-  @Get('/movies/:id/plot-question')
-  askPlotQuestion(@Id() movieId: number, @Query('question') question: string) {
-    return this.askPlotQuestionUseCase.askPlotQuestion(movieId, question);
-  }
-
   @AuthOptional()
-  @Get('/movies/:id')
+  @Get('/movies/:id(\\d+)')
   async getMovieById(@Id() movieId: number, @CurrentUser() user?: AppUser) {
-    return plainToClass(
-      MovieDetailsResponseDto,
+    return pipe(
       await this.getMovieDetailsUseCase.getMovieDetails(movieId, user?.id),
+      O.map((movie) => plainToClass(MovieDetailsResponseDto, movie)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Movie not found');
+      }),
     );
   }
 
@@ -65,27 +68,39 @@ export class MovieController {
     @Query('search') search: string,
     @CurrentUser() user: AppUser,
   ) {
-    return plainToClass(
-      MovieListResponseDto,
+    return pipe(
       await this.getMoviesUseCase.getMovies(search, page, user?.id),
+      O.map((movie) => plainToClass(PaginatedMovieListResponseDto, movie)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Page not found');
+      }),
     );
   }
 
   @AuthOptional()
   @Get('/movies/popular')
-  async getPopularMovies(@CurrentUser() user: AppUser) {
-    return plainToClass(
-      MovieListResponseDto,
-      await this.getPopularMoviesUseCase.getPopularMovies(user?.id),
+  async getPopularMovies(
+    @Query('page') page: number,
+    @CurrentUser() user: AppUser,
+  ) {
+    return pipe(
+      await this.getPopularMoviesUseCase.getPopularMovies(page, user?.id),
+      O.map((movie) => plainToClass(PaginatedMovieListResponseDto, movie)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Page not found');
+      }),
     );
   }
 
   @AuthOptional()
   @Get('/movies/:id/similar')
   async getSimilarMovies(@Id() movieId: number, @CurrentUser() user: AppUser) {
-    return plainToClass(
-      MovieListResponseDto,
-      await this.getSimilarMoviesUseCase.getSimilarMovies(movieId, user.id),
+    return pipe(
+      await this.getSimilarMoviesUseCase.getSimilarMovies(movieId, user?.id),
+      O.map((movie) => plainToClass(MovieListResponseDto, movie)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Movie not found');
+      }),
     );
   }
 }

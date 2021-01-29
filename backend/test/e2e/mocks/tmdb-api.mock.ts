@@ -1,12 +1,28 @@
 import { rest } from 'msw';
-import { MovieListResponseDto } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-list-response.dto';
+import { MovieItemResponse } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-list-response.dto';
 import { MovieDetailsResponseDto } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-details-response.dto';
 import { MovieCastResponseDto } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-cast-list-response.dto';
 import { HttpStatus } from '@nestjs/common';
 
-export const queryMovies = (response: MovieListResponseDto) =>
+export const queryMovies = (
+  response: MovieItemResponse[],
+  totalPages: number,
+) =>
   rest.get('/search/movie', (req, res, ctx) => {
-    return res(ctx.json(response));
+    const page = Number(req.url.searchParams.get('page'));
+
+    if (page > totalPages) {
+      return res(ctx.status(HttpStatus.NOT_FOUND));
+    }
+
+    return res(
+      ctx.json({
+        page,
+        results: response,
+        totalResults: totalPages * 20,
+        totalPages,
+      }),
+    );
   });
 
 export const getMovieById = (response: MovieDetailsResponseDto) =>
@@ -18,14 +34,37 @@ export const getMovieById = (response: MovieDetailsResponseDto) =>
     return res(ctx.json(response));
   });
 
-export const getSimilarMovies = (response: MovieListResponseDto) =>
-  rest.get('/search/:id/movie', (req, res, ctx) => {
-    return res(ctx.json(response));
+export const getSimilarMovies = (
+  response: MovieItemResponse[],
+  movieId: number,
+) =>
+  rest.get('/movie/:id/similar', (req, res, ctx) => {
+    if (req.params.id != movieId) {
+      return res(ctx.status(HttpStatus.NOT_FOUND));
+    }
+
+    return res(ctx.json({ results: response }));
   });
 
-export const getPopularMovies = (response: MovieListResponseDto) =>
+export const getPopularMovies = (
+  response: MovieItemResponse[],
+  totalPages: number,
+) =>
   rest.get('/movie/popular', (req, res, ctx) => {
-    return res(ctx.json(response));
+    const page = Number(req.url.searchParams.get('page'));
+
+    if (page > totalPages) {
+      return res(ctx.status(HttpStatus.NOT_FOUND));
+    }
+
+    return res(
+      ctx.json({
+        page,
+        results: response,
+        totalResults: totalPages * 20,
+        totalPages,
+      }),
+    );
   });
 
 export const getMovieCast = (response: MovieCastResponseDto, movieId: number) =>

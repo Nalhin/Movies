@@ -5,6 +5,8 @@ import {
   GetPopularMoviesPort,
 } from '../../port/out/get-popular-movies.port';
 import { MovieListReadModel } from '../../../domain/read-models/movie-list.read-model';
+import * as O from 'fp-ts/Option';
+import { PaginatedReadModel } from '../../../domain/read-models/paginated.read-model';
 
 @Injectable()
 export class GetPopularMoviesService implements GetPopularMoviesUseCase {
@@ -13,7 +15,10 @@ export class GetPopularMoviesService implements GetPopularMoviesUseCase {
     private readonly getPopular: GetPopularMoviesPort,
   ) {}
 
-  getPopularMovies(userId?: number): Promise<MovieListReadModel[]> {
-    return this.getPopular.getPopularMovies(userId);
+  getPopularMovies(
+    page: number,
+    userId?: number,
+  ): Promise<O.Option<PaginatedReadModel<MovieListReadModel[]>>> {
+    return this.getPopular.getPopularMovies(page, userId);
   }
 }

@@ -1,12 +1,12 @@
 import { E2EApp, initializeApp } from '../utils/initialize-app';
 import { setupServer } from 'msw/node';
-import { tmdbMovieDetailsFactory } from '../../factories/tmdb-api';
 import { getMovieById } from '../mocks/tmdb-api.mock';
+import { tmdbMovieDetailsFactory } from '../../factories/tmdb-api';
 import { authenticate } from '../utils/authenticate';
 import { HttpStatus } from '@nestjs/common';
 import request from 'supertest';
 
-describe('Movie Rating API', () => {
+describe('Favourite Movie API', () => {
   let e2eTest: E2EApp;
   const server = setupServer();
   const externalMovie = tmdbMovieDetailsFactory.buildOne();
@@ -32,25 +32,23 @@ describe('Movie Rating API', () => {
     server.close();
   });
 
-  describe('POST /movies/:id/rating', () => {
+  describe('POST /movies/:id/favourite', () => {
     it('should return OK (200) status code and rate the movie', async () => {
       const { authenticatedRequest } = await authenticate(e2eTest.app);
 
       await authenticatedRequest
-        .post(`/movies/${externalMovie.id}/rating`)
-        .send({ rating: 5 })
+        .post(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.OK);
 
       const response = await authenticatedRequest.get(
         `/movies/${externalMovie.id}`,
       );
-      expect(response.body.userRating).toEqual(5);
+      expect(response.body.isFavourite).toBeTrue();
     });
 
     it('should return FORBIDDEN (403) status code when user is not authorized', () => {
       return request(e2eTest.app.getHttpServer())
-        .post(`/movies/${externalMovie.id}/rating`)
-        .send({ rating: 4 })
+        .post(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.FORBIDDEN);
     });
 
@@ -58,55 +56,42 @@ describe('Movie Rating API', () => {
       const { authenticatedRequest } = await authenticate(e2eTest.app);
 
       await authenticatedRequest
-        .post(`/movies/${externalMovie.id + 1}/rating`)
-        .send({ rating: 4 })
+        .post(`/movies/${externalMovie.id + 1}/favourite`)
         .expect(HttpStatus.NOT_FOUND);
     });
 
-    it('should return CONFLICT (409) status code when movie is already rated', async () => {
+    it('should return CONFLICT (409) status code when movie is already favourite', async () => {
       const { authenticatedRequest } = await authenticate(e2eTest.app);
       await authenticatedRequest
-        .post(`/movies/${externalMovie.id}/rating`)
-        .send({ rating: 5 })
+        .post(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.OK);
 
       await authenticatedRequest
-        .post(`/movies/${externalMovie.id}/rating`)
-        .send({ rating: 5 })
+        .post(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.CONFLICT);
-    });
-
-    it('should return BAD_REQUEST (400) status code when rating is invalid', async () => {
-      const { authenticatedRequest } = await authenticate(e2eTest.app);
-
-      await authenticatedRequest
-        .post(`/movies/${externalMovie.id}/rating`)
-        .send({ rating: 4.4 })
-        .expect(HttpStatus.BAD_REQUEST);
     });
   });
 
-  describe('DELETE /movies/:id/rating', () => {
-    it('should return OK (200) status code and remove movie rating', async () => {
+  describe('DELETE /movies/:id/favourite', () => {
+    it('should return OK (200) status code and remove movie from favourites', async () => {
       const { authenticatedRequest } = await authenticate(e2eTest.app);
       await authenticatedRequest
-        .post(`/movies/${externalMovie.id}/rating`)
-        .send({ rating: 5 })
+        .post(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.OK);
 
       await authenticatedRequest
-        .delete(`/movies/${externalMovie.id}/rating`)
+        .delete(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.OK);
 
       const response = await authenticatedRequest.get(
         `/movies/${externalMovie.id}`,
       );
-      expect(response.body.userRating).toEqual(null);
+      expect(response.body.isFavourite).toBeFalse();
     });
 
     it('should return FORBIDDEN (403) status code when user is not authorized', () => {
       return request(e2eTest.app.getHttpServer())
-        .delete(`/movies/${externalMovie.id}/rating`)
+        .delete(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.FORBIDDEN);
     });
 
@@ -114,15 +99,15 @@ describe('Movie Rating API', () => {
       const { authenticatedRequest } = await authenticate(e2eTest.app);
 
       await authenticatedRequest
-        .delete(`/movies/${externalMovie.id + 1}/rating`)
+        .delete(`/movies/${externalMovie.id + 1}/favourite`)
         .expect(HttpStatus.NOT_FOUND);
     });
 
-    it('should return CONFLICT (409) status code when movie is not rated', async () => {
+    it('should return CONFLICT (409) status code when movie is not favourite', async () => {
       const { authenticatedRequest } = await authenticate(e2eTest.app);
 
       await authenticatedRequest
-        .delete(`/movies/${externalMovie.id}/rating`)
+        .delete(`/movies/${externalMovie.id}/favourite`)
         .expect(HttpStatus.CONFLICT);
     });
   });

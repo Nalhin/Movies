@@ -1,5 +1,8 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { MovieListResponseDto } from './dto/movie-list-response.dto';
+import {
+  MovieItemResponse,
+  MovieListResponseDto,
+} from './dto/movie-list-response.dto';
 import { catchError, map } from 'rxjs/operators';
 import { MovieDetailsResponseDto } from './dto/movie-details-response.dto';
 import { Observable, of } from 'rxjs';
@@ -13,12 +16,18 @@ import * as O from 'fp-ts/Option';
 export class TmdbClientService {
   constructor(private readonly httpService: HttpService) {}
 
-  queryMovies(query: string, page: number): Observable<MovieListResponseDto> {
+  queryMovies(
+    query: string,
+    page: number,
+  ): Observable<O.Option<MovieListResponseDto>> {
     return this.httpService
       .get<MovieListResponseDto>('/search/movie', {
         params: { query, page },
       })
-      .pipe(map((resp) => resp.data));
+      .pipe(
+        map((resp) => O.some(resp.data)),
+        catchError(() => of(O.none)),
+      );
   }
 
   getMovieById(movieId: number): Observable<O.Option<MovieDetailsResponseDto>> {
@@ -30,16 +39,22 @@ export class TmdbClientService {
       );
   }
 
-  getSimilarMovies(movieId: number): Observable<MovieListResponseDto> {
+  getSimilarMovies(movieId: number): Observable<O.Option<MovieItemResponse[]>> {
     return this.httpService
       .get<MovieListResponseDto>(`/movie/${movieId}/similar`)
-      .pipe(map((resp) => resp.data));
+      .pipe(
+        map((resp) => O.some(resp.data.results)),
+        catchError(() => of(O.none)),
+      );
   }
 
-  getPopularMovies(): Observable<MovieListResponseDto> {
+  getPopularMovies(page: number): Observable<O.Option<MovieListResponseDto>> {
     return this.httpService
-      .get<MovieListResponseDto>(`/movie/popular`)
-      .pipe(map((resp) => resp.data));
+      .get<MovieListResponseDto>(`/movie/popular`, { params: { page } })
+      .pipe(
+        map((resp) => O.some(resp.data)),
+        catchError(() => of(O.none)),
+      );
   }
 
   getMovieCast(

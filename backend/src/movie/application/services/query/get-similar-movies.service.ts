@@ -5,6 +5,7 @@ import {
   GET_SIMILAR_MOVIES_PORT,
   GetSimilarMoviesPort,
 } from '../../port/out/get-similar-movies.port';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class GetSimilarMoviesService implements GetSimilarMoviesUseCase {
@@ -13,7 +14,10 @@ export class GetSimilarMoviesService implements GetSimilarMoviesUseCase {
     private readonly getSimilar: GetSimilarMoviesPort,
   ) {}
 
-  getSimilarMovies(userId?: number): Promise<MovieListReadModel[]> {
-    return this.getSimilar.getSimilarMovies(userId);
+  getSimilarMovies(
+    movieId: number,
+    userId?: number,
+  ): Promise<O.Option<MovieListReadModel[]>> {
+    return this.getSimilar.getSimilarMovies(movieId, userId);
   }
 }

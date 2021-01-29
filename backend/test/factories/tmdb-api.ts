@@ -2,6 +2,26 @@ import { FactoryBuilder } from 'factory.io';
 import { MovieDetailsResponseDto } from '../../src/movie/adapter/out/http/tmdb-movie/dto/movie-details-response.dto';
 import * as faker from 'faker';
 import { MovieCastListResponseDto } from '../../src/movie/adapter/out/http/tmdb-movie/dto/movie-cast-list-response.dto';
+import { MovieItemResponse } from '../../src/movie/adapter/out/http/tmdb-movie/dto/movie-list-response.dto';
+
+export const tmdvMovieItemResponse = FactoryBuilder.of<MovieItemResponse>()
+  .props({
+    posterPath: null,
+    adult: faker.random.boolean(),
+    overview: () => faker.random.words(10),
+    releaseDate: () => faker.date.soon().toDateString(),
+    genreIds: [],
+    id: faker.random.number,
+    originalTitle: faker.random.word,
+    originalLanguage: faker.random.word,
+    title: faker.random.word,
+    backdropPath: faker.image.imageUrl,
+    popularity: faker.random.number,
+    voteCount: faker.random.number,
+    video: faker.random.boolean,
+    voteAverage: () => faker.random.number({ min: 1, max: 10 }),
+  })
+  .build();
 
 export const tmdbMovieDetailsFactory = FactoryBuilder.of<MovieDetailsResponseDto>()
   .props({
