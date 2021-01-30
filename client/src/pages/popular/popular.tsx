@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 const Popular = () => {
   return (
     <View>
-      <Text>dasdasds</Text>
+      <Text>Popular</Text>
     </View>
   );
 };

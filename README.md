@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/Nalhin/Movies/branch/main/graph/badge.svg?token=PJW2cYyuwC)](https://codecov.io/gh/Nalhin/Movies)
 [![CodeFactor](https://www.codefactor.io/repository/github/nalhin/movies/badge)](https://www.codefactor.io/repository/github/nalhin/movies)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Movies_backend&metric=alert_status)](https://sonarcloud.io/dashboard?id=Movies_backend)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Movies_client&metric=alert_status)](https://sonarcloud.io/dashboard?id=Movies_client)
 [![License](https://img.shields.io/github/license/nalhin/Chess)](LICENSE.md)
 
 # Movies
