@@ -1,26 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import tailwind from 'tailwind-rn';
-import { Button } from 'react-native-elements';
+import { Provider as PaperProvider } from 'react-native-paper';
+import Popular from './pages/popular/popular';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={tailwind('bg-yellow-300 px-12')}>
-        Open up App.tsx to start working on your app
-      </Text>
+    <PaperProvider>
       <StatusBar style="auto" />
-      <Button title="button" />
-    </View>
+      <Popular />
+    </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
