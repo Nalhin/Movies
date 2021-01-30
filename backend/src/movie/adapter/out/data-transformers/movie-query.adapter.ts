@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { MovieRepository } from './persistance/movie/movie.repository';
-import { TmdbClientService } from './http/tmdb-movie/tmdb-client.service';
-import { GetMoviesPort } from '../../application/port/out/get-movies.port';
-import { MovieDetailsReadModel } from '../../domain/read-model/movie-details.read-model';
-import { MovieListReadModel } from '../../domain/read-model/movie-list.read-model';
-import { GetMovieDetailsPort } from '../../application/port/out/get-movie-details.port';
-import { GetSimilarMoviesPort } from '../../application/port/out/get-similar-movies.port';
-import { MovieItemResponse } from './http/tmdb-movie/dto/movie-list-response.dto';
-import { GetPopularMoviesPort } from '../../application/port/out/get-popular-movies.port';
+import { MovieRepository } from '../persistance/movie/movie.repository';
+import { TmdbClientService } from '../movie-data/tmdb-movie-data/tmdb-client.service';
+import { GetMoviesPort } from '../../../application/port/out/get-movies.port';
+import { MovieDetailsReadModel } from '../../../domain/read-model/movie-details.read-model';
+import { MovieListReadModel } from '../../../domain/read-model/movie-list.read-model';
+import { GetMovieDetailsPort } from '../../../application/port/out/get-movie-details.port';
+import { GetSimilarMoviesPort } from '../../../application/port/out/get-similar-movies.port';
+import { MovieItemResponse } from '../movie-data/tmdb-movie-data/dto/movie-list-response.dto';
+import { GetPopularMoviesPort } from '../../../application/port/out/get-popular-movies.port';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { PaginatedReadModel } from '../../domain/read-model/paginated.read-model';
+import { PaginatedReadModel } from '../../../domain/read-model/paginated.read-model';
 
 @Injectable()
 export class MovieQueryAdapter

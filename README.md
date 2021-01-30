@@ -28,14 +28,16 @@ and "Clean architecture" by Robert C. Martin.
 The API consists of two boundary contexts:
 
 * user boundary context is responsible for authentication and authorization
-* movie is responsible for movie data aggregation
+* movie boundary context is responsible for movie data aggregation
 
-The main (movie) "hexagon" has multiple output ports namely:
+The main (movie) "hexagon" has multiple output ports such as:
 
 * TMBD movie REST API
 * Live Wikipedia web scrapping
+* SPARQL IMDB id to Wikipedia url resolver
 * NLP question answering model
-* Persistence and a singular REST API input port.
+* Database persistence (PostgreSQL)
+
 
 ## Features
 

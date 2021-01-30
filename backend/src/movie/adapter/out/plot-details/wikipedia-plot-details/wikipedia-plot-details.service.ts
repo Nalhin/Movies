@@ -6,7 +6,7 @@ import { GetPlotDetailsPort } from '../../../../application/port/out/get-plot-de
 import * as O from 'fp-ts/Option';
 
 @Injectable()
-export class WikipediaPlotDetailsAdapter implements GetPlotDetailsPort {
+export class WikipediaPlotDetailsService implements GetPlotDetailsPort {
   constructor(private readonly httpClient: HttpService) {}
 
   private getWikiPage(imdbId: string) {

@@ -1,18 +1,20 @@
 import { HttpModule, HttpService, Module, OnModuleInit } from '@nestjs/common';
-import { TmdbClientService } from './tmdb-client.service';
-import { TmbdConfigService } from '../../../../../core/config/tmdb.config';
-import { HttpCacheService } from '../../../../../core/http-cache/http-cache.service';
+import { WikipediaPlotDetailsService } from './wikipedia-plot-details.service';
 import { HttpCacheModule } from '../../../../../core/http-cache/http-cache.module';
+import { HttpCacheService } from '../../../../../core/http-cache/http-cache.service';
 
 @Module({
   imports: [
-    HttpModule.registerAsync({ useClass: TmbdConfigService }),
+    HttpModule.register({
+      timeout: 10000,
+      maxRedirects: 5,
+    }),
     HttpCacheModule,
   ],
-  providers: [TmdbClientService, HttpCacheService],
-  exports: [TmdbClientService],
+  providers: [WikipediaPlotDetailsService],
+  exports: [WikipediaPlotDetailsService],
 })
-export class TmdbModule implements OnModuleInit {
+export class WikipediaPlotDetailsModule implements OnModuleInit {
   constructor(
     private readonly httpService: HttpService,
     private readonly httpCacheService: HttpCacheService,

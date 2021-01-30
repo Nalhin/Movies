@@ -9,7 +9,7 @@ import {
 } from '../../../../../core/config/question-answering.config';
 
 @Injectable()
-export class QuestionAnsweringAdapter
+export class NlpQuestionAsweringService
   implements OnModuleInit, QuestionAnsweringPort {
   private model: QuestionAndAnswer;
 

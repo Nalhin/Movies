@@ -1,7 +1,7 @@
 import { rest } from 'msw';
-import { MovieItemResponse } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-list-response.dto';
-import { MovieDetailsResponseDto } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-details-response.dto';
-import { MovieCastResponseDto } from '../../../src/movie/adapter/out/http/tmdb-movie/dto/movie-cast-list-response.dto';
+import { MovieItemResponse } from '../../../src/movie/adapter/out/movie-data/tmdb-movie-data/dto/movie-list-response.dto';
+import { MovieDetailsResponseDto } from '../../../src/movie/adapter/out/movie-data/tmdb-movie-data/dto/movie-details-response.dto';
+import { MovieCastResponseDto } from '../../../src/movie/adapter/out/movie-data/tmdb-movie-data/dto/movie-cast-list-response.dto';
 import { HttpStatus } from '@nestjs/common';
 
 export const queryMovies = (

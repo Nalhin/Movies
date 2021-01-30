@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { GetMovieCastPort } from '../../application/port/out/get-movie-cast.port';
-import { TmdbClientService } from './http/tmdb-movie/tmdb-client.service';
+import { GetMovieCastPort } from '../../../application/port/out/get-movie-cast.port';
+import { TmdbClientService } from '../movie-data/tmdb-movie-data/tmdb-client.service';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { MovieCastReadModel } from '../../domain/read-model/movie-cast.read-model';
+import { MovieCastReadModel } from '../../../domain/read-model/movie-cast.read-model';
 import { map } from 'rxjs/operators';
 
 @Injectable()

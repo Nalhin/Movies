@@ -1,8 +1,8 @@
 import { FactoryBuilder } from 'factory.io';
-import { MovieDetailsResponseDto } from '../../src/movie/adapter/out/http/tmdb-movie/dto/movie-details-response.dto';
+import { MovieDetailsResponseDto } from '../../src/movie/adapter/out/movie-data/tmdb-movie-data/dto/movie-details-response.dto';
 import * as faker from 'faker';
-import { MovieCastListResponseDto } from '../../src/movie/adapter/out/http/tmdb-movie/dto/movie-cast-list-response.dto';
-import { MovieItemResponse } from '../../src/movie/adapter/out/http/tmdb-movie/dto/movie-list-response.dto';
+import { MovieCastListResponseDto } from '../../src/movie/adapter/out/movie-data/tmdb-movie-data/dto/movie-cast-list-response.dto';
+import { MovieItemResponse } from '../../src/movie/adapter/out/movie-data/tmdb-movie-data/dto/movie-list-response.dto';
 
 export const tmdvMovieItemResponse = FactoryBuilder.of<MovieItemResponse>()
   .props({
