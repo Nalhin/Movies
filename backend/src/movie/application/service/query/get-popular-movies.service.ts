@@ -4,9 +4,9 @@ import {
   GET_POPULAR_MOVIES_PORT,
   GetPopularMoviesPort,
 } from '../../port/out/get-popular-movies.port';
-import { MovieListReadModel } from '../../../domain/read-models/movie-list.read-model';
+import { MovieListReadModel } from '../../../domain/read-model/movie-list.read-model';
 import * as O from 'fp-ts/Option';
-import { PaginatedReadModel } from '../../../domain/read-models/paginated.read-model';
+import { PaginatedReadModel } from '../../../domain/read-model/paginated.read-model';
 
 @Injectable()
 export class GetPopularMoviesService implements GetPopularMoviesUseCase {

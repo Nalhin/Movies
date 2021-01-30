@@ -4,7 +4,7 @@ import {
   GetMovieCastPort,
   GET_MOVIE_CAST_PORT,
 } from '../../port/out/get-movie-cast.port';
-import { MovieCastReadModel } from '../../../domain/read-models/movie-cast.read-model';
+import { MovieCastReadModel } from '../../../domain/read-model/movie-cast.read-model';
 import * as O from 'fp-ts/Option';
 
 @Injectable()

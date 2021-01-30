@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from './database/user.repository';
 import { ExistsByUsernameOrEmailPort } from '../../../application/port/out/query/exists-by-username-or-email.port';
 import { GetUserByUsernamePort } from '../../../application/port/out/query/get-user-by-username.port';
-import { User } from '../../../domain/models/user.domain-model';
+import { User } from '../../../domain/model/user.domain-model';
 import * as O from 'fp-ts/Option';
 
 @Injectable()

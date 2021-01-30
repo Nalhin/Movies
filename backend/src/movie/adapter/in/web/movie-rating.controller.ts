@@ -61,6 +61,8 @@ export class MovieRatingController {
             throw new ConflictException('Movie was already rated by the user');
           case RateMovieErrors.PersistenceError:
             throw new InternalServerErrorException();
+          default:
+            throw new InternalServerErrorException('Unexpected error');
         }
       }),
     );
@@ -85,6 +87,8 @@ export class MovieRatingController {
             throw new ConflictException('Movie was not rated by the user');
           case RemoveMovieRatingErrors.PersistenceError:
             throw new InternalServerErrorException();
+          default:
+            throw new InternalServerErrorException('Unexpected error');
         }
       }),
     );

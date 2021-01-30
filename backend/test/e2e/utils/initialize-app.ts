@@ -7,8 +7,9 @@ import { CACHE_MANAGER, INestApplication } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { CacheTestConfigService } from '../../config/cache-test.config';
 import { CacheConfigService } from '../../../src/core/config/cache.config';
-import { TmbdConfigService } from '../../../src/movie/adapter/out/http/tmdb-movie/tmdb-config.service';
+import { TmbdConfigService } from '../../../src/core/config/tmdb.config';
 import { TmbdTestConfigService } from '../../config/tmdb-test.config';
+import { questionAnsweringTestConfig } from '../../config/question-anwering-test.config';
 
 export interface E2EApp {
   app: INestApplication;
@@ -34,7 +35,9 @@ export async function initializeApp(
     .overrideProvider(TypeOrmConfigService)
     .useClass(TypeormTestConfig)
     .overrideProvider(TmbdConfigService)
-    .useClass(TmbdTestConfigService);
+    .useClass(TmbdTestConfigService)
+    .overrideProvider(questionAnsweringTestConfig.KEY)
+    .useValue(questionAnsweringTestConfig);
 
   for (const override of overrides) {
     if (override.value) {

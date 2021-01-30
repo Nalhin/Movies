@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { MovieRepository } from './persistance/movie/movie.repository';
 import { TmdbClientService } from './http/tmdb-movie/tmdb-client.service';
 import { GetMoviesPort } from '../../application/port/out/get-movies.port';
-import { MovieDetailsReadModel } from '../../domain/read-models/movie-details.read-model';
-import { MovieListReadModel } from '../../domain/read-models/movie-list.read-model';
+import { MovieDetailsReadModel } from '../../domain/read-model/movie-details.read-model';
+import { MovieListReadModel } from '../../domain/read-model/movie-list.read-model';
 import { GetMovieDetailsPort } from '../../application/port/out/get-movie-details.port';
 import { GetSimilarMoviesPort } from '../../application/port/out/get-similar-movies.port';
 import { MovieItemResponse } from './http/tmdb-movie/dto/movie-list-response.dto';
 import { GetPopularMoviesPort } from '../../application/port/out/get-popular-movies.port';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { PaginatedReadModel } from '../../domain/read-models/paginated.read-model';
+import { PaginatedReadModel } from '../../domain/read-model/paginated.read-model';
 
 @Injectable()
 export class MovieQueryAdapter
@@ -30,7 +30,7 @@ export class MovieQueryAdapter
   ): Promise<O.Option<MovieDetailsReadModel>> {
     const [movieExternal, moviePersisted] = await Promise.all([
       this.movieClient.getMovieById(movieId).toPromise(),
-      this.movieRepository.getPersonalMovieDetails(movieId, userId),
+      this.movieRepository.getMovieDetails(movieId, userId),
     ]);
 
     return pipe(
@@ -58,16 +58,14 @@ export class MovieQueryAdapter
       return O.none;
     }
 
-    const joined = await this.joinWithDbData(
-      externalMovies.value.results,
-      userId,
-    );
-
     return O.some(
-      new PaginatedReadModel(joined, {
-        page: externalMovies.value.page,
-        totalPages: externalMovies.value.totalPages,
-      }),
+      new PaginatedReadModel(
+        await this.joinWithDbData(externalMovies.value.results, userId),
+        {
+          page: externalMovies.value.page,
+          totalPages: externalMovies.value.totalPages,
+        },
+      ),
     );
   }
 
@@ -83,8 +81,7 @@ export class MovieQueryAdapter
       return O.none;
     }
 
-    const joined = await this.joinWithDbData(externalMovies.value, userId);
-    return O.some(joined);
+    return O.some(await this.joinWithDbData(externalMovies.value, userId));
   }
 
   async getPopularMovies(
@@ -99,16 +96,14 @@ export class MovieQueryAdapter
       return O.none;
     }
 
-    const joined = await this.joinWithDbData(
-      externalMovies.value.results,
-      userId,
-    );
-
     return O.some(
-      new PaginatedReadModel(joined, {
-        page: externalMovies.value.page,
-        totalPages: externalMovies.value.totalPages,
-      }),
+      new PaginatedReadModel(
+        await this.joinWithDbData(externalMovies.value.results, userId),
+        {
+          page: externalMovies.value.page,
+          totalPages: externalMovies.value.totalPages,
+        },
+      ),
     );
   }
 
@@ -116,7 +111,7 @@ export class MovieQueryAdapter
     apiMovies: MovieItemResponse[],
     userId?: number,
   ) {
-    const moviesPersisted = await this.movieRepository.getPersonalMoviesDetails(
+    const moviesPersisted = await this.movieRepository.getMoviesDetails(
       apiMovies.map((result) => result.id),
       userId,
     );

@@ -2,14 +2,24 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { QuestionAnsweringPort } from '../../../../application/port/out/question-answering.port';
 import { QuestionAndAnswer } from '@tensorflow-models/qna';
 import * as O from 'fp-ts/Option';
+import { Inject } from '@nestjs/common/decorators/core';
+import {
+  QuestionAnsweringConfig,
+  questionAnsweringConfig,
+} from '../../../../../core/config/question-answering.config';
 
 @Injectable()
 export class QuestionAnsweringAdapter
   implements OnModuleInit, QuestionAnsweringPort {
   private model: QuestionAndAnswer;
 
+  constructor(
+    @Inject(questionAnsweringConfig.KEY)
+    private qaConfig: QuestionAnsweringConfig,
+  ) {}
+
   public async onModuleInit(): Promise<void> {
-    if (process.env.NODE_ENV === 'production') {
+    if (this.qaConfig.enableML) {
       await require('@tensorflow/tfjs-node');
       const { load } = await require('@tensorflow-models/qna');
       this.model = await load();

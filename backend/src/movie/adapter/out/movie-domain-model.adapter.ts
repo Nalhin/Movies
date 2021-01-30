@@ -1,6 +1,6 @@
 import { FindMoviePort } from '../../application/port/out/find-movie.port';
 import { UpdateMoviePort } from '../../application/port/out/update-movie.port';
-import { Movie } from '../../domain/models/movie.domain-model';
+import { Movie } from '../../domain/model/movie.domain-model';
 import { MovieRepository } from './persistance/movie/movie.repository';
 import { MovieRatingRepository } from './persistance/movie-rating/movie-rating.repository';
 import { Injectable } from '@nestjs/common';
@@ -9,7 +9,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 
 @Injectable()
-export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
+export class MovieDomainModelAdapter implements FindMoviePort, UpdateMoviePort {
   constructor(
     private readonly movieRepository: MovieRepository,
     private readonly ratingRepository: MovieRatingRepository,
@@ -20,7 +20,7 @@ export class MovieCommandAdapter implements FindMoviePort, UpdateMoviePort {
   async findById(movieId: number, userId: number): Promise<O.Option<Movie>> {
     const [movieExternal, moviePersisted] = await Promise.all([
       this.movieClient.getMovieById(movieId).toPromise(),
-      this.movieRepository.getPersonalMovieDetails(movieId, userId),
+      this.movieRepository.getMovieDetails(movieId, userId),
     ]);
 
     return pipe(

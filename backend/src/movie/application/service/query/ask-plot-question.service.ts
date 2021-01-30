@@ -37,7 +37,7 @@ export class AskPlotQuestionService implements AskPlotQuestionUseCase {
     const movie = await this.movieDetailsProvider.getMovieById(movieId);
 
     if (O.isNone(movie)) {
-      return E.left(AskPlotQuestionErrors.MoviePlotNotFound);
+      return E.left(AskPlotQuestionErrors.MovieNotFound);
     }
 
     const plotDetails = await this.plotDetailsProvider.getPlotDetails(

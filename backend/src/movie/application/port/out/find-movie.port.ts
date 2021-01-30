@@ -1,4 +1,4 @@
-import { Movie } from '../../../domain/models/movie.domain-model';
+import { Movie } from '../../../domain/model/movie.domain-model';
 import * as O from 'fp-ts/Option';
 
 export interface FindMoviePort {

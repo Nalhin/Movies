@@ -1,4 +1,4 @@
-import { User } from '../../../../domain/models/user.domain-model';
+import { User } from '../../../../domain/model/user.domain-model';
 
 export interface SaveUserPort {
   save(user: User): Promise<User>;

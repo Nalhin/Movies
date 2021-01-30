@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './database/user.repository';
 import { SaveUserPort } from '../../../application/port/out/command/save-user.port';
-import { User } from '../../../domain/models/user.domain-model';
+import { User } from '../../../domain/model/user.domain-model';
 
 @Injectable()
 export class UserPersistenceCommandAdapter implements SaveUserPort {

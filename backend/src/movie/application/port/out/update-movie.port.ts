@@ -1,4 +1,4 @@
-import { Movie } from '../../../domain/models/movie.domain-model';
+import { Movie } from '../../../domain/model/movie.domain-model';
 
 export interface UpdateMoviePort {
   updateMovie(movie: Movie, userId: number): Promise<void>;

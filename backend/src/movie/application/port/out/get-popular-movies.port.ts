@@ -1,6 +1,6 @@
-import { MovieListReadModel } from '../../../domain/read-models/movie-list.read-model';
+import { MovieListReadModel } from '../../../domain/read-model/movie-list.read-model';
 import * as O from 'fp-ts/Option';
-import { PaginatedReadModel } from '../../../domain/read-models/paginated.read-model';
+import { PaginatedReadModel } from '../../../domain/read-model/paginated.read-model';
 
 export interface GetPopularMoviesPort {
   getPopularMovies(

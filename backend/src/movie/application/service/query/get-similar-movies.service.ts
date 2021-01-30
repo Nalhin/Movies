@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MovieListReadModel } from '../../../domain/read-models/movie-list.read-model';
+import { MovieListReadModel } from '../../../domain/read-model/movie-list.read-model';
 import { GetSimilarMoviesUseCase } from '../../port/in/query/get-similar-movies.use-case';
 import {
   GET_SIMILAR_MOVIES_PORT,

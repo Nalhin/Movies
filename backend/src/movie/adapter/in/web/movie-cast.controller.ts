@@ -20,7 +20,9 @@ export class MovieCastController {
   ) {}
 
   @Get('/movies/:id/cast')
-  async getMovieCast(@Id() movieId: number) {
+  async getMovieCast(
+    @Id() movieId: number,
+  ): Promise<MovieCastListResponseDto[]> {
     return pipe(
       await this.getMovieCastUseCase.getMovieCast(movieId),
       O.map((cast) => plainToClass(MovieCastListResponseDto, cast)),

@@ -1,4 +1,4 @@
-import { User } from '../../../../domain/models/user.domain-model';
+import { User } from '../../../../domain/model/user.domain-model';
 import { Option } from 'fp-ts/Option';
 
 export interface FindUserByUsernameUseCase {

@@ -51,7 +51,10 @@ export class MovieController {
 
   @AuthOptional()
   @Get('/movies/:id(\\d+)')
-  async getMovieById(@Id() movieId: number, @CurrentUser() user?: AppUser) {
+  async getMovieById(
+    @Id() movieId: number,
+    @CurrentUser() user?: AppUser,
+  ): Promise<MovieDetailsResponseDto> {
     return pipe(
       await this.getMovieDetailsUseCase.getMovieDetails(movieId, user?.id),
       O.map((movie) => plainToClass(MovieDetailsResponseDto, movie)),
@@ -67,7 +70,7 @@ export class MovieController {
     @Query('page') page: number,
     @Query('search') search: string,
     @CurrentUser() user: AppUser,
-  ) {
+  ): Promise<PaginatedMovieListResponseDto> {
     return pipe(
       await this.getMoviesUseCase.getMovies(search, page, user?.id),
       O.map((movie) => plainToClass(PaginatedMovieListResponseDto, movie)),
@@ -82,7 +85,7 @@ export class MovieController {
   async getPopularMovies(
     @Query('page') page: number,
     @CurrentUser() user: AppUser,
-  ) {
+  ): Promise<PaginatedMovieListResponseDto> {
     return pipe(
       await this.getPopularMoviesUseCase.getPopularMovies(page, user?.id),
       O.map((movie) => plainToClass(PaginatedMovieListResponseDto, movie)),
@@ -94,7 +97,10 @@ export class MovieController {
 
   @AuthOptional()
   @Get('/movies/:id/similar')
-  async getSimilarMovies(@Id() movieId: number, @CurrentUser() user: AppUser) {
+  async getSimilarMovies(
+    @Id() movieId: number,
+    @CurrentUser() user: AppUser,
+  ): Promise<MovieDetailsResponseDto[]> {
     return pipe(
       await this.getSimilarMoviesUseCase.getSimilarMovies(movieId, user?.id),
       O.map((movie) => plainToClass(MovieListResponseDto, movie)),

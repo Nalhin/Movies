@@ -2,7 +2,7 @@ import { FIND_USER_BY_USERNAME_USE_CASE } from '../../../../application/port/in/
 import { Test } from '@nestjs/testing';
 import { JwtStrategy } from './jwt.strategy';
 import * as O from 'fp-ts/Option';
-import { User } from '../../../../domain/models/user.domain-model';
+import { User } from '../../../../domain/model/user.domain-model';
 import { jwtConfig } from '../../../../../core/config/jwt.config';
 
 describe('JwtStrategy', () => {

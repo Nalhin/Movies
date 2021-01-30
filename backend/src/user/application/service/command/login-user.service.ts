@@ -4,7 +4,7 @@ import {
   LoginUserUseCase,
 } from '../../port/in/command/login-user.use-case';
 import { Injectable } from '@nestjs/common';
-import { User } from '../../../domain/models/user.domain-model';
+import { User } from '../../../domain/model/user.domain-model';
 import {
   GET_USER_BY_USERNAME_PORT,
   GetUserByUsernamePort,

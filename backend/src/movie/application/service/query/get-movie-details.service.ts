@@ -4,7 +4,7 @@ import {
   GetMovieDetailsPort,
 } from '../../port/out/get-movie-details.port';
 import { GetMovieDetailsUseCase } from '../../port/in/query/get-movie-details.use-case';
-import { MovieDetailsReadModel } from '../../../domain/read-models/movie-details.read-model';
+import { MovieDetailsReadModel } from '../../../domain/read-model/movie-details.read-model';
 import * as O from 'fp-ts/Option';
 
 @Injectable()

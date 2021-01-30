@@ -1,4 +1,4 @@
-import { User } from '../../../../domain/models/user.domain-model';
+import { User } from '../../../../domain/model/user.domain-model';
 import * as E from 'fp-ts/Either';
 import { IsString, MaxLength, MinLength } from 'class-validator';
 import { SelfValidating } from '../../../../../common/self-validating/self-validating';

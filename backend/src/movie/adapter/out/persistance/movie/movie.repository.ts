@@ -10,7 +10,7 @@ interface MoviePersonalDetails {
 
 @EntityRepository(MovieEntity)
 export class MovieRepository extends Repository<MovieEntity> {
-  async getPersonalMovieDetails(
+  async getMovieDetails(
     movieId: number,
     userId?: number,
   ): Promise<MoviePersonalDetails | undefined> {
@@ -56,7 +56,7 @@ export class MovieRepository extends Repository<MovieEntity> {
     };
   }
 
-  getPersonalMoviesDetails(
+  getMoviesDetails(
     movieIds: number[],
     userId?: number,
   ): Promise<MoviePersonalDetails[]> {

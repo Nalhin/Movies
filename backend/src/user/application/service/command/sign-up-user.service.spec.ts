@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { TOKEN_PROVIDER_PORT } from '../../port/out/query/token-provider.port';
 import * as E from 'fp-ts/Either';
-import { User } from '../../../domain/models/user.domain-model';
+import { User } from '../../../domain/model/user.domain-model';
 import { SignUpUserService } from './sign-up-user.service';
 import { EXISTS_BY_USERNAME_OR_EMAIL_PORT } from '../../port/out/query/exists-by-username-or-email.port';
 import { SAVE_USER_PORT } from '../../port/out/command/save-user.port';

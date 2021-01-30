@@ -1,6 +1,6 @@
 import { HttpModule, HttpService, Module, OnModuleInit } from '@nestjs/common';
 import { TmdbClientService } from './tmdb-client.service';
-import { TmbdConfigService } from './tmdb-config.service';
+import { TmbdConfigService } from '../../../../../core/config/tmdb.config';
 import { HttpCacheService } from '../../../../../core/http-cache/http-cache.service';
 import { HttpCacheModule } from '../../../../../core/http-cache/http-cache.module';
 

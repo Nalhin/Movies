@@ -1,4 +1,4 @@
-import { MovieDetailsReadModel } from '../../../domain/read-models/movie-details.read-model';
+import { MovieDetailsReadModel } from '../../../domain/read-model/movie-details.read-model';
 import * as O from 'fp-ts/Option';
 
 export interface GetMovieDetailsPort {

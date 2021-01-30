@@ -58,6 +58,8 @@ export class FavouriteMovieController {
             throw new ConflictException('Movie is already marked as favourite');
           case AddFavouriteMovieErrors.PersistenceError:
             throw new InternalServerErrorException();
+          default:
+            throw new InternalServerErrorException('Unexpected error');
         }
       }),
     );
@@ -82,6 +84,8 @@ export class FavouriteMovieController {
             throw new ConflictException('Movie is not marked as favourite');
           case RemoveFavouriteMovieErrors.PersistenceError:
             throw new InternalServerErrorException();
+          default:
+            throw new InternalServerErrorException('Unexpected error');
         }
       }),
     );

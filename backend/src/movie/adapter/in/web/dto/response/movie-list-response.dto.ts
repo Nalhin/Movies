@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { Paginated } from '../../../../../../common/http/paginated';
+import { Paginated } from './paginated';
 
 export class MovieListResponseDto {
   @Expose()

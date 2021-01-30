@@ -4,7 +4,7 @@ import {
   SignUpUserUseCase,
 } from '../../port/in/command/sign-up-user.use-case';
 import { Injectable } from '@nestjs/common';
-import { User } from '../../../domain/models/user.domain-model';
+import { User } from '../../../domain/model/user.domain-model';
 import {
   SAVE_USER_PORT,
   SaveUserPort,

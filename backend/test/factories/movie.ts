@@ -1,5 +1,5 @@
 import { FactoryBuilder } from 'factory.io';
-import { Movie } from '../../src/movie/domain/models/movie.domain-model';
+import { Movie } from '../../src/movie/domain/model/movie.domain-model';
 import * as faker from 'faker';
 
 export const movieFactory = FactoryBuilder.of(Movie)

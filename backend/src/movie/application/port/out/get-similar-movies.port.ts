@@ -1,4 +1,4 @@
-import { MovieListReadModel } from '../../../domain/read-models/movie-list.read-model';
+import { MovieListReadModel } from '../../../domain/read-model/movie-list.read-model';
 import * as O from 'fp-ts/Option';
 
 export interface GetSimilarMoviesPort {

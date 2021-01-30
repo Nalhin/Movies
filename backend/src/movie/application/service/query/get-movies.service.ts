@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MovieListReadModel } from 'src/movie/domain/read-models/movie-list.read-model';
+import { MovieListReadModel } from 'src/movie/domain/read-model/movie-list.read-model';
 import { GetMoviesUseCase } from '../../port/in/query/get-movies-use-case';
 import { GET_MOVIES, GetMoviesPort } from '../../port/out/get-movies.port';
 import * as O from 'fp-ts/Option';
-import { PaginatedReadModel } from '../../../domain/read-models/paginated.read-model';
+import { PaginatedReadModel } from '../../../domain/read-model/paginated.read-model';
 
 @Injectable()
 export class GetMoviesService implements GetMoviesUseCase {
