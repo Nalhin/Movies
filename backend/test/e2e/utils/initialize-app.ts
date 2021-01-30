@@ -39,11 +39,11 @@ export async function initializeApp(
   for (const override of overrides) {
     if (override.value) {
       moduleFixture = moduleFixture
-        .overrideProvider(override.class)
+        .overrideProvider(override.provider)
         .useValue(override.value);
     } else {
       moduleFixture = moduleFixture
-        .overrideProvider(override.class)
+        .overrideProvider(override.provider)
         .useClass(override.class);
     }
   }

@@ -18,7 +18,7 @@ import { UPDATE_MOVIE_PORT } from './application/port/out/update-movie.port';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieRatingRepository } from './adapter/out/persistance/movie-rating/movie-rating.repository';
 import { MovieRepository } from './adapter/out/persistance/movie/movie.repository';
-import { GET_PLOT_DETAILS } from './application/port/out/get-plot-details.port';
+import { GET_PLOT_DETAILS_PORT } from './application/port/out/get-plot-details.port';
 import { WikipediaPlotDetailsAdapter } from './adapter/out/http/wikipedia-plot-details/wikipedia-plot-details.adapter';
 import { QUESTION_ANSWERING_PORT } from './application/port/out/question-answering.port';
 import { QuestionAnsweringAdapter } from './adapter/out/machine-learning/question-answering/question-answering.adapter';
@@ -86,7 +86,7 @@ import { MoviePlotQuestionController } from './adapter/in/web/movie-plot-questio
       useClass: MovieCommandAdapter,
     },
     {
-      provide: GET_PLOT_DETAILS,
+      provide: GET_PLOT_DETAILS_PORT,
       useClass: WikipediaPlotDetailsAdapter,
     },
     {

@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { QuestionAnsweringPort } from '../../../../application/port/out/question-answering.port';
 import { QuestionAndAnswer } from '@tensorflow-models/qna';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class QuestionAnsweringAdapter
@@ -18,9 +19,9 @@ export class QuestionAnsweringAdapter
   public async answerQuestion(
     question: string,
     text: string,
-  ): Promise<string | null> {
+  ): Promise<O.Option<string>> {
     const answers = await this.model.findAnswers(question, text);
 
-    return answers.length > 0 ? answers[0].text : null;
+    return answers.length > 0 ? O.some(answers[0].text) : O.none;
   }
 }

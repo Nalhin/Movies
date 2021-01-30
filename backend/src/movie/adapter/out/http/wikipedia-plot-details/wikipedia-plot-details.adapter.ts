@@ -3,6 +3,7 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import cheerio from 'cheerio';
 import { of } from 'rxjs';
 import { GetPlotDetailsPort } from '../../../../application/port/out/get-plot-details.port';
+import * as O from 'fp-ts/Option';
 
 @Injectable()
 export class WikipediaPlotDetailsAdapter implements GetPlotDetailsPort {
@@ -26,14 +27,17 @@ export class WikipediaPlotDetailsAdapter implements GetPlotDetailsPort {
   }
 
   public getPlotDetails(imdbId: string, title: string) {
-    return this.getWikiPage(imdbId).pipe(
-      catchError(() => of(`https://en.wikipedia.org/wiki/${title}`)),
-      mergeMap((link) => this.httpClient.get(link)),
-      map((res) => this.extractPlot(res.data)),
-    );
+    return this.getWikiPage(imdbId)
+      .pipe(
+        catchError(() => of(`https://en.wikipedia.org/wiki/${title}`)),
+        mergeMap((link) => this.httpClient.get(link)),
+        map((res) => this.extractPlot(res.data)),
+        catchError(() => of(O.none)),
+      )
+      .toPromise();
   }
 
-  private extractPlot(html: string): string {
+  private extractPlot(html: string): O.Option<string> {
     const $ = cheerio.load(html);
 
     let text = '';
@@ -43,6 +47,6 @@ export class WikipediaPlotDetailsAdapter implements GetPlotDetailsPort {
       text += first.text();
       first = first.next();
     }
-    return text;
+    return text ? O.some(text) : O.none;
   }
 }
