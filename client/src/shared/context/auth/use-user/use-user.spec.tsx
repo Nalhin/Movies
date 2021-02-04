@@ -5,7 +5,7 @@ import { useAuthState } from '../use-auth-state/use-auth-state';
 import { authenticatedUserFactory } from '../../../../../test/factory/user/user';
 import { AuthProvider } from '../auth-provider/auth-provider';
 import { useUser } from './use-user';
-import { AuthStorageService } from '../../../service/storage/auth-storage.service';
+import { AuthStorageMock } from '../../../../../test/mocks/services/auth-storage.mock';
 
 jest.mock('../use-auth-state/use-auth-state');
 
@@ -24,7 +24,7 @@ describe('useUser', () => {
 
     const { result } = renderHook(() => useUser(), {
       wrapper: ({ children }) => (
-        <AuthProvider authStorage={mocked(new AuthStorageService())}>
+        <AuthProvider authStorage={new AuthStorageMock()}>
           {children}
         </AuthProvider>
       ),

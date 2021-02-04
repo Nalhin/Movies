@@ -1,11 +1,11 @@
 import { render, RenderOptions } from '@testing-library/react-native';
 import { AnonymousUser, User } from '../../src/shared/models/user/user';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { AuthProvider } from '../../src/shared/context/auth/auth-provider/auth-provider';
-import { AuthStorageService } from '../../src/shared/service/storage/auth-storage.service';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { authStorageMock } from '../mocks/auth-storage.mock-service';
+import { AuthProviderMock } from '../mocks/context/auth-provider.mock';
+import { AuthStorage } from '../../src/shared/services/storage/auth-storage.service';
+import { createStackNavigator } from '@react-navigation/stack';
 
 interface CustomRenderOptions extends RenderOptions {
   user?: User;
@@ -19,17 +19,29 @@ export const renderWithProviders = (
     defaultOptions: { queries: { retry: false } },
   });
 
+  const logoutUser = jest.fn();
+  const authenticateUser = jest.fn();
+  const Stack = createStackNavigator();
+
   return {
     ...render(
       <NavigationContainer>
-        <AuthProvider
+        <AuthProviderMock
           defaultUser={user}
-          authStorage={(authStorageMock as unknown) as AuthStorageService}
+          logoutUser={logoutUser}
+          authenticateUser={authenticateUser}
+          authStorage={(null as unknown) as AuthStorage}
         >
-          <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
-        </AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <Stack.Navigator initialRouteName={'/'} headerMode="none">
+              <Stack.Screen name={'/'}>{() => ui}</Stack.Screen>
+            </Stack.Navigator>
+          </QueryClientProvider>
+        </AuthProviderMock>
       </NavigationContainer>,
     ),
     queryClient,
+    logoutUser,
+    authenticateUser,
   };
 };

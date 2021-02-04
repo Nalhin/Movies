@@ -7,7 +7,7 @@ export interface AuthContextProps {
   authenticateUser: (
     { user, token }: { user: UserProperties; token: string },
     config?: { onAuth?: (user: User) => void },
-  ) => void;
+  ) => Promise<void>;
   logoutUser: () => void;
 }
 

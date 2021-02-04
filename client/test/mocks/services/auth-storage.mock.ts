@@ -1,4 +1,6 @@
-class AuthStorageMockService {
+import { AuthStorage } from '../../../src/shared/services/storage/auth-storage.service';
+
+export class AuthStorageMock implements AuthStorage {
   private token: string | null = null;
 
   async getAuthToken(): Promise<string | null> {
@@ -13,5 +15,3 @@ class AuthStorageMockService {
     this.token = null;
   }
 }
-
-export const authStorageMock = new AuthStorageMockService();

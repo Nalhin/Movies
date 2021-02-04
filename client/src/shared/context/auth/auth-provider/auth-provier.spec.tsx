@@ -4,7 +4,7 @@ import { useAuthState } from '../use-auth-state/use-auth-state';
 import { mocked } from 'ts-jest/utils';
 import { render } from '@testing-library/react-native';
 import { Text } from 'react-native';
-import { AuthStorageService } from '../../../service/storage/auth-storage.service';
+import { AuthStorageMock } from '../../../../../test/mocks/services/auth-storage.mock';
 
 jest.mock('../use-auth-state/use-auth-state');
 
@@ -15,7 +15,7 @@ describe('authProvider', () => {
     } as ReturnType<typeof useAuthState>);
 
     const { queryByText } = render(
-      <AuthProvider authStorage={mocked(new AuthStorageService())}>
+      <AuthProvider authStorage={new AuthStorageMock()}>
         <Text>test</Text>
       </AuthProvider>,
     );
@@ -29,7 +29,7 @@ describe('authProvider', () => {
     } as ReturnType<typeof useAuthState>);
 
     const { getByText } = render(
-      <AuthProvider authStorage={mocked(new AuthStorageService())}>
+      <AuthProvider authStorage={new AuthStorageMock()}>
         <Text>test</Text>
       </AuthProvider>,
     );

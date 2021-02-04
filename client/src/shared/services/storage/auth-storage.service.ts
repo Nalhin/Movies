@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export class AuthStorageService {
+export class AuthStorageService implements AuthStorage {
   private token: string | null = null;
 
   async getAuthToken(): Promise<string | null> {
@@ -20,6 +20,12 @@ export class AuthStorageService {
     this.token = null;
     await AsyncStorage.removeItem('@auth_token');
   }
+}
+
+export interface AuthStorage {
+  getAuthToken(): Promise<string | null>;
+  setAuthToken(token: string): Promise<void>;
+  removeAuthToken(): Promise<void>;
 }
 
 export const authStorage = new AuthStorageService();

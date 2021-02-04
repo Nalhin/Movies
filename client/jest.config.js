@@ -14,9 +14,5 @@ module.exports = {
       preset: 'jest-expo/android',
       setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
     },
-    {
-      preset: 'jest-expo/web',
-      setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
-    },
   ],
 };

@@ -1,5 +1,5 @@
 import defaultAxios from 'axios';
-import { authStorage } from '../../shared/service/storage/auth-storage.service';
+import { authStorage } from '../../shared/services/storage/auth-storage.service';
 
 const instance = defaultAxios.create({
   baseURL: 'http://192.168.1.180:3000/api',

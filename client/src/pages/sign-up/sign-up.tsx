@@ -1,19 +1,43 @@
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { View } from 'react-native';
 import { Button, Card, Input } from 'react-native-elements';
 import tailwind from 'tailwind-rn';
 import { useMutation } from 'react-query';
 import { postSignUp } from '../../core/api/user/auth.api';
+import { useAuth } from '../../shared/context/auth/use-auth/use-auth';
+import { SignUpRequestDto } from '../../core/api/api.types';
+import { useNavigation } from '@react-navigation/native';
+import { ROOT_ROUTES } from '../root.routes';
 
 const SignUp = () => {
-  const { mutate, isLoading } = useMutation(postSignUp);
+  const navigation = useNavigation();
+  const auth = useAuth();
+  const { mutateAsync, isLoading } = useMutation(postSignUp);
+
+  const signUp = async (
+    values: SignUpRequestDto,
+    helper: FormikHelpers<SignUpRequestDto>,
+  ) => {
+    try {
+      const response = await mutateAsync(values);
+      await auth.authenticateUser(
+        {
+          user: response.data.user,
+          token: response.data.token,
+        },
+        { onAuth: () => navigation.navigate(ROOT_ROUTES.MAIN) },
+      );
+    } catch (e) {
+      helper.resetForm();
+    }
+  };
 
   return (
     <View style={tailwind('h-full justify-center')}>
       <Formik
         initialValues={{ email: '', username: '', password: '' }}
-        onSubmit={(values) => mutate(values)}
+        onSubmit={signUp}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <Card>

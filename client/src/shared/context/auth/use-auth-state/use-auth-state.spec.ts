@@ -6,7 +6,7 @@ import { useAuthState } from './use-auth-state';
 import { AnonymousUser, AuthenticatedUser } from '../../../models/user/user';
 import { userResponseFactory } from '../../../../../test/factory/api/auth';
 import { getMe } from '../../../../core/api/user/user.api';
-import { AuthStorageService } from '../../../service/storage/auth-storage.service';
+import { AuthStorageService } from '../../../services/storage/auth-storage.service';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 
 jest.mock('../../../../core/api/user/user.api');

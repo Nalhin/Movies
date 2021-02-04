@@ -3,14 +3,14 @@ import { AnonymousUser, AuthenticatedUser } from '../../../models/user/user';
 import { useAuthState } from '../use-auth-state/use-auth-state';
 import { AuthContext } from '../use-auth/use-auth';
 import { UserContext } from '../use-user/use-user';
-import { AuthStorageService } from '../../../service/storage/auth-storage.service';
+import { AuthStorage } from '../../../services/storage/auth-storage.service';
 
-interface Props {
+export interface AuthProviderProps {
   defaultUser?: AnonymousUser | AuthenticatedUser;
-  authStorage: AuthStorageService;
+  authStorage: AuthStorage;
 }
 
-export const AuthProvider: React.FC<Props> = ({
+export const AuthProvider: React.FC<AuthProviderProps> = ({
   authStorage,
   children,
   defaultUser = new AnonymousUser(),

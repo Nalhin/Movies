@@ -5,13 +5,10 @@ import {
   UserProperties,
 } from '../../../models/user/user';
 import React from 'react';
-import { AuthStorageService } from '../../../service/storage/auth-storage.service';
+import { AuthStorage } from '../../../services/storage/auth-storage.service';
 import { getMe } from '../../../../core/api/user/user.api';
 
-export const useAuthState = (
-  authStorage: AuthStorageService,
-  defaultUser: User,
-) => {
+export const useAuthState = (authStorage: AuthStorage, defaultUser: User) => {
   const [currUser, setCurrUser] = React.useState<User>(defaultUser);
   const [isLoading, setIsLoading] = React.useState(true);
 
