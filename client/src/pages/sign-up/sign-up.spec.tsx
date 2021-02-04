@@ -1,16 +1,17 @@
 import { setupServer } from 'msw/node';
-import { LoginRequestDto } from '../../core/api/api.types';
+import { SignUpRequestDto } from '../../core/api/api.types';
 import { renderWithProviders } from '../../../test/render/render-with-providers';
-import React from 'react';
-import Login from './login';
-import { loginUserFactory } from '../../../test/factory/api/auth';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import {
-  postLoginErrorApiMock,
-  postLoginSuccessApiMock,
+  postSignUpErrorApiMock,
+  postSignUpSuccessApiMock,
 } from '../../../test/mocks/api/auth';
+import { signUpRequestFactory } from '../../../test/factory/api/auth';
+import Login from '../login/login';
+import React from 'react';
+import SignUp from './sign-up';
 
-describe('Login Page', () => {
+describe('SignUp Page', () => {
   const server = setupServer();
 
   beforeAll(() => server.listen());
@@ -18,18 +19,19 @@ describe('Login Page', () => {
   afterAll(() => server.close());
 
   function submitForm(
-    { username, password }: LoginRequestDto,
+    { username, password, email }: SignUpRequestDto,
     rr: ReturnType<typeof renderWithProviders>,
   ) {
     fireEvent.changeText(rr.getByLabelText(/username/i), username);
     fireEvent.changeText(rr.getByLabelText(/password/i), password);
+    fireEvent.changeText(rr.getByLabelText(/email/i), email);
     fireEvent.press(rr.getByRole('button'));
   }
 
   it('should authenticate user after successful login', async () => {
-    server.use(postLoginSuccessApiMock({ email: 'email', token: 'token' }));
-    const formState = loginUserFactory.buildOne();
-    const rr = renderWithProviders(<Login />);
+    server.use(postSignUpSuccessApiMock({ token: 'token' }));
+    const formState = signUpRequestFactory.buildOne();
+    const rr = renderWithProviders(<SignUp />);
 
     submitForm(formState, rr);
 
@@ -37,7 +39,7 @@ describe('Login Page', () => {
       expect(rr.authenticateUser).toHaveBeenCalledTimes(1);
       expect(rr.authenticateUser).toHaveBeenCalledWith(
         {
-          user: { username: formState.username, email: 'email' },
+          user: { username: formState.username, email: formState.email },
           token: 'token',
         },
         { onAuth: expect.any(Function) },
@@ -46,10 +48,10 @@ describe('Login Page', () => {
   });
 
   it('should not authenticate when login is unsuccessful', async () => {
-    server.use(postLoginErrorApiMock(401));
-    const rr = renderWithProviders(<Login />);
+    server.use(postSignUpErrorApiMock(401));
+    const rr = renderWithProviders(<SignUp />);
 
-    submitForm(loginUserFactory.buildOne(), rr);
+    submitForm(signUpRequestFactory.buildOne(), rr);
 
     await waitFor(() => {
       expect(rr.getByRole('button')).not.toBeDisabled();
@@ -69,7 +71,7 @@ describe('Login Page', () => {
   });
 
   it('should not submit request when form is invalid', async () => {
-    const rr = renderWithProviders(<Login />);
+    const rr = renderWithProviders(<SignUp />);
 
     fireEvent.press(rr.getByRole('button'));
 
@@ -79,15 +81,15 @@ describe('Login Page', () => {
     expect(rr.authenticateUser).toHaveBeenCalledTimes(0);
   });
 
-  it('should populate form with api errors when login responds with BAD_REQUEST', async () => {
+  it('should populate form with api errors when sign up responds with 400 status code', async () => {
     server.use(
-      postLoginErrorApiMock(400, {
+      postSignUpErrorApiMock(400, {
         errors: [{ field: 'username', messages: ['username error'] }],
       }),
     );
-    const rr = renderWithProviders(<Login />);
+    const rr = renderWithProviders(<SignUp />);
 
-    submitForm(loginUserFactory.buildOne(), rr);
+    submitForm(signUpRequestFactory.buildOne(), rr);
 
     await waitFor(() => expect(rr.getByText(/username error/i)).toBeTruthy());
   });

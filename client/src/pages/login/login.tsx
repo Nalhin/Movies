@@ -53,7 +53,7 @@ const Login = () => {
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <Card>
             <Input
-              accessibilityLabel={'username'}
+              accessibilityLabel="username"
               label="Username"
               onChangeText={handleChange('username')}
               onBlur={handleBlur('username')}
@@ -61,7 +61,7 @@ const Login = () => {
               errorMessage={errors.username}
             />
             <Input
-              accessibilityLabel={'password'}
+              accessibilityLabel="password"
               label="Password"
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
