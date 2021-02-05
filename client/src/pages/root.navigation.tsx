@@ -5,9 +5,10 @@ import SignUp from './sign-up/sign-up';
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './main/main';
 import tailwind from 'tailwind-rn';
-import { ROOT_ROUTES } from './root.routes';
+import { ROOT_ROUTES, RootStackParamList } from './root.routes';
+import MovieDetails from './movie-details/movie-details';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigation = () => {
   return (
@@ -20,6 +21,7 @@ const RootNavigation = () => {
       <Stack.Screen name={ROOT_ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROOT_ROUTES.SIGN_UP} component={SignUp} />
       <Stack.Screen name={ROOT_ROUTES.MAIN} component={Main} />
+      <Stack.Screen name={ROOT_ROUTES.MOVIE_DETAILS} component={MovieDetails} />
     </Stack.Navigator>
   );
 };

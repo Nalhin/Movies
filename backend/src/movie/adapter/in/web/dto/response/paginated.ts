@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export function Paginated<T>(classRef: TsType<T>): any {
   abstract class PaginatedType {
     @Expose()
-    @ApiProperty({ type: classRef })
+    @ApiProperty({ type: [classRef] })
     @Type(() => classRef)
     data: T[];
     @Expose()

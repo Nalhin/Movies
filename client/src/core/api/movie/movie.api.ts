@@ -8,8 +8,9 @@ import {
   RateMovieRequestDto,
 } from '../api.types';
 
-export const postMovieRating = (body: RateMovieRequestDto, movieId: number) =>
-  axios.post<void>(`/movies/${movieId}/rating`);
+export const postMovieRating = (body: RateMovieRequestDto, movieId: number) => {
+  return axios.post<void>(`/movies/${movieId}/rating`, body);
+};
 
 export const deleteMovieRating = (movieId: number) =>
   axios.delete<void>(`/movies/${movieId}/rating`);

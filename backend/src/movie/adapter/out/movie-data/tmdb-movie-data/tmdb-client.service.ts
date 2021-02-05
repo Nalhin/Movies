@@ -25,7 +25,15 @@ export class TmdbClientService {
         params: { query, page },
       })
       .pipe(
-        map((resp) => O.some(resp.data)),
+        map((resp) => {
+          return O.some({
+            ...resp.data,
+            results: resp.data.results.map((item) => ({
+              ...item,
+              posterPath: `https://image.tmdb.org/t/p/w500/${item.posterPath}`,
+            })),
+          });
+        }),
         catchError(() => of(O.none)),
       );
   }
@@ -34,7 +42,12 @@ export class TmdbClientService {
     return this.httpService
       .get<MovieDetailsResponseDto>(`/movie/${movieId}`)
       .pipe(
-        map((resp) => O.some(resp.data)),
+        map((resp) => {
+          return O.some({
+            ...resp.data,
+            posterPath: `https://image.tmdb.org/t/p/original/${resp.data.posterPath}`,
+          });
+        }),
         catchError(() => of(O.none)),
       );
   }
@@ -43,7 +56,14 @@ export class TmdbClientService {
     return this.httpService
       .get<MovieListResponseDto>(`/movie/${movieId}/similar`)
       .pipe(
-        map((resp) => O.some(resp.data.results)),
+        map((resp) => {
+          return O.some(
+            resp.data.results.map((item) => ({
+              ...item,
+              posterPath: `https://image.tmdb.org/t/p/w500/${item.posterPath}`,
+            })),
+          );
+        }),
         catchError(() => of(O.none)),
       );
   }
@@ -52,7 +72,13 @@ export class TmdbClientService {
     return this.httpService
       .get<MovieListResponseDto>(`/movie/popular`, { params: { page } })
       .pipe(
-        map((resp) => O.some(resp.data)),
+        map((resp) => {
+          resp.data.results = resp.data.results.map((item) => ({
+            ...item,
+            posterPath: `https://image.tmdb.org/t/p/w500/${item.posterPath}`,
+          }));
+          return O.some(resp.data);
+        }),
         catchError(() => of(O.none)),
       );
   }

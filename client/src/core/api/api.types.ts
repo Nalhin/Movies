@@ -76,7 +76,7 @@ export interface MovieListResponseDto {
 }
 
 export interface PaginatedMovieListResponseDto {
-  data: MovieListResponseDto;
+  data: MovieListResponseDto[];
   page: number;
   hasNextPage: boolean;
   totalPages: number;

@@ -18,7 +18,8 @@ export class MovieRepository extends Repository<MovieEntity> {
       .select('movies.id', 'id')
       .addSelect('AVG(ratings.rating)', 'averageRating')
       .leftJoin('movies.ratings', 'ratings')
-      .addGroupBy('movies.id');
+      .addGroupBy('movies.id')
+      .where('movies.id=:movieId', { movieId });
 
     if (userId) {
       query = query
