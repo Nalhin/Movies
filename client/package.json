@@ -45,6 +45,7 @@
     "react-native-web": "~0.13.12",
     "react-query": "^3.6.0",
     "tailwind-rn": "^3.0.0",
+    "use-debounce": "^5.2.0",
     "yup": "^0.32.8"
   },
   "devDependencies": {
