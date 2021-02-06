@@ -1,23 +1,24 @@
 import React from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
-import { useInfiniteQuery } from 'react-query';
-import { getPopularMoviesPage } from '../../../core/api/movie/movie.api';
-import MovieCard from '../../../shared/components/movie-card/movie-card';
 import { useNavigation } from '@react-navigation/native';
+import { useInfiniteQuery } from 'react-query';
+import { getFavouriteMoviesPage } from '../../../core/api/movie/movie.api';
+import { FlatList, SafeAreaView } from 'react-native';
+import MovieCard from '../../../shared/components/movie-card/movie-card';
 import { ROOT_ROUTES } from '../../root.routes';
 
-const Popular = () => {
+const FavouriteMovies = () => {
   const navigation = useNavigation();
   const { data, fetchNextPage } = useInfiniteQuery(
-    'projects',
+    'favouriteMovies',
     async ({ pageParam = 1 }) => {
-      return getPopularMoviesPage(pageParam).then((resp) => resp.data);
+      return getFavouriteMoviesPage(pageParam).then((resp) => {
+        console.log(resp.data);
+        return resp.data;
+      });
     },
     {
-      getPreviousPageParam: (firstPage) =>
-        firstPage.page > 1 ? firstPage.page - 1 : false,
       getNextPageParam: (lastPage) =>
-        lastPage.hasNextPage ? lastPage.page + 1 : false,
+        lastPage.hasNextPage ? lastPage.page + 1 : undefined,
     },
   );
 
@@ -43,4 +44,4 @@ const Popular = () => {
   );
 };
 
-export default Popular;
+export default FavouriteMovies;

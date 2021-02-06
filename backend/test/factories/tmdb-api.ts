@@ -10,7 +10,6 @@ export const tmdvMovieItemResponse = FactoryBuilder.of<MovieItemResponse>()
     adult: faker.random.boolean(),
     overview: () => faker.random.words(10),
     releaseDate: () => faker.date.soon().toDateString(),
-    genreIds: [],
     id: faker.random.number,
     originalTitle: faker.random.word,
     originalLanguage: faker.random.word,

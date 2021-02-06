@@ -7,12 +7,14 @@ import { Injectable } from '@nestjs/common';
 import { TmdbClientService } from '../movie-data/tmdb-movie-data/tmdb-client.service';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { MovieFavouriteByUserRepository } from '../persistance/movie-favourite-by-user/movie-favourite-by-user.repository';
 
 @Injectable()
 export class MovieDomainAdapter implements FindMoviePort, UpdateMoviePort {
   constructor(
     private readonly movieRepository: MovieRepository,
     private readonly ratingRepository: MovieRatingRepository,
+    private readonly mfbuRepository: MovieFavouriteByUserRepository,
     private readonly movieRating: MovieRatingRepository,
     private readonly movieClient: TmdbClientService,
   ) {}
@@ -42,7 +44,6 @@ export class MovieDomainAdapter implements FindMoviePort, UpdateMoviePort {
     const movieToSave = this.movieRepository.create({
       id: movie.id,
       imdbId: movie.imdbId,
-      favouriteBy: movie.isFavourite ? [{ id: userId }] : [],
     });
     await this.movieRepository.save(movieToSave);
 
@@ -62,6 +63,25 @@ export class MovieDomainAdapter implements FindMoviePort, UpdateMoviePort {
 
     if (!movie.userRating && rating) {
       await this.ratingRepository.remove(rating);
+    }
+
+    const favourite = await this.mfbuRepository.findOne({
+      movie: { id: movie.id },
+      author: {
+        id: userId,
+      },
+    });
+
+    if (!movie.isFavourite && favourite) {
+      await this.mfbuRepository.remove(favourite);
+    }
+
+    if (movie.isFavourite && !favourite) {
+      await this.mfbuRepository.save({
+        ...favourite,
+        movie: { id: movie.id },
+        author: { id: userId },
+      });
     }
   }
 }

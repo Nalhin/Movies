@@ -10,7 +10,6 @@ export interface MovieItemResponse {
   adult: boolean;
   overview: string;
   releaseDate: string;
-  genreIds: number[];
   id: number;
   originalTitle: string;
   originalLanguage: string;

@@ -47,3 +47,8 @@ export const getPlotQuestion = (movieId: number, question: string) =>
   axios.get<PlotQuestionResponseDto>(`/movies/${movieId}/plot-question`, {
     params: { question },
   });
+
+export const getFavouriteMoviesPage = (page: number) =>
+  axios.get<PaginatedMovieListResponseDto>(`/me/movies/favourite`, {
+    params: { page },
+  });

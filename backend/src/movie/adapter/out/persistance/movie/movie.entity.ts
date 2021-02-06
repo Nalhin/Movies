@@ -1,13 +1,6 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
-import { UserEntity } from '../../../../../user/adapter/out/persistance/database/user.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { MovieRatingEntity } from '../movie-rating/movie-rating.entity';
+import { MovieFavouriteByUserEntity } from '../movie-favourite-by-user/movie-favourite-by-user.entity';
 
 @Entity({ name: 'movies' })
 export class MovieEntity {
@@ -17,16 +10,9 @@ export class MovieEntity {
   @Column({ name: 'imdb_id', nullable: false })
   imdbId: string;
 
-  @OneToMany(() => MovieRatingEntity, (rating) => rating.movie, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => MovieRatingEntity, (rating) => rating.movie)
   ratings: MovieRatingEntity[];
 
-  @ManyToMany(() => UserEntity)
-  @JoinTable({
-    name: 'movies_favourite_by_users',
-    joinColumn: { name: 'movie_id' },
-    inverseJoinColumn: { name: 'user_id' },
-  })
-  favouriteBy: UserEntity[];
+  @OneToMany(() => MovieFavouriteByUserEntity, (mfbu) => mfbu.movie)
+  favouriteBy: MovieFavouriteByUserEntity[];
 }

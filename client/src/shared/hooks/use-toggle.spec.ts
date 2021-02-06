@@ -22,7 +22,7 @@ describe('useToggle()', () => {
       result.current.toggle();
     });
 
-    expect(result.current.isOpen).toBeTrue();
+    expect(result.current.isOpen).toBeFalse();
   });
 
   it('should return true when open', () => {

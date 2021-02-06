@@ -1,5 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { MovieEntity } from './movie.entity';
+import { MovieFavouriteByUserEntity } from '../movie-favourite-by-user/movie-favourite-by-user.entity';
 
 interface MoviePersonalDetails {
   userRating: number | null;
@@ -28,9 +29,9 @@ export class MovieRepository extends Repository<MovieEntity> {
             qb
               .subQuery()
               .select('COUNT(mfbu) > 0')
-              .from('movies_favourite_by_users', 'mfbu')
-              .where('mfbu.movie_id=:movieId', { movieId })
-              .andWhere('mfbu.user_id=:userId', { userId }),
+              .from(MovieFavouriteByUserEntity, 'mfbu')
+              .where('mfbu.movie.id=:movieId', { movieId })
+              .andWhere('mfbu.author.id=:userId', { userId }),
           'isFavourite',
         )
         .addSelect('user_rating.rating', 'userRating')
@@ -79,7 +80,7 @@ export class MovieRepository extends Repository<MovieEntity> {
           },
         )
         .addSelect('userRating.rating', 'userRating')
-        .leftJoin('movies.favouriteBy', 'mfbu', 'mfbu.id=:userId', {
+        .leftJoin('movies.favouriteBy', 'mfbu', 'mfbu.author.id=:userId', {
           userId,
         })
         .addSelect('COUNT(mfbu.id) > 0', 'isFavourite')

@@ -11,6 +11,7 @@ import { GetPopularMoviesPort } from '../../../application/port/out/get-popular-
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { PaginatedReadModel } from '../../../domain/read-model/paginated.read-model';
+import { MovieFavouriteByUserRepository } from '../persistance/movie-favourite-by-user/movie-favourite-by-user.repository';
 
 @Injectable()
 export class MovieQueryAdapter
@@ -21,6 +22,7 @@ export class MovieQueryAdapter
     GetPopularMoviesPort {
   constructor(
     private readonly movieRepository: MovieRepository,
+    private readonly movieFavouriteRepository: MovieFavouriteByUserRepository,
     private readonly movieClient: TmdbClientService,
   ) {}
 
@@ -121,6 +123,38 @@ export class MovieQueryAdapter
           ...result,
           ...moviesPersisted.find((movie) => movie.id === result.id),
         }),
+    );
+  }
+
+  async getFavouriteMovies(page: number, userId: number) {
+    const [result, count] = await this.movieFavouriteRepository.findAndCount({
+      take: 10,
+      skip: 10 * page - 10,
+      where: {
+        author: {
+          id: userId,
+        },
+      },
+      order: { created: 'DESC' },
+      relations: ['movie'],
+    });
+
+    if (result.length <= 0) {
+      return O.none;
+    }
+
+    const externalMovies = await this.movieClient
+      .getMoviesByIds(result.map((item) => item.movie.id))
+      .toPromise();
+
+    return O.some(
+      new PaginatedReadModel(
+        await this.joinWithDbData(externalMovies, userId),
+        {
+          page,
+          totalPages: Math.ceil(count / 10),
+        },
+      ),
     );
   }
 }

@@ -2,12 +2,14 @@ import {
   ConflictException,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Inject,
   InternalServerErrorException,
   NotFoundException,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthRequired } from '../../../../common/decorators/auth-required.decorator';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
@@ -28,6 +30,13 @@ import { AuthenticatedUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import { plainToClass } from 'class-transformer';
+import { PaginatedMovieListResponseDto } from './dto/response/movie-list-response.dto';
+import {
+  GET_FAVOURITE_MOVIES_USE_CASE,
+  GetFavouriteMoviesUseCase,
+} from '../../../application/port/in/query/get-favourite-movies.use-case';
 
 @Controller()
 @ApiTags('movie')
@@ -37,6 +46,8 @@ export class FavouriteMovieController {
     private readonly addFavouriteMovieUseCase: AddFavouriteMovieUseCase,
     @Inject(REMOVE_FAVOURITE_MOVIE_USE_CASE)
     private readonly removeFavouriteMovieUseCase: RemoveFavouriteMovieUseCase,
+    @Inject(GET_FAVOURITE_MOVIES_USE_CASE)
+    private readonly getFavouriteMoviesUseCase: GetFavouriteMoviesUseCase,
   ) {}
 
   @AuthRequired()
@@ -87,6 +98,21 @@ export class FavouriteMovieController {
           default:
             throw new InternalServerErrorException('Unexpected error');
         }
+      }),
+    );
+  }
+
+  @AuthRequired()
+  @Get('/me/movies/favourite')
+  async getFavouriteMovies(
+    @Query('page') page: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return pipe(
+      await this.getFavouriteMoviesUseCase.getFavouriteMovies(page, user.id),
+      O.map((movie) => plainToClass(PaginatedMovieListResponseDto, movie)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Page not found');
       }),
     );
   }

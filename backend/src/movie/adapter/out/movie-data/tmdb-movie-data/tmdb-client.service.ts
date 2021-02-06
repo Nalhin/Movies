@@ -3,9 +3,9 @@ import {
   MovieItemResponse,
   MovieListResponseDto,
 } from './dto/movie-list-response.dto';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { MovieDetailsResponseDto } from './dto/movie-details-response.dto';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import {
   MovieCastListResponseDto,
   MovieCastResponseDto,
@@ -83,6 +83,23 @@ export class TmdbClientService {
         }),
         catchError(() => of(O.none)),
       );
+  }
+
+  getMoviesByIds(ids: number[]): Observable<MovieDetailsResponseDto[]> {
+    return of(ids).pipe(
+      switchMap((arr) =>
+        forkJoin(
+          arr.map((id) =>
+            this.httpService.get<MovieDetailsResponseDto>(`/movie/${id}`).pipe(
+              map((resp) => ({
+                ...resp.data,
+                posterPath: `https://image.tmdb.org/t/p/w500/${resp.data.posterPath}`,
+              })),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   getMovieCast(
