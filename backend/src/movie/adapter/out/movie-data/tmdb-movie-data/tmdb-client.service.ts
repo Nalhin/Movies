@@ -73,11 +73,13 @@ export class TmdbClientService {
       .get<MovieListResponseDto>(`/movie/popular`, { params: { page } })
       .pipe(
         map((resp) => {
-          resp.data.results = resp.data.results.map((item) => ({
-            ...item,
-            posterPath: `https://image.tmdb.org/t/p/w500/${item.posterPath}`,
-          }));
-          return O.some(resp.data);
+          return O.some({
+            ...resp.data,
+            results: resp.data.results.map((item) => ({
+              ...item,
+              posterPath: `https://image.tmdb.org/t/p/w500/${item.posterPath}`,
+            })),
+          });
         }),
         catchError(() => of(O.none)),
       );
