@@ -30,8 +30,16 @@ export class NlpQuestionAsweringService
     question: string,
     text: string,
   ): Promise<O.Option<string>> {
+    if (!this.qaConfig.enableML) {
+      return O.none;
+    }
     const answers = await this.model.findAnswers(question, text);
 
-    return answers.length > 0 ? O.some(answers[0].text) : O.none;
+    if (answers.length <= 0) {
+      return O.none;
+    }
+
+    const topAnswer = answers[0].text;
+    return O.some(topAnswer.charAt(0).toUpperCase() + topAnswer.slice(1));
   }
 }

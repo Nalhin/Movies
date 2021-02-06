@@ -15,9 +15,11 @@ import {
   postMovieFavourite,
   postMovieRating,
 } from '../../core/api/movie/movie.api';
-import { AirbnbRating, Icon, Image } from 'react-native-elements';
+import { AirbnbRating, Button, Icon, Image } from 'react-native-elements';
 import tailwind from 'tailwind-rn';
 import { MovieDetailsRouteProps } from '../root.routes';
+import PlotQuestionModal from './plot-question-modal';
+import { useToggle } from '../../shared/hooks/use-toggle';
 
 const MovieDetails = () => {
   const {
@@ -28,6 +30,7 @@ const MovieDetails = () => {
     () => getMovieById(movieId),
     { select: (resp) => resp.data },
   );
+  const toggle = useToggle(false);
 
   const { mutate: rateMovie } = useMutation(
     (rating: number) => postMovieRating({ rating }, movieId),
@@ -78,6 +81,12 @@ const MovieDetails = () => {
           style={tailwind('w-full h-80')}
           PlaceholderContent={<ActivityIndicator />}
         />
+        <PlotQuestionModal
+          isOpen={toggle.isOpen}
+          onClose={toggle.close}
+          movieId={movieId}
+        />
+        <Button title="Ask a plot question" onPress={toggle.open} />
         <Text style={tailwind('text-center')}>Your rating</Text>
         <Text>{movie.overview}</Text>
         <AirbnbRating

@@ -30,6 +30,6 @@ describe('useUser', () => {
       ),
     });
 
-    expect(result.current.user).toStrictEqual(expectedUser);
+    expect(result.current).toStrictEqual(expectedUser);
   });
 });
