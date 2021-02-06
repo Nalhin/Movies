@@ -138,8 +138,17 @@ describe('Favourite Movie API', () => {
 
       await authenticatedRequest
         .get(`/me/movies/favourite`)
-        .query({ page: 1 })
+        .query({ page: 2 })
         .expect(HttpStatus.NOT_FOUND);
+    });
+
+    it('should return OK (200) when first page is empty', async () => {
+      const { authenticatedRequest } = await authenticate(e2eTest.app);
+
+      await authenticatedRequest
+        .get(`/me/movies/favourite`)
+        .query({ page: 1 })
+        .expect(HttpStatus.OK);
     });
   });
 });

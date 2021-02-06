@@ -1,34 +1,38 @@
-import React, { useState } from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useInfiniteQuery } from 'react-query';
-import { getSearchMoviesPage } from '../../../core/api/movie/movie.api';
+import { getRatedMoviesPage } from '../../../core/api/movie/movie.api';
+import { FlatList, SafeAreaView } from 'react-native';
 import MovieCard from '../../../shared/components/movie-card/movie-card';
 import { ROOT_ROUTES } from '../../root.routes';
-import { useDebounce } from 'use-debounce';
-import { Input } from 'react-native-elements';
+import React from 'react';
+import { PaginatedMovieListResponseDto } from '../../../core/api/api.types';
+import type { AxiosError } from 'axios';
 
-const SearchMovies = () => {
+const RatedMovies = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState('');
-  const [debouncedSearch] = useDebounce(search, 500);
-  const { data, fetchNextPage } = useInfiniteQuery(
-    ['projects', debouncedSearch],
+  const { data, fetchNextPage, refetch } = useInfiniteQuery<
+    PaginatedMovieListResponseDto,
+    AxiosError
+  >(
+    'ratedMovies',
     async ({ pageParam = 1 }) => {
-      return getSearchMoviesPage(pageParam, debouncedSearch).then(
-        (resp) => resp.data,
-      );
+      return getRatedMoviesPage(pageParam).then((resp) => resp.data);
     },
     {
       getNextPageParam: (lastPage) =>
         lastPage.hasNextPage ? lastPage.page + 1 : undefined,
-      enabled: !!debouncedSearch,
     },
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return;
+    }, []),
   );
 
   return (
     <SafeAreaView>
-      <Input onChangeText={(text) => setSearch(text)} value={search} />
       <FlatList
         data={data?.pages.flatMap((page) => page.data)}
         renderItem={({ item }) => (
@@ -49,4 +53,4 @@ const SearchMovies = () => {
   );
 };
 
-export default SearchMovies;
+export default RatedMovies;

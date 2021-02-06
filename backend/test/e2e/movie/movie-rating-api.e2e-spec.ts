@@ -126,4 +126,46 @@ describe('Movie Rating API', () => {
         .expect(HttpStatus.CONFLICT);
     });
   });
+
+  describe('GET /me/movies/rating', () => {
+    it('should return OK (200) status code and page with movies rated by user', async () => {
+      const { authenticatedRequest } = await authenticate(e2eTest.app);
+      await authenticatedRequest
+        .post(`/movies/${externalMovie.id}/rating`)
+        .send({ rating: 5 });
+
+      const response = await authenticatedRequest
+        .get(`/me/movies/rating`)
+        .query({ page: 1 })
+        .expect(HttpStatus.OK);
+
+      expect(response.body.data.length).toBe(1);
+      expect(response.body.hasNextPage).toBe(false);
+    });
+
+    it('should return UNAUTHORIZED (403) when user is not authenticated ', () => {
+      return request(e2eTest.app.getHttpServer())
+        .get('/me/movies/rating')
+        .query({ page: 1 })
+        .expect(HttpStatus.FORBIDDEN);
+    });
+
+    it('should return OK (200) when first page is empty', async () => {
+      const { authenticatedRequest } = await authenticate(e2eTest.app);
+
+      await authenticatedRequest
+        .get(`/me/movies/rating`)
+        .query({ page: 1 })
+        .expect(HttpStatus.OK);
+    });
+
+    it('should return NOT_FOUND (404) when page is not found', async () => {
+      const { authenticatedRequest } = await authenticate(e2eTest.app);
+
+      await authenticatedRequest
+        .get(`/me/movies/rating`)
+        .query({ page: 2 })
+        .expect(HttpStatus.NOT_FOUND);
+    });
+  });
 });

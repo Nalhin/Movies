@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useInfiniteQuery } from 'react-query';
 import { getFavouriteMoviesPage } from '../../../core/api/movie/movie.api';
 import { FlatList, SafeAreaView } from 'react-native';
@@ -8,18 +8,22 @@ import { ROOT_ROUTES } from '../../root.routes';
 
 const FavouriteMovies = () => {
   const navigation = useNavigation();
-  const { data, fetchNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage, refetch } = useInfiniteQuery(
     'favouriteMovies',
     async ({ pageParam = 1 }) => {
-      return getFavouriteMoviesPage(pageParam).then((resp) => {
-        console.log(resp.data);
-        return resp.data;
-      });
+      return getFavouriteMoviesPage(pageParam).then((resp) => resp.data);
     },
     {
       getNextPageParam: (lastPage) =>
         lastPage.hasNextPage ? lastPage.page + 1 : undefined,
     },
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return;
+    }, []),
   );
 
   return (

@@ -42,9 +42,12 @@ import { MovieCastQueryAdapter } from './adapter/out/data-transformers/movie-cas
 import { MoviePlotQuestionController } from './adapter/in/web/movie-plot-question.controller';
 import { MovieDataTransformersModule } from './adapter/out/data-transformers/movie-data-transformers.module';
 import { MoviePersistenceModule } from './adapter/out/persistance/movie-persistence.module';
-import { GET_FAVOURITE_MOVIES_USE_CASE } from './application/port/in/query/get-favourite-movies.use-case';
 import { GetFavouriteMoviesService } from './application/service/query/get-favourite-movies.service';
 import { GET_FAVOURITE_MOVIES_PORT } from './application/port/out/get-favourite-movies.port';
+import { GET_FAVOURITE_MOVIES_USE_CASE } from './application/port/in/query/get-favourite-movies.use-case';
+import { GET_RATED_MOVIES_PORT } from './application/port/out/get-rated-movies.port';
+import { GET_RATED_MOVIES_USE_CASE } from './application/port/in/query/get-rated-movies-use.case';
+import { GetRatedMoviesService } from './application/service/query/get-rated-movies.service';
 
 @Module({
   imports: [
@@ -145,6 +148,14 @@ import { GET_FAVOURITE_MOVIES_PORT } from './application/port/out/get-favourite-
     {
       provide: GET_FAVOURITE_MOVIES_PORT,
       useClass: MovieQueryAdapter,
+    },
+    {
+      provide: GET_RATED_MOVIES_PORT,
+      useClass: MovieQueryAdapter,
+    },
+    {
+      provide: GET_RATED_MOVIES_USE_CASE,
+      useClass: GetRatedMoviesService,
     },
   ],
 })

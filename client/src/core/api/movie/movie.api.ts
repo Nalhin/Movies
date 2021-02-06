@@ -52,3 +52,8 @@ export const getFavouriteMoviesPage = (page: number) =>
   axios.get<PaginatedMovieListResponseDto>(`/me/movies/favourite`, {
     params: { page },
   });
+
+export const getRatedMoviesPage = (page: number) =>
+  axios.get<PaginatedMovieListResponseDto>(`/me/movies/rating`, {
+    params: { page },
+  });

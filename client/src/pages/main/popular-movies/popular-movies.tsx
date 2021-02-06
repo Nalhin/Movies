@@ -14,10 +14,8 @@ const PopularMovies = () => {
       return getPopularMoviesPage(pageParam).then((resp) => resp.data);
     },
     {
-      getPreviousPageParam: (firstPage) =>
-        firstPage.page > 1 ? firstPage.page - 1 : false,
       getNextPageParam: (lastPage) =>
-        lastPage.hasNextPage ? lastPage.page + 1 : false,
+        lastPage.hasNextPage ? lastPage.page + 1 : undefined,
     },
   );
 

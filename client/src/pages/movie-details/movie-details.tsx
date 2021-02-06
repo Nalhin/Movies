@@ -20,6 +20,7 @@ import tailwind from 'tailwind-rn';
 import { MovieDetailsRouteProps } from '../root.routes';
 import PlotQuestionModal from './plot-question-modal';
 import { useToggle } from '../../shared/hooks/use-toggle';
+import { useUser } from '../../shared/context/auth/use-user/use-user';
 
 const MovieDetails = () => {
   const {
@@ -31,6 +32,7 @@ const MovieDetails = () => {
     { select: (resp) => resp.data },
   );
   const toggle = useToggle(false);
+  const user = useUser();
 
   const { mutate: rateMovie } = useMutation(
     (rating: number) => postMovieRating({ rating }, movieId),
@@ -89,26 +91,31 @@ const MovieDetails = () => {
         <Button title="Ask a plot question" onPress={toggle.open} />
         <Text style={tailwind('text-center')}>Your rating</Text>
         <Text>{movie.overview}</Text>
-        <AirbnbRating
-          showRating={false}
-          count={10}
-          defaultRating={movie.userRating ?? 0}
-          isDisabled={!!movie.userRating}
-          size={20}
-          onFinishRating={(rating) => rateMovie(rating)}
-        />
+
+        {user.isAuthenticated && (
+          <AirbnbRating
+            showRating={false}
+            count={10}
+            defaultRating={movie.userRating ?? 0}
+            isDisabled={!!movie.userRating}
+            size={20}
+            onFinishRating={(rating) => rateMovie(rating)}
+          />
+        )}
       </ScrollView>
-      <View style={tailwind('absolute bottom-2 right-2')}>
-        <Icon
-          reverse
-          name={movie.isFavourite ? 'heart-broken' : 'heart'}
-          type="font-awesome-5"
-          color="#517fa4"
-          onPress={() =>
-            movie.isFavourite ? removeFavourite() : setFavourite()
-          }
-        />
-      </View>
+      {user.isAuthenticated && (
+        <View style={tailwind('absolute bottom-2 right-2')}>
+          <Icon
+            reverse
+            name={movie.isFavourite ? 'heart-broken' : 'heart'}
+            type="font-awesome-5"
+            color="#517fa4"
+            onPress={() =>
+              movie.isFavourite ? removeFavourite() : setFavourite()
+            }
+          />
+        </View>
+      )}
       {movie.userRating && (
         <View style={tailwind('absolute bottom-2 left-2')}>
           <Icon

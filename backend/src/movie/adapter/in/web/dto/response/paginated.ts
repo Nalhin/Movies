@@ -7,7 +7,7 @@ export function Paginated<T>(classRef: TsType<T>): any {
     @Expose()
     @ApiProperty({ type: [classRef] })
     @Type(() => classRef)
-    data: T[];
+    data: T[] = [];
     @Expose()
     @ApiProperty()
     page: number;

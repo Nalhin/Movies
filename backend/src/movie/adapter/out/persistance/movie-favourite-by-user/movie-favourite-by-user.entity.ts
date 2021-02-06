@@ -23,6 +23,6 @@ export class MovieFavouriteByUserEntity {
   @JoinColumn({ name: 'movie_id' })
   movie: MovieEntity;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'createDate' })
   created: Date;
 }

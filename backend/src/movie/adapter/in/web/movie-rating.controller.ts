@@ -3,12 +3,14 @@ import {
   ConflictException,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Inject,
   InternalServerErrorException,
   NotFoundException,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthRequired } from '../../../../common/decorators/auth-required.decorator';
 import { RateMovieRequestDto } from './dto/request/rate-movie-request.dto';
@@ -30,6 +32,13 @@ import { AuthenticatedUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import { plainToClass } from 'class-transformer';
+import { PaginatedMovieListResponseDto } from './dto/response/movie-list-response.dto';
+import {
+  GET_RATED_MOVIES_USE_CASE,
+  GetRatedMoviesUseCase,
+} from '../../../application/port/in/query/get-rated-movies-use.case';
 
 @Controller()
 @ApiTags('movie')
@@ -39,6 +48,8 @@ export class MovieRatingController {
     private readonly rateMovieUseCase: RateMovieUseCase,
     @Inject(REMOVE_MOVIE_RATING_USE_CASE)
     private readonly removeRatingUseCase: RemoveMovieRatingUseCase,
+    @Inject(GET_RATED_MOVIES_USE_CASE)
+    private readonly ratedMovies: GetRatedMoviesUseCase,
   ) {}
 
   @AuthRequired()
@@ -90,6 +101,21 @@ export class MovieRatingController {
           default:
             throw new InternalServerErrorException('Unexpected error');
         }
+      }),
+    );
+  }
+
+  @AuthRequired()
+  @Get('/me/movies/rating')
+  async getFavouriteMovies(
+    @Query('page') page: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return pipe(
+      await this.ratedMovies.getRatedMovies(page, user.id),
+      O.map((movie) => plainToClass(PaginatedMovieListResponseDto, movie)),
+      O.getOrElse(() => {
+        throw new NotFoundException('Page not found');
       }),
     );
   }

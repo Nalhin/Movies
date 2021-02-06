@@ -5,10 +5,14 @@ import SearchMovies from './search-movies/search-movies';
 import { MAIN_ROUTES } from './main.routes';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FavouriteMovies from './favourite-movies/favourite-movies';
+import RatedMovies from './rated-movies/rated-movies';
+import { useUser } from '../../shared/context/auth/use-user/use-user';
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
+  const user = useUser();
+
   return (
     <Tab.Navigator initialRouteName={MAIN_ROUTES.POPULAR_MOVIES}>
       <Tab.Screen
@@ -31,16 +35,30 @@ const Main = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name={MAIN_ROUTES.FAVOURITE_MOVIES}
-        component={FavouriteMovies}
-        options={{
-          tabBarLabel: 'Favourite',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="heart" color={color} size={size} />
-          ),
-        }}
-      />
+      {user.isAuthenticated && (
+        <>
+          <Tab.Screen
+            name={MAIN_ROUTES.FAVOURITE_MOVIES}
+            component={FavouriteMovies}
+            options={{
+              tabBarLabel: 'Favourite',
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="heart" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name={MAIN_ROUTES.RATED_MOVIES}
+            component={RatedMovies}
+            options={{
+              tabBarLabel: 'Rated',
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="star" color={color} size={size} />
+              ),
+            }}
+          />
+        </>
+      )}
     </Tab.Navigator>
   );
 };

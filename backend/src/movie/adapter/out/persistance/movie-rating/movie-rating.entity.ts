@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -25,4 +26,7 @@ export class MovieRatingEntity {
   @ManyToOne(() => MovieEntity, (movie) => movie.ratings, { nullable: false })
   @JoinColumn({ name: 'movie_id' })
   movie: MovieEntity;
+
+  @CreateDateColumn({ name: 'createDate' })
+  created: Date;
 }
