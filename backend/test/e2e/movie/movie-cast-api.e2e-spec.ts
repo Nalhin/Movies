@@ -32,17 +32,20 @@ describe('Movie Cast API', () => {
   describe('GET /movies/:id/cast', () => {
     it('should return OK (200) and response with movie cast', async () => {
       const expectedResponse = movieCast.map((cast) => ({
-        id: cast.id,
+        id: cast.castId,
         name: cast.name,
         character: cast.character,
-        profilePath: cast.profilePath,
       }));
 
       const response = await request(e2eTest.app.getHttpServer())
         .get(`/movies/${movieId}/cast`)
         .expect(HttpStatus.OK);
 
-      expect(response.body).toStrictEqual(expectedResponse);
+      expect(response.body).toStrictEqual(
+        expect.arrayContaining(
+          expectedResponse.map((resp) => expect.objectContaining(resp)),
+        ),
+      );
     });
 
     it('should return NOT FOUND (404) status code when movie does not exist', () => {
