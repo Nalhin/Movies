@@ -8,19 +8,22 @@ import {
 } from 'react-native';
 import { useMutation, useQuery } from 'react-query';
 import { useRoute } from '@react-navigation/native';
-import {
-  deleteMovieFavourite,
-  deleteMovieRating,
-  getMovieById,
-  postMovieFavourite,
-  postMovieRating,
-} from '../../core/api/movie/movie.api';
+import { getMovieById } from '../../core/api/movie/movie.api';
 import { AirbnbRating, Button, Icon, Image } from 'react-native-elements';
 import tailwind from 'tailwind-rn';
 import { MovieDetailsRouteProps } from '../root.routes';
 import PlotQuestionModal from './plot-question-modal';
 import { useToggle } from '../../shared/hooks/use-toggle';
 import { useUser } from '../../shared/context/auth/use-user/use-user';
+import {
+  deleteMovieFavourite,
+  postMovieFavourite,
+} from '../../core/api/movie/movie-favourite.api';
+import {
+  deleteMovieRating,
+  postMovieRating,
+} from '../../core/api/movie/movie-rating.api';
+import MovieCast from './movie-cast';
 
 const MovieDetails = () => {
   const {
@@ -83,15 +86,14 @@ const MovieDetails = () => {
           style={tailwind('w-full h-80')}
           PlaceholderContent={<ActivityIndicator />}
         />
+        <MovieCast movieId={movieId} />
         <PlotQuestionModal
           isOpen={toggle.isOpen}
           onClose={toggle.close}
           movieId={movieId}
         />
         <Button title="Ask a plot question" onPress={toggle.open} />
-        <Text style={tailwind('text-center')}>Your rating</Text>
         <Text>{movie.overview}</Text>
-
         {user.isAuthenticated && (
           <AirbnbRating
             showRating={false}

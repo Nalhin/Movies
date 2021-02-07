@@ -108,7 +108,15 @@ export class TmdbClientService {
     return this.httpService
       .get<MovieCastResponseDto>(`/movie/${movieId}/credits`)
       .pipe(
-        map((resp) => O.some(resp.data.cast)),
+        map((resp) =>
+          O.some(
+            resp.data.cast.map((cast) => ({
+              ...cast,
+              id: cast.castId,
+              profilePath: `https://image.tmdb.org/t/p/w500/${cast.profilePath}`,
+            })),
+          ),
+        ),
         catchError(() => of(O.none)),
       );
   }

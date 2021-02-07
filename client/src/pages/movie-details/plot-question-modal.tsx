@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Input, Overlay } from 'react-native-elements';
 import { View, Text } from 'react-native';
-import { getPlotQuestion } from '../../core/api/movie/movie.api';
 import { useQuery } from 'react-query';
 import tailwind from 'tailwind-rn';
+import { getPlotQuestion } from '../../core/api/movie/movie-plot-question.api';
 
 interface Props {
   movieId: number;

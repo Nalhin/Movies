@@ -1,12 +1,12 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useInfiniteQuery } from 'react-query';
-import { getRatedMoviesPage } from '../../../core/api/movie/movie.api';
 import { FlatList, SafeAreaView } from 'react-native';
 import MovieCard from '../../../shared/components/movie-card/movie-card';
 import { ROOT_ROUTES } from '../../root.routes';
 import React from 'react';
 import { PaginatedMovieListResponseDto } from '../../../core/api/api.types';
 import type { AxiosError } from 'axios';
+import { getRatedMoviesPage } from '../../../core/api/movie/movie-rating.api';
 
 const RatedMovies = () => {
   const navigation = useNavigation();
