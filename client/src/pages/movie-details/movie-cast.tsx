@@ -17,7 +17,6 @@ const MovieCast: React.FC<Props> = ({ movieId }) => {
 
   return (
     <View>
-      <Text>Cast</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => (

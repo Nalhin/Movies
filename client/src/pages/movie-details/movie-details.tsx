@@ -83,7 +83,7 @@ const MovieDetails = () => {
         </Text>
         <Image
           source={{ uri: movie.posterPath ?? undefined }}
-          style={tailwind('w-full h-80')}
+          style={{ height: 500 }}
           PlaceholderContent={<ActivityIndicator />}
         />
         <MovieCast movieId={movieId} />

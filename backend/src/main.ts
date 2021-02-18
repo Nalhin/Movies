@@ -10,7 +10,6 @@ async function bootstrap() {
     .setTitle('Movies')
     .setDescription('Movies REST API')
     .setVersion('1.0')
-    .addTag('movies')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
