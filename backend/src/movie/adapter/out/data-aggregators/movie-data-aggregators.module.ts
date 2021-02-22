@@ -17,4 +17,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TmdbModule,
   ],
 })
-export class MovieDataTransformersModule {}
+export class MovieDataAggregatorsModule {}

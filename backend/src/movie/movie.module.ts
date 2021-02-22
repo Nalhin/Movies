@@ -12,7 +12,7 @@ import { RateMovieService } from './application/service/command/rate-movie.servi
 import { RemoveMovieRatingService } from './application/service/command/remove-movie-rating.service';
 import { REMOVE_MOVIE_RATING_USE_CASE } from './application/port/in/command/remove-movie-rating.use-case';
 import { FIND_MOVIE_PORT } from './application/port/out/find-movie.port';
-import { MovieDomainAdapter } from './adapter/out/data-transformers/movie-domain.adapter';
+import { MovieDomainAdapter } from './adapter/out/data-aggregators/movie-domain.adapter';
 import { UPDATE_MOVIE_PORT } from './application/port/out/update-movie.port';
 import { GET_PLOT_DETAILS_PORT } from './application/port/out/get-plot-details.port';
 import { WikipediaPlotDetailsService } from './adapter/out/plot-details/wikipedia-plot-details/wikipedia-plot-details.service';
@@ -21,7 +21,7 @@ import { NlpQuestionAsweringService } from './adapter/out/question-answering/nlp
 import { GET_MOVIES_USE_CASE } from './application/port/in/query/get-movies-use-case';
 import { GetMoviesService } from './application/service/query/get-movies.service';
 import { GET_MOVIES } from './application/port/out/get-movies.port';
-import { MovieQueryAdapter } from './adapter/out/data-transformers/movie-query.adapter';
+import { MovieQueryAdapter } from './adapter/out/data-aggregators/movie-query.adapter';
 import { MovieController } from './adapter/in/web/movie.controller';
 import { ASK_PLOT_QUESTION_USE_CASE } from './application/port/in/query/ask-plot-question.use-case';
 import { AskPlotQuestionService } from './application/service/query/ask-plot-question.service';
@@ -38,9 +38,9 @@ import { GET_MOVIE_CAST_USE_CASE } from './application/port/in/query/get-movie-c
 import { GetMovieCastService } from './application/service/query/get-movie-cast.service';
 import { GET_MOVIE_CAST_PORT } from './application/port/out/get-movie-cast.port';
 import { MovieCastController } from './adapter/in/web/movie-cast.controller';
-import { MovieCastQueryAdapter } from './adapter/out/data-transformers/movie-cast-query.adapter';
+import { MovieCastQueryAdapter } from './adapter/out/data-aggregators/movie-cast-query.adapter';
 import { MoviePlotQuestionController } from './adapter/in/web/movie-plot-question.controller';
-import { MovieDataTransformersModule } from './adapter/out/data-transformers/movie-data-transformers.module';
+import { MovieDataAggregatorsModule } from './adapter/out/data-aggregators/movie-data-aggregators.module';
 import { MoviePersistenceModule } from './adapter/out/persistance/movie-persistence.module';
 import { GetFavouriteMoviesService } from './application/service/query/get-favourite-movies.service';
 import { GET_FAVOURITE_MOVIES_PORT } from './application/port/out/get-favourite-movies.port';
@@ -54,7 +54,7 @@ import { GetRatedMoviesService } from './application/service/query/get-rated-mov
     HttpModule,
     NlpQuestionAnsweringModule,
     WikipediaPlotDetailsModule,
-    MovieDataTransformersModule,
+    MovieDataAggregatorsModule,
     MoviePersistenceModule,
   ],
   controllers: [

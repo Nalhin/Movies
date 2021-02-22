@@ -14,9 +14,8 @@ Movie data aggregator with hexagonal architecture.
 
 * [Description](#description)
 * [Features](#features)
-* [Presentation](#presentation)
 * [Architecture](#architecture)
-* [REST API specification](#rest-api-specification)  
+* [REST API specification](#rest-api-specification)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Tests](#tests)
@@ -34,7 +33,7 @@ The API consists of two boundary contexts:
 
 The service integrates with multiple external data sources such as
 
-* TMBD movie REST API
+* TMDb movie REST API
 * Live Wikipedia web scrapping
 * SPARQL IMDB id to Wikipedia url resolver
 * NLP question answering model
@@ -42,12 +41,10 @@ The service integrates with multiple external data sources such as
 
 ## Features
 
-* Movie browsing 
+* Movie browsing
 * List of favourites
-* User rating system  
+* User rating system
 * NLP movie plot question answering
-
-## Presentation
 
 ## Technology Stack
 
@@ -55,9 +52,9 @@ The service integrates with multiple external data sources such as
 
 * TypeScript
 * React Native
-* Expo  
+* Expo
 * React Query
-* React Navigation  
+* React Navigation
 * Tailwind
 * Formik
 * Jest
@@ -69,10 +66,10 @@ The service integrates with multiple external data sources such as
 * TypeScript
 * NestJs
 * PostgreSQL
-* Redis  
+* Redis
 * Rxjs
 * Passport
-* fp-ts  
+* fp-ts
 * Jest
 * Mock Service Worker
 
@@ -80,13 +77,99 @@ The service integrates with multiple external data sources such as
 
 ### Backend
 
+Backend architecture was designed following the concepts of "Clean Architecture" and hexagonal architecture. The
+business logic is separated from client access (input port), and it does not rely on the representation of external
+data (output port). This separation is crucial as multiple external data sources are used in combination.
+
+The project consists of two separated bounded contexts - user and movie. The contexts are entirely independent and can
+operate as separate services.
+
+Each context consists of adapter (input and output port implementation)
+application (application services and port interfaces)
+domain (domain objects)
+
+```
+context
+├── adapter (implementation of input/output ports)
+├── application (application services and input/output ports interfaces)
+└── domain (domain objects)
+```
+
+The use of input adapters separates the domain logic from the communication layer. If one was interested in integrating
+GraphQL into the application, all he would have to do is provide different input adapters.
+
+Output adapters serve a similar purpose. They separate the details of data access and persistence. Even though movie
+data originates from multiple sources such as Wikipedia or TMBd, the application logic depends only on a particular
+interface and not on concrete data provider representation.
+
+```
+adapter
+├── input   
+|   └──── web 
+|          ├── dto
+|          └── controllers
+|
+└── output
+      ├── movie-data (movie data provider)
+      ├── persistance (Database persistance)
+      ├── plot-details (plot details adapter)
+      ├── question-answering (question answering adapter)
+      └── data-aggregators (persistance and external data adapter)
+```
+
+Application services are separated depending on their responsibility -query and command.  "Queries" usually don't
+include complex business logic and domain objects; therefore, they can entirely skip the application layer. "Commands",
+on the other hand, require complex constraint validation and domain rules. The responsibility of application services is
+to follow the business logic embedded into use-cases (input ports) by interacting with domain objects.
+
+```
+application
+├── port (input and output ports)
+|    ├── in
+|    |   ├── command
+|    |   └── query
+|    |
+|    └── out (input ports - specific use cases)
+|         ├── command
+|         └── query
+| 
+└── service
+       ├── command
+       └── query
+```
+
+Domain objects encapsulate business rules specific to the domain. They enhance the code with domain-specific ambiguous
+language. 
+
+```
+domain 
+├── model (models used by commands. They embed business logic)
+└── read-model (data representation)
+```
 
 ### Client
 
+Client architecture follows modern React trends. React context and React Query is used instead of the global state
+libraries. Such a design decision reduces clutter and allows the application to be tested with a mock REST API server
+making the tests more reliable and robust.
+
+```
+src
+├── core (communication with backend)
+├── pages (views with page specific components)
+└── shared (shared functionality)
+    ├── components (reusable components)
+    ├── context (react context providers and hooks)
+    ├── models (data models that encapsulate business logic)
+    ├── services (classes that encapsulate business logic and mobile specific api)
+    ├── types (TypeScript types)
+    └── utils (reusable, pure functions)
+```
+
 ## REST API specification
 
-Swagger API specification is available at [http://localhost:3000/api-docs/](http://localhost:3000/api-docs/). 
-The server has to be up and running in for the documentation to be available.
+Swagger API specification is available at [http://localhost:3000/api-docs/](http://localhost:3000/api-docs/). The server
+has to be up and running in for the documentation to be available.
 
 ## Prerequisites
 
