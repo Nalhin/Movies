@@ -84,9 +84,8 @@ data (output port). This separation is crucial as multiple external data sources
 The project consists of two separated bounded contexts - user and movie. The contexts are entirely independent and can
 operate as separate services.
 
-Each context consists of adapter (input and output port implementation)
-application (application services and port interfaces)
-domain (domain objects)
+Each context is composed of the adapter (input and output port implementation), application (application services and
+port interfaces) and domain (domain objects) layer.
 
 ```
 context
@@ -139,7 +138,7 @@ application
 ```
 
 Domain objects encapsulate business rules specific to the domain. They enhance the code with domain-specific ambiguous
-language. 
+language.
 
 ```
 domain 
