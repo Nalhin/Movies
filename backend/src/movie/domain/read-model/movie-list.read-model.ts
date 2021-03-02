@@ -1,20 +1,21 @@
 export class MovieListReadModel {
-  posterPath: string;
-  adult: boolean;
-  overview: string;
-  releaseDate: string;
-  id: number;
-  originalTitle: string;
-  originalLanguage: string;
-  title: string;
-  backdropPath: string;
-  popularity: number;
-  voteCount: number;
-  isFavourite: boolean;
-  userRating: number | null;
-  averageRating: number | null;
+  readonly overview: string;
+  readonly releaseDate: string;
+  readonly id: number;
+  readonly title: string;
+  readonly posterPath: string | null;
+  readonly isFavourite: boolean;
+  readonly userRating: number | null;
+  readonly averageRating: number | null;
 
   constructor(partial?: Partial<MovieListReadModel>) {
-    Object.assign(this, partial);
+    this.id = partial.id;
+    this.posterPath = partial.posterPath;
+    this.overview = partial.overview;
+    this.releaseDate = partial.releaseDate;
+    this.title = partial.title;
+    this.isFavourite = partial.isFavourite;
+    this.userRating = partial.userRating;
+    this.averageRating = partial.averageRating;
   }
 }
