@@ -24,6 +24,9 @@ import {
   postMovieRating,
 } from '../../core/api/movie/movie-rating.api';
 import MovieCast from './movie-cast';
+import { format } from 'date-fns';
+import MovieRating from './movie-rating';
+import MovieStats from './movie-stats';
 
 const MovieDetails = () => {
   const {
@@ -79,31 +82,41 @@ const MovieDetails = () => {
     <SafeAreaView>
       <ScrollView style={tailwind('h-full')}>
         <Text style={tailwind('text-2xl font-bold text-center')}>
-          {movie.title}
+          {movie.title} ({format(new Date(movie.releaseDate), 'yyyy')})
         </Text>
         <Image
           source={{ uri: movie.posterPath ?? undefined }}
           style={{ height: 500 }}
           PlaceholderContent={<ActivityIndicator />}
         />
-        <MovieCast movieId={movieId} />
-        <PlotQuestionModal
-          isOpen={toggle.isOpen}
-          onClose={toggle.close}
-          movieId={movieId}
-        />
-        <Button title="Ask a plot question" onPress={toggle.open} />
-        <Text>{movie.overview}</Text>
-        {user.isAuthenticated && (
-          <AirbnbRating
-            showRating={false}
-            count={10}
-            defaultRating={movie.userRating ?? 0}
-            isDisabled={!!movie.userRating}
-            size={20}
-            onFinishRating={(rating) => rateMovie(rating)}
+        <View style={tailwind('mx-1')}>
+          <MovieCast movieId={movieId} />
+          <PlotQuestionModal
+            isOpen={toggle.isOpen}
+            onClose={toggle.close}
+            movieId={movieId}
           />
-        )}
+          <Text style={tailwind('font-bold text-lg text-center')}>
+            Overview
+          </Text>
+          <Text style={tailwind('text-sm text-center')}>{movie.overview}</Text>
+          <MovieStats
+            budget={movie.budget}
+            revenue={movie.revenue}
+            releaseDate={movie.releaseDate}
+            runtime={movie.runtime}
+          />
+          <MovieRating
+            userRating={movie.userRating}
+            rateMovie={rateMovie}
+            averageRating={movie.averageRating}
+          />
+          <Button
+            title="Ask a plot question"
+            onPress={toggle.open}
+            style={tailwind('mt-2')}
+          />
+        </View>
       </ScrollView>
       {user.isAuthenticated && (
         <View style={tailwind('absolute bottom-2 right-2')}>
@@ -111,7 +124,8 @@ const MovieDetails = () => {
             reverse
             name={movie.isFavourite ? 'heart-broken' : 'heart'}
             type="font-awesome-5"
-            color="#517fa4"
+            color="#EF4444"
+            solid
             onPress={() =>
               movie.isFavourite ? removeFavourite() : setFavourite()
             }
@@ -124,7 +138,8 @@ const MovieDetails = () => {
             reverse
             name="eraser"
             type="font-awesome-5"
-            color="#517fa4"
+            color="#FBBF24"
+            solid
             onPress={() => removeRating()}
           />
         </View>

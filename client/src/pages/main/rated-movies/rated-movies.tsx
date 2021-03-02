@@ -44,6 +44,8 @@ const RatedMovies = () => {
                 movieId: item.id,
               })
             }
+            isFavourite={item.isFavourite}
+            userRating={item.userRating}
           />
         )}
         keyExtractor={(item) => String(item.id)}

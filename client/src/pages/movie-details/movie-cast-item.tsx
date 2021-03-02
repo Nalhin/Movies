@@ -11,10 +11,10 @@ interface Props {
 
 const MovieCastItem = ({ name, character, profilePath }: Props) => {
   return (
-    <Card wrapperStyle={tailwind('w-40')}>
-      <Card.Title>{character}</Card.Title>
-      <Text>{name}</Text>
+    <Card wrapperStyle={tailwind('w-40')} containerStyle={tailwind('p-0 m-1')}>
       <Card.Image source={{ uri: profilePath }} resizeMethod={'scale'} />
+      <Text style={tailwind('text-center font-bold')}>{name}</Text>
+      <Text style={tailwind('text-center')}>{character}</Text>
     </Card>
   );
 };

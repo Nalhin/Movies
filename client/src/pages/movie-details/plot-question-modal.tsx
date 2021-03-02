@@ -14,7 +14,7 @@ interface Props {
 const PlotQuestionModal = ({ movieId, isOpen, onClose }: Props) => {
   const [question, setQuestion] = useState('');
 
-  const { data, refetch, isLoading } = useQuery(
+  const { data, refetch, isLoading, remove, error } = useQuery(
     [movieId, 'question'],
     () => getPlotQuestion(movieId, question),
     { enabled: false, select: (resp) => resp.data },
@@ -22,15 +22,37 @@ const PlotQuestionModal = ({ movieId, isOpen, onClose }: Props) => {
 
   return (
     <Overlay isVisible={isOpen} onBackdropPress={onClose}>
-      <View style={tailwind('w-80 h-40')}>
+      <View style={tailwind('w-80')}>
+        <Text style={tailwind('font-bold text-lg text-center mb-1')}>
+          Question
+        </Text>
         <Input onChangeText={(text) => setQuestion(text)} value={question} />
         <Button
-          title="Answer"
-          onPress={() => refetch()}
+          title="Ask"
+          onPress={() => {
+            remove();
+            refetch();
+          }}
           loading={isLoading}
           disabled={isLoading}
         />
-        <Text>{data?.answer}</Text>
+        {error && (
+          <Text
+            style={tailwind(
+              'font-bold text-base text-center mt-2 text-red-600',
+            )}
+          >
+            The question couldn't be answered
+          </Text>
+        )}
+        {data?.answer && (
+          <>
+            <Text style={tailwind('font-bold text-lg text-center mt-2')}>
+              Your answer
+            </Text>
+            <Text style={tailwind('text-sm text-center')}>{data?.answer}</Text>
+          </>
+        )}
       </View>
     </Overlay>
   );

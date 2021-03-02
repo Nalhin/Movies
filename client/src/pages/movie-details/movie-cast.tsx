@@ -3,6 +3,7 @@ import { View, Text, FlatList } from 'react-native';
 import { getMovieCast } from '../../core/api/movie/movie-cast.api';
 import { useQuery } from 'react-query';
 import MovieCastItem from './movie-cast-item';
+import tailwind from 'tailwind-rn';
 
 interface Props {
   movieId: number;
@@ -17,6 +18,7 @@ const MovieCast: React.FC<Props> = ({ movieId }) => {
 
   return (
     <View>
+      <Text style={tailwind('font-bold text-lg text-center')}>Cast</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => (
