@@ -13,7 +13,7 @@ describe('Home Page', () => {
       screens: [ROOT_ROUTES.MAIN],
     });
 
-    fireEvent.press(getByA11yLabel(/Continue/));
+    fireEvent.press(getByA11yLabel(/continue/i));
 
     expect(navigation.getCurrentRoute()?.name).toEqual(ROOT_ROUTES.MAIN);
   });
@@ -23,7 +23,7 @@ describe('Home Page', () => {
       user: authenticatedUserFactory.buildOne(),
     });
 
-    fireEvent.press(getByA11yLabel(/Logout/));
+    fireEvent.press(getByA11yLabel(/logout/i));
 
     expect(logoutUser).toBeCalledTimes(1);
   });
@@ -34,9 +34,9 @@ describe('Home Page', () => {
       screens: [ROOT_ROUTES.HOME],
     });
 
-    expect(queryByA11yLabel(/Login/)).toBeNull();
-    expect(queryByA11yLabel(/Skip login/)).toBeNull();
-    expect(queryByA11yLabel(/Sign up/)).toBeNull();
+    expect(queryByA11yLabel(/login/i)).toBeNull();
+    expect(queryByA11yLabel(/skip login/i)).toBeNull();
+    expect(queryByA11yLabel(/sign up/i)).toBeNull();
   });
 
   it('should allow to visit main page when not authenticated', () => {
@@ -45,7 +45,7 @@ describe('Home Page', () => {
       screens: [ROOT_ROUTES.MAIN],
     });
 
-    fireEvent.press(getByA11yLabel(/Skip logging/));
+    fireEvent.press(getByA11yLabel(/skip logging/i));
 
     expect(navigation.getCurrentRoute()?.name).toEqual(ROOT_ROUTES.MAIN);
   });
@@ -56,7 +56,7 @@ describe('Home Page', () => {
       screens: [ROOT_ROUTES.LOGIN],
     });
 
-    fireEvent.press(getByA11yLabel(/Login/));
+    fireEvent.press(getByA11yLabel(/login/i));
 
     expect(navigation.getCurrentRoute()?.name).toEqual(ROOT_ROUTES.LOGIN);
   });
@@ -67,7 +67,7 @@ describe('Home Page', () => {
       screens: [ROOT_ROUTES.SIGN_UP],
     });
 
-    fireEvent.press(getByA11yLabel(/Sign up/));
+    fireEvent.press(getByA11yLabel(/sign up/i));
 
     expect(navigation.getCurrentRoute()?.name).toEqual(ROOT_ROUTES.SIGN_UP);
   });
@@ -77,7 +77,7 @@ describe('Home Page', () => {
       user: new AnonymousUser(),
     });
 
-    expect(queryByA11yLabel(/Continue/)).toBeNull();
-    expect(queryByA11yLabel(/Logout/)).toBeNull();
+    expect(queryByA11yLabel(/continue/i)).toBeNull();
+    expect(queryByA11yLabel(/logout/i)).toBeNull();
   });
 });
