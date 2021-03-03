@@ -27,7 +27,12 @@ import {
   RemoveMovieRatingCommand,
   RemoveMovieRatingErrors,
 } from '../../../application/port/in/command/remove-movie-rating.use-case';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthenticatedUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
 import { pipe } from 'fp-ts/function';
@@ -53,6 +58,9 @@ export class MovieRatingController {
   ) {}
 
   @AuthRequired()
+  @ApiBadRequestResponse({ description: 'Invalid request body.' })
+  @ApiNotFoundResponse({ description: 'Movie not found.' })
+  @ApiConflictResponse({ description: 'Movie already rated.' })
   @Post('/movies/:id/rating')
   @HttpCode(HttpStatus.OK)
   async rateMovie(
@@ -80,6 +88,9 @@ export class MovieRatingController {
   }
 
   @AuthRequired()
+  @ApiBadRequestResponse({ description: 'Invalid request body.' })
+  @ApiNotFoundResponse({ description: 'Movie not found.' })
+  @ApiConflictResponse({ description: 'Move not rated.' })
   @Delete('/movies/:id/rating')
   @HttpCode(HttpStatus.OK)
   async deleteRating(
@@ -106,6 +117,7 @@ export class MovieRatingController {
   }
 
   @AuthRequired()
+  @ApiNotFoundResponse({ description: 'Page not found.' })
   @Get('/me/movies/rating')
   async getFavouriteMovies(
     @Query('page') page: number,

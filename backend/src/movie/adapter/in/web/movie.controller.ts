@@ -29,7 +29,7 @@ import {
   GET_SIMILAR_MOVIES_USE_CASE,
   GetSimilarMoviesUseCase,
 } from '../../../application/port/in/query/get-similar-movies.use-case';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { AppUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
 import { pipe } from 'fp-ts/function';
@@ -50,6 +50,7 @@ export class MovieController {
   ) {}
 
   @AuthOptional()
+  @ApiNotFoundResponse({ description: 'Move not found.' })
   @Get('/movies/:id(\\d+)')
   async getMovieById(
     @Id() movieId: number,
@@ -65,6 +66,7 @@ export class MovieController {
   }
 
   @AuthOptional()
+  @ApiNotFoundResponse({ description: 'Page not found.' })
   @Get('/movies')
   async getMovies(
     @Query('page') page: number,
@@ -81,6 +83,7 @@ export class MovieController {
   }
 
   @AuthOptional()
+  @ApiNotFoundResponse({ description: 'Page not found.' })
   @Get('/movies/popular')
   async getPopularMovies(
     @Query('page') page: number,
@@ -96,6 +99,7 @@ export class MovieController {
   }
 
   @AuthOptional()
+  @ApiNotFoundResponse({ description: 'Movie not found.' })
   @Get('/movies/:id/similar')
   async getSimilarMovies(
     @Id() movieId: number,

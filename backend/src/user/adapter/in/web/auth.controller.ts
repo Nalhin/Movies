@@ -21,7 +21,12 @@ import {
   LoginUserErrors,
   LoginUserUseCase,
 } from '../../../application/port/in/command/login-user.use-case';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { LoginRequestDto } from './dto/request/login-request.dto';
@@ -39,6 +44,8 @@ export class AuthController {
   ) {}
 
   @Post('/login')
+  @ApiForbiddenResponse({ description: 'Invalid credentials.' })
+  @ApiBadRequestResponse({ description: 'Invalid request body.' })
   @HttpCode(HttpStatus.OK)
   async login(@Body() request: LoginRequestDto): Promise<AuthResponseDto> {
     return pipe(
@@ -58,6 +65,10 @@ export class AuthController {
   }
 
   @Post('/sign-up')
+  @ApiBadRequestResponse({ description: 'Invalid request body.' })
+  @ApiUnprocessableEntityResponse({
+    description: 'Username or password taken.',
+  })
   @HttpCode(HttpStatus.OK)
   async signUp(@Body() request: SignUpRequestDto): Promise<AuthResponseDto> {
     return pipe(

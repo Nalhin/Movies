@@ -25,7 +25,12 @@ import {
   RemoveFavouriteMovieErrors,
   RemoveFavouriteMovieUseCase,
 } from '../../../application/port/in/command/remove-favourite-movie.use-case';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthenticatedUser } from '../../../../common/model/app-user.model';
 import { Id } from '../../../../common/params/id';
 import { pipe } from 'fp-ts/function';
@@ -52,6 +57,9 @@ export class FavouriteMovieController {
 
   @AuthRequired()
   @HttpCode(HttpStatus.OK)
+  @ApiBadRequestResponse({ description: 'Invalid request body.' })
+  @ApiNotFoundResponse({ description: 'Movie not found.' })
+  @ApiConflictResponse({ description: 'Movie already marked as favourite.' })
   @Post('/movies/:id/favourite')
   async addFavouriteMovie(
     @Id() movieId: number,
@@ -77,6 +85,9 @@ export class FavouriteMovieController {
   }
 
   @AuthRequired()
+  @ApiBadRequestResponse({ description: 'Invalid request body.' })
+  @ApiNotFoundResponse({ description: 'Movie not found.' })
+  @ApiConflictResponse({ description: 'Movie not marked as favourite.' })
   @HttpCode(HttpStatus.OK)
   @Delete('/movies/:id/favourite')
   async removeFavouriteMovie(
@@ -103,6 +114,7 @@ export class FavouriteMovieController {
   }
 
   @AuthRequired()
+  @ApiNotFoundResponse({ description: 'Page not found.' })
   @Get('/me/movies/favourite')
   async getFavouriteMovies(
     @Query('page') page: number,

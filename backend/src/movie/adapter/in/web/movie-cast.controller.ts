@@ -6,7 +6,7 @@ import { Inject } from '@nestjs/common/decorators/core';
 import { Controller, Get, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { MovieCastListResponseDto } from './dto/response/movie-cast-list-response.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { Id } from '../../../../common/params/id';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
@@ -20,6 +20,7 @@ export class MovieCastController {
   ) {}
 
   @Get('/movies/:id/cast')
+  @ApiNotFoundResponse({ description: 'Movie not found.' })
   async getMovieCast(
     @Id() movieId: number,
   ): Promise<MovieCastListResponseDto[]> {

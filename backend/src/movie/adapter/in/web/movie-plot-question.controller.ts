@@ -7,7 +7,11 @@ import {
   Query,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 import {
   ASK_PLOT_QUESTION_USE_CASE,
   AskPlotQuestionErrors,
@@ -27,6 +31,10 @@ export class MoviePlotQuestionController {
   ) {}
 
   @Get('/movies/:id/plot-question')
+  @ApiNotFoundResponse({ description: 'Movie plot not found.' })
+  @ApiUnprocessableEntityResponse({
+    description: 'Question could not be answered.',
+  })
   async askPlotQuestion(
     @Id() movieId: number,
     @Query('question') question: string,
