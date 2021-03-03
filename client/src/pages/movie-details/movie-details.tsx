@@ -9,7 +9,7 @@ import {
 import { useMutation, useQuery } from 'react-query';
 import { useRoute } from '@react-navigation/native';
 import { getMovieById } from '../../core/api/movie/movie.api';
-import { AirbnbRating, Button, Icon, Image } from 'react-native-elements';
+import { Button, Icon, Image } from 'react-native-elements';
 import tailwind from 'tailwind-rn';
 import { MovieDetailsRouteProps } from '../root.routes';
 import PlotQuestionModal from './plot-question-modal';
@@ -27,6 +27,7 @@ import MovieCast from './movie-cast';
 import { format } from 'date-fns';
 import MovieRating from './movie-rating';
 import MovieStats from './movie-stats';
+import SimilarMovies from './similar-movies';
 
 const MovieDetails = () => {
   const {
@@ -106,17 +107,18 @@ const MovieDetails = () => {
             releaseDate={movie.releaseDate}
             runtime={movie.runtime}
           />
-          <MovieRating
-            userRating={movie.userRating}
-            rateMovie={rateMovie}
-            averageRating={movie.averageRating}
-          />
-          <Button
-            title="Ask a plot question"
-            onPress={toggle.open}
-            style={tailwind('mt-2')}
-          />
         </View>
+        <SimilarMovies movieId={movieId} />
+        <MovieRating
+          userRating={movie.userRating}
+          rateMovie={rateMovie}
+          averageRating={movie.averageRating}
+        />
+        <Button
+          title="Ask a plot question"
+          onPress={toggle.open}
+          style={tailwind('mt-2 mx-8')}
+        />
       </ScrollView>
       {user.isAuthenticated && (
         <View style={tailwind('absolute bottom-2 right-2')}>

@@ -3,12 +3,12 @@ import { FlatList, SafeAreaView } from 'react-native';
 import { useInfiniteQuery } from 'react-query';
 import { getPopularMoviesPage } from '../../../core/api/movie/movie.api';
 import MovieCard from '../../../shared/components/movie-card/movie-card';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ROOT_ROUTES } from '../../root.routes';
 
 const PopularMovies = () => {
   const navigation = useNavigation();
-  const { data, fetchNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage, refetch } = useInfiniteQuery(
     'popularMovies',
     async ({ pageParam = 1 }) => {
       return getPopularMoviesPage(pageParam).then((resp) => resp.data);
@@ -17,6 +17,13 @@ const PopularMovies = () => {
       getNextPageParam: (lastPage) =>
         lastPage.hasNextPage ? lastPage.page + 1 : undefined,
     },
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return;
+    }, []),
   );
 
   return (

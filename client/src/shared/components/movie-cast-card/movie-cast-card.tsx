@@ -9,14 +9,18 @@ interface Props {
   profilePath: string;
 }
 
-const MovieCastItem = ({ name, character, profilePath }: Props) => {
+const MovieCastCard = ({ name, character, profilePath }: Props) => {
   return (
     <Card wrapperStyle={tailwind('w-40')} containerStyle={tailwind('p-0 m-1')}>
       <Card.Image source={{ uri: profilePath }} resizeMethod={'scale'} />
-      <Text style={tailwind('text-center font-bold')}>{name}</Text>
-      <Text style={tailwind('text-center')}>{character}</Text>
+      <Text style={tailwind('text-center font-bold mt-2')} numberOfLines={1}>
+        {name}
+      </Text>
+      <Text style={tailwind('text-center')} numberOfLines={1}>
+        {character}
+      </Text>
     </Card>
   );
 };
 
-export default MovieCastItem;
+export default MovieCastCard;

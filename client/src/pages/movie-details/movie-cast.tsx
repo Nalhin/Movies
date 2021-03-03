@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { getMovieCast } from '../../core/api/movie/movie-cast.api';
 import { useQuery } from 'react-query';
-import MovieCastItem from './movie-cast-item';
+import MovieCastCard from '../../shared/components/movie-cast-card/movie-cast-card';
 import tailwind from 'tailwind-rn';
 
 interface Props {
@@ -22,7 +22,7 @@ const MovieCast: React.FC<Props> = ({ movieId }) => {
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <MovieCastItem
+          <MovieCastCard
             key={item.id}
             name={item.name}
             character={item.character}
