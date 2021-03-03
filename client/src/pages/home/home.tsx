@@ -26,12 +26,14 @@ const Home = () => {
           <Text>Welcome back {user.username}</Text>
           <Button
             title="Continue"
+            accessibilityLabel="Continue"
             type="solid"
             style={tailwind('w-80 py-1')}
             onPress={() => navigation.navigate(ROOT_ROUTES.MAIN)}
           />
           <Button
             title="Logout"
+            accessibilityLabel="Logout"
             type="solid"
             style={tailwind('w-80 py-1')}
             onPress={auth.logoutUser}
@@ -41,18 +43,21 @@ const Home = () => {
         <>
           <Button
             title="Skip logging"
+            accessibilityLabel="Skip logging"
             type="solid"
             style={tailwind('w-80 py-1')}
             onPress={() => navigation.navigate(ROOT_ROUTES.MAIN)}
           />
           <Button
             title="Login"
+            accessibilityLabel="Login"
             type="solid"
             style={tailwind('w-80 py-1')}
             onPress={() => navigation.navigate(ROOT_ROUTES.LOGIN)}
           />
           <Button
             title="Sign up"
+            accessibilityLabel="Sign up"
             type="solid"
             style={tailwind('w-80 py-1')}
             onPress={() => navigation.navigate(ROOT_ROUTES.SIGN_UP)}
