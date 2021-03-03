@@ -27,7 +27,6 @@ const RatedMovies = () => {
   useFocusEffect(
     React.useCallback(() => {
       refetch();
-      return;
     }, []),
   );
 

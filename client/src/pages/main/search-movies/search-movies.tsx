@@ -30,7 +30,6 @@ const SearchMovies = () => {
   useFocusEffect(
     React.useCallback(() => {
       refetch();
-      return;
     }, []),
   );
 

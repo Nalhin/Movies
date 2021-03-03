@@ -25,7 +25,7 @@ export class RemoveMovieRatingService implements RemoveMovieRatingUseCase {
   async removeRating(
     command: RemoveMovieRatingCommand,
   ): Promise<E.Either<RemoveMovieRatingErrors, void>> {
-    return await pipe(
+    return pipe(
       await this.findMoviePort.findById(command.movieId, command.userId),
       TE.fromOption(() => RemoveMovieRatingErrors.MovieNotFound),
       TE.chain((movie) =>

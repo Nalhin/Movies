@@ -25,7 +25,7 @@ export class RateMovieService implements RateMovieUseCase {
   async rateMovie(
     command: RateMovieCommand,
   ): Promise<E.Either<RateMovieErrors, void>> {
-    return await pipe(
+    return pipe(
       await this.findMoviePort.findById(command.movieId, command.userId),
       TE.fromOption(() => RateMovieErrors.MovieNotFound),
       TE.chain((movie) =>

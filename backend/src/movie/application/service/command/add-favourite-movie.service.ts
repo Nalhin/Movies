@@ -25,7 +25,7 @@ export class AddFavouriteMovieService implements AddFavouriteMovieUseCase {
   async addFavourite(
     command: AddFavouriteMovieCommand,
   ): Promise<E.Either<AddFavouriteMovieErrors, void>> {
-    return await pipe(
+    return pipe(
       await this.findMoviePort.findById(command.movieId, command.userId),
       TE.fromOption(() => AddFavouriteMovieErrors.MovieNotFound),
       TE.chain((movie) =>

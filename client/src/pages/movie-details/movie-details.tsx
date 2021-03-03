@@ -82,7 +82,7 @@ const MovieDetails = () => {
   return (
     <SafeAreaView>
       <ScrollView style={tailwind('h-full')}>
-        <Text style={tailwind('text-2xl font-bold text-center')}>
+        <Text style={tailwind('text-2xl font-bold text-center mb-2')}>
           {movie.title} ({format(new Date(movie.releaseDate), 'yyyy')})
         </Text>
         <Image

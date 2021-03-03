@@ -22,7 +22,6 @@ const PopularMovies = () => {
   useFocusEffect(
     React.useCallback(() => {
       refetch();
-      return;
     }, []),
   );
 

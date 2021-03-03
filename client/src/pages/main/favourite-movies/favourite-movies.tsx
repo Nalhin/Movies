@@ -22,7 +22,6 @@ const FavouriteMovies = () => {
   useFocusEffect(
     React.useCallback(() => {
       refetch();
-      return;
     }, []),
   );
 

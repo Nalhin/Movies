@@ -26,7 +26,7 @@ export class RemoveFavouriteMovieService
   async removeFavourite(
     command: RemoveFavouriteMovieCommand,
   ): Promise<E.Either<RemoveFavouriteMovieErrors, void>> {
-    return await pipe(
+    return pipe(
       await this.findMoviePort.findById(command.movieId, command.userId),
       TE.fromOption(() => RemoveFavouriteMovieErrors.MovieNotFound),
       TE.chain((movie) =>
