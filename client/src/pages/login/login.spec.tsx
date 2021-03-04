@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node';
 import { LoginRequestDto } from '../../core/api/api.types';
-import { renderWithProviders } from '../../../test/render/render-with-providers';
+import { renderWithNavigation } from '../../../test/render/render-with-providers';
 import React from 'react';
 import Login from './login';
 import { loginUserFactory } from '../../../test/factory/api/auth.factory';
@@ -19,7 +19,7 @@ describe('Login Page', () => {
 
   function submitForm(
     { username, password }: LoginRequestDto,
-    rr: ReturnType<typeof renderWithProviders>,
+    rr: ReturnType<typeof renderWithNavigation>,
   ) {
     fireEvent.changeText(rr.getByLabelText(/username/i), username);
     fireEvent.changeText(rr.getByLabelText(/password/i), password);
@@ -29,7 +29,7 @@ describe('Login Page', () => {
   it('should authenticate user after successful login', async () => {
     server.use(postLoginSuccessApiMock({ email: 'email', token: 'token' }));
     const formState = loginUserFactory.buildOne();
-    const rr = renderWithProviders(<Login />);
+    const rr = renderWithNavigation(<Login />);
 
     submitForm(formState, rr);
 
@@ -47,7 +47,7 @@ describe('Login Page', () => {
 
   it('should not authenticate when login is unsuccessful', async () => {
     server.use(postLoginErrorApiMock(401));
-    const rr = renderWithProviders(<Login />);
+    const rr = renderWithNavigation(<Login />);
 
     submitForm(loginUserFactory.buildOne(), rr);
 
@@ -58,7 +58,7 @@ describe('Login Page', () => {
   });
 
   it('should display errors when form is invalid', async () => {
-    const { getByRole, getByText } = renderWithProviders(<Login />);
+    const { getByRole, getByText } = renderWithNavigation(<Login />);
 
     fireEvent.press(getByRole('button'));
 
@@ -69,7 +69,7 @@ describe('Login Page', () => {
   });
 
   it('should not submit request when form is invalid', async () => {
-    const rr = renderWithProviders(<Login />);
+    const rr = renderWithNavigation(<Login />);
 
     fireEvent.press(rr.getByRole('button'));
 
@@ -85,7 +85,7 @@ describe('Login Page', () => {
         errors: [{ field: 'username', messages: ['username error'] }],
       }),
     );
-    const rr = renderWithProviders(<Login />);
+    const rr = renderWithNavigation(<Login />);
 
     submitForm(loginUserFactory.buildOne(), rr);
 

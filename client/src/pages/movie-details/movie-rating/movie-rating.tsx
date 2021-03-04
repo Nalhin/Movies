@@ -1,7 +1,7 @@
 import React from 'react';
 import { AirbnbRating } from 'react-native-elements';
 import { View, Text } from 'react-native';
-import { useUser } from '../../shared/context/auth/use-user/use-user';
+import { useUser } from '../../../shared/context/auth/use-user/use-user';
 import tailwind from 'tailwind-rn';
 
 interface Props {

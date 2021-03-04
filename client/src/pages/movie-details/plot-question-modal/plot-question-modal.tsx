@@ -3,7 +3,7 @@ import { Button, Input, Overlay } from 'react-native-elements';
 import { View, Text } from 'react-native';
 import { useQuery } from 'react-query';
 import tailwind from 'tailwind-rn';
-import { getPlotQuestion } from '../../core/api/movie/movie-plot-question.api';
+import { getPlotQuestion } from '../../../core/api/movie/movie-plot-question.api';
 
 interface Props {
   movieId: number;
@@ -26,7 +26,11 @@ const PlotQuestionModal = ({ movieId, isOpen, onClose }: Props) => {
         <Text style={tailwind('font-bold text-lg text-center mb-1')}>
           Question
         </Text>
-        <Input onChangeText={(text) => setQuestion(text)} value={question} />
+        <Input
+          onChangeText={(text) => setQuestion(text)}
+          value={question}
+          testID="ask-question-text"
+        />
         <Button
           title="Ask"
           onPress={() => {

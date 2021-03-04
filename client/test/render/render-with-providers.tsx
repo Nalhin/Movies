@@ -8,22 +8,16 @@ import {
 } from '@react-navigation/native';
 import { AuthProviderMock } from '../mocks/context/auth-provider.mock';
 import { AuthStorage } from '../../src/shared/services/storage/auth-storage.service';
-import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-interface CustomRenderOptions extends RenderOptions {
+interface CustomBaseRenderOptions extends RenderOptions {
   user?: User;
-  screens?: string[];
-  routeParams?: Record<string, unknown>;
 }
 
-export const renderWithProviders = (
+export const renderWithBaseProviders = (
   ui: JSX.Element,
-  {
-    user = new AnonymousUser(),
-    screens = [],
-    routeParams = {},
-  }: CustomRenderOptions = {},
+  { user = new AnonymousUser() }: CustomBaseRenderOptions = {},
 ) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -31,41 +25,62 @@ export const renderWithProviders = (
 
   const logoutUser = jest.fn();
   const authenticateUser = jest.fn();
-  const Stack = createStackNavigator();
-
-  const navigationRef = React.createRef<NavigationContainerRef>();
 
   return {
     ...render(
-      <NavigationContainer ref={navigationRef}>
-        <AuthProviderMock
-          defaultUser={user}
-          logoutUser={logoutUser}
-          authenticateUser={authenticateUser}
-          authStorage={(null as unknown) as AuthStorage}
-        >
-          <QueryClientProvider client={queryClient}>
-            <Stack.Navigator initialRouteName="/" headerMode="none">
-              <Stack.Screen name="/" initialParams={routeParams}>
-                {() => ui}
-              </Stack.Screen>
-              {screens.map((screen) => (
-                <Stack.Screen key={screen} name={screen}>
-                  {() => (
-                    <View>
-                      <Text>{screen}</Text>
-                    </View>
-                  )}
-                </Stack.Screen>
-              ))}
-            </Stack.Navigator>
-          </QueryClientProvider>
-        </AuthProviderMock>
-      </NavigationContainer>,
+      <AuthProviderMock
+        defaultUser={user}
+        logoutUser={logoutUser}
+        authenticateUser={authenticateUser}
+        authStorage={(null as unknown) as AuthStorage}
+      >
+        <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+      </AuthProviderMock>,
     ),
     queryClient,
     logoutUser,
     authenticateUser,
+  };
+};
+
+interface CustomNavigationRenderOptions extends CustomBaseRenderOptions {
+  user?: User;
+  screens?: string[];
+  routeParams?: Record<string, unknown>;
+}
+
+const Stack = createStackNavigator();
+
+export const renderWithNavigation = (
+  ui: JSX.Element,
+  {
+    user = new AnonymousUser(),
+    screens = [],
+    routeParams = {},
+  }: CustomNavigationRenderOptions = {},
+) => {
+  const navigationRef = React.createRef<NavigationContainerRef>();
+
+  return {
+    ...renderWithBaseProviders(
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator initialRouteName="/" headerMode="none">
+          <Stack.Screen name="/" initialParams={routeParams}>
+            {(props) => React.cloneElement(ui, { ...ui.props, ...props })}
+          </Stack.Screen>
+          {screens.map((screen) => (
+            <Stack.Screen key={screen} name={screen}>
+              {() => (
+                <View>
+                  <Text>{screen}</Text>
+                </View>
+              )}
+            </Stack.Screen>
+          ))}
+        </Stack.Navigator>
+      </NavigationContainer>,
+      { user },
+    ),
     navigation: navigationRef.current as NavigationContainerRef,
   };
 };

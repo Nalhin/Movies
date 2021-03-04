@@ -1,4 +1,4 @@
-import { renderWithProviders } from '../../../test/render/render-with-providers';
+import { renderWithNavigation } from '../../../test/render/render-with-providers';
 import React from 'react';
 import Home from './home';
 import { fireEvent } from '@testing-library/react-native';
@@ -8,7 +8,7 @@ import { AnonymousUser } from '../../shared/models/user/user';
 
 describe('Home Page', () => {
   it('should allow to visit main page when authenticated', () => {
-    const { getByA11yLabel, navigation } = renderWithProviders(<Home />, {
+    const { getByA11yLabel, navigation } = renderWithNavigation(<Home />, {
       user: authenticatedUserFactory.buildOne(),
       screens: [ROOT_ROUTES.MAIN],
     });
@@ -19,7 +19,7 @@ describe('Home Page', () => {
   });
 
   it('should allow logging out when authenticated', () => {
-    const { getByA11yLabel, logoutUser } = renderWithProviders(<Home />, {
+    const { getByA11yLabel, logoutUser } = renderWithNavigation(<Home />, {
       user: authenticatedUserFactory.buildOne(),
     });
 
@@ -29,7 +29,7 @@ describe('Home Page', () => {
   });
 
   it('should hide login, skip login, and sign up buttons when authenticated', () => {
-    const { queryByA11yLabel } = renderWithProviders(<Home />, {
+    const { queryByA11yLabel } = renderWithNavigation(<Home />, {
       user: authenticatedUserFactory.buildOne(),
       screens: [ROOT_ROUTES.HOME],
     });
@@ -40,7 +40,7 @@ describe('Home Page', () => {
   });
 
   it('should allow to visit main page when not authenticated', () => {
-    const { getByA11yLabel, navigation } = renderWithProviders(<Home />, {
+    const { getByA11yLabel, navigation } = renderWithNavigation(<Home />, {
       user: new AnonymousUser(),
       screens: [ROOT_ROUTES.MAIN],
     });
@@ -51,7 +51,7 @@ describe('Home Page', () => {
   });
 
   it('should allow to visit login page when not authenticated', () => {
-    const { getByA11yLabel, navigation } = renderWithProviders(<Home />, {
+    const { getByA11yLabel, navigation } = renderWithNavigation(<Home />, {
       user: new AnonymousUser(),
       screens: [ROOT_ROUTES.LOGIN],
     });
@@ -62,7 +62,7 @@ describe('Home Page', () => {
   });
 
   it('should allow to visit sign up page when not authenticated', () => {
-    const { getByA11yLabel, navigation } = renderWithProviders(<Home />, {
+    const { getByA11yLabel, navigation } = renderWithNavigation(<Home />, {
       user: new AnonymousUser(),
       screens: [ROOT_ROUTES.SIGN_UP],
     });
@@ -73,7 +73,7 @@ describe('Home Page', () => {
   });
 
   it('should hide continue and logout button when not authenticated', () => {
-    const { queryByA11yLabel } = renderWithProviders(<Home />, {
+    const { queryByA11yLabel } = renderWithNavigation(<Home />, {
       user: new AnonymousUser(),
     });
 

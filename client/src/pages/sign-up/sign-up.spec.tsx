@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node';
 import { SignUpRequestDto } from '../../core/api/api.types';
-import { renderWithProviders } from '../../../test/render/render-with-providers';
+import { renderWithNavigation } from '../../../test/render/render-with-providers';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import {
   postSignUpErrorApiMock,
@@ -20,7 +20,7 @@ describe('SignUp Page', () => {
 
   function submitForm(
     { username, password, email }: SignUpRequestDto,
-    rr: ReturnType<typeof renderWithProviders>,
+    rr: ReturnType<typeof renderWithNavigation>,
   ) {
     fireEvent.changeText(rr.getByLabelText(/username/i), username);
     fireEvent.changeText(rr.getByLabelText(/password/i), password);
@@ -31,7 +31,7 @@ describe('SignUp Page', () => {
   it('should authenticate user after successful login', async () => {
     server.use(postSignUpSuccessApiMock({ token: 'token' }));
     const formState = signUpRequestFactory.buildOne();
-    const rr = renderWithProviders(<SignUp />);
+    const rr = renderWithNavigation(<SignUp />);
 
     submitForm(formState, rr);
 
@@ -49,7 +49,7 @@ describe('SignUp Page', () => {
 
   it('should not authenticate when login is unsuccessful', async () => {
     server.use(postSignUpErrorApiMock(401));
-    const rr = renderWithProviders(<SignUp />);
+    const rr = renderWithNavigation(<SignUp />);
 
     submitForm(signUpRequestFactory.buildOne(), rr);
 
@@ -60,7 +60,7 @@ describe('SignUp Page', () => {
   });
 
   it('should display errors when form is invalid', async () => {
-    const { getByRole, getByText } = renderWithProviders(<Login />);
+    const { getByRole, getByText } = renderWithNavigation(<Login />);
 
     fireEvent.press(getByRole('button'));
 
@@ -71,7 +71,7 @@ describe('SignUp Page', () => {
   });
 
   it('should not submit request when form is invalid', async () => {
-    const rr = renderWithProviders(<SignUp />);
+    const rr = renderWithNavigation(<SignUp />);
 
     fireEvent.press(rr.getByRole('button'));
 
@@ -87,7 +87,7 @@ describe('SignUp Page', () => {
         errors: [{ field: 'username', messages: ['username error'] }],
       }),
     );
-    const rr = renderWithProviders(<SignUp />);
+    const rr = renderWithNavigation(<SignUp />);
 
     submitForm(signUpRequestFactory.buildOne(), rr);
 

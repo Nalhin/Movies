@@ -3,7 +3,7 @@ import {
   movieListResponseFactory,
   paginatedMovieListResponse,
 } from '../../../../test/factory/api/movie.factory';
-import { renderWithProviders } from '../../../../test/render/render-with-providers';
+import { renderWithNavigation } from '../../../../test/render/render-with-providers';
 import { waitFor } from '@testing-library/react-native';
 import React from 'react';
 import FavouriteMovies from './favourite-movies';
@@ -25,7 +25,7 @@ describe('FavouriteMovies Page', () => {
         paginatedMovieListResponse.buildOne({ data: movies }),
       ),
     );
-    const { getAllByText } = renderWithProviders(<FavouriteMovies />);
+    const { getAllByText } = renderWithNavigation(<FavouriteMovies />);
 
     await waitFor(() => {
       expect(getAllByText(/title/i)).toHaveLength(4);

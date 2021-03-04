@@ -7,12 +7,12 @@ import {
   View,
 } from 'react-native';
 import { useMutation, useQuery } from 'react-query';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { getMovieById } from '../../core/api/movie/movie.api';
 import { Button, Icon, Image } from 'react-native-elements';
 import tailwind from 'tailwind-rn';
-import { MovieDetailsRouteProps } from '../root.routes';
-import PlotQuestionModal from './plot-question-modal';
+import { MovieDetailsRouteProps, ROOT_ROUTES } from '../root.routes';
+import PlotQuestionModal from './plot-question-modal/plot-question-modal';
 import { useToggle } from '../../shared/hooks/use-toggle';
 import { useUser } from '../../shared/context/auth/use-user/use-user';
 import {
@@ -23,13 +23,14 @@ import {
   deleteMovieRating,
   postMovieRating,
 } from '../../core/api/movie/movie-rating.api';
-import MovieCast from './movie-cast';
+import MovieCast from './movie-cast/movie-cast';
 import { format } from 'date-fns';
-import MovieRating from './movie-rating';
-import MovieStats from './movie-stats';
-import SimilarMovies from './similar-movies';
+import MovieRating from './movie-rating/movie-rating';
+import MovieStats from './movie-stats/movie-stats';
+import SimilarMovies from './similar-movies/similar-movies';
 
 const MovieDetails = () => {
+  const navigation = useNavigation();
   const {
     params: { movieId },
   } = useRoute<MovieDetailsRouteProps>();
@@ -108,7 +109,14 @@ const MovieDetails = () => {
             runtime={movie.runtime}
           />
         </View>
-        <SimilarMovies movieId={movieId} />
+        <SimilarMovies
+          movieId={movieId}
+          onMoviePress={(pressedId) =>
+            navigation.navigate(ROOT_ROUTES.MOVIE_DETAILS, {
+              movieId: pressedId,
+            })
+          }
+        />
         <MovieRating
           userRating={movie.userRating}
           rateMovie={rateMovie}

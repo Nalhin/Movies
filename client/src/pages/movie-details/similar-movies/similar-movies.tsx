@@ -1,18 +1,16 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { getSimilarMovies } from '../../core/api/movie/movie.api';
+import { getSimilarMovies } from '../../../core/api/movie/movie.api';
 import { FlatList, Text, View } from 'react-native';
 import tailwind from 'tailwind-rn';
-import MovieCardSmall from '../../shared/components/movie-card/movie-card-small';
-import { ROOT_ROUTES } from '../root.routes';
-import { useNavigation } from '@react-navigation/native';
+import MovieCardSmall from '../../../shared/components/movie-card/movie-card-small';
 
 interface Props {
   movieId: number;
+  onMoviePress: (movieId: number) => void;
 }
 
-const SimilarMovies = ({ movieId }: Props) => {
-  const navigation = useNavigation();
+const SimilarMovies = ({ movieId, onMoviePress }: Props) => {
   const { data, isLoading } = useQuery(
     ['similarMovies', movieId],
     () => getSimilarMovies(movieId),
@@ -39,11 +37,7 @@ const SimilarMovies = ({ movieId }: Props) => {
           <MovieCardSmall
             title={item.title}
             posterPath={item.posterPath}
-            onPress={() =>
-              navigation.navigate(ROOT_ROUTES.MOVIE_DETAILS, {
-                movieId: item.id,
-              })
-            }
+            onPress={() => onMoviePress(movieId)}
           />
         )}
         horizontal

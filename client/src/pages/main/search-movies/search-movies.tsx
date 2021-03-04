@@ -14,7 +14,7 @@ const SearchMovies = () => {
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 500);
   const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery(
-    ['projects', debouncedSearch],
+    ['searchMovies', debouncedSearch],
     async ({ pageParam = 1 }) => {
       return getSearchMoviesPage(pageParam, debouncedSearch).then(
         (resp) => resp.data,
@@ -65,7 +65,7 @@ const SearchMovies = () => {
           )}
           pointerEvents="none"
         >
-          <ActivityIndicator size={'large'} />
+          <ActivityIndicator size={'large'} testID="loader" />
         </View>
       )}
     </SafeAreaView>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { getMovieCast } from '../../core/api/movie/movie-cast.api';
+import { getMovieCast } from '../../../core/api/movie/movie-cast.api';
 import { useQuery } from 'react-query';
-import MovieCastCard from '../../shared/components/movie-cast-card/movie-cast-card';
+import MovieCastCard from '../../../shared/components/movie-cast-card/movie-cast-card';
 import tailwind from 'tailwind-rn';
 
 interface Props {
