@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -35,41 +36,26 @@ export interface RateMovieRequestDto {
 }
 
 export interface MovieDetailsResponseDto {
-  adult: boolean;
-  backdropPath: string;
   budget: number;
   id: number;
   imdbId: string;
-  originalLanguage: string;
-  originalTitle: string;
   overview: string;
-  popularity: number;
   posterPath: string | null;
   releaseDate: string;
   revenue: number;
   runtime: number | null;
-  tagline: string | null;
   title: string;
-  video: boolean;
   isFavourite: boolean;
   userRating: number | null;
   averageRating: number | null;
-  voteAverage: number;
-  voteCount: number;
 }
 
 export interface MovieListResponseDto {
   posterPath: string;
-  adult: boolean;
   overview: string;
   releaseDate: string;
   id: number;
-  originalTitle: string;
-  originalLanguage: string;
   title: string;
-  backdropPath: string;
-  popularity: number;
-  voteCount: number;
   userRating: number | null;
   isFavourite: boolean;
   averageRating: number | null;

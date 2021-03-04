@@ -14,11 +14,16 @@ import { View, Text } from 'react-native';
 interface CustomRenderOptions extends RenderOptions {
   user?: User;
   screens?: string[];
+  routeParams?: Record<string, unknown>;
 }
 
 export const renderWithProviders = (
   ui: JSX.Element,
-  { user = new AnonymousUser(), screens = [] }: CustomRenderOptions = {},
+  {
+    user = new AnonymousUser(),
+    screens = [],
+    routeParams = {},
+  }: CustomRenderOptions = {},
 ) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -41,7 +46,9 @@ export const renderWithProviders = (
         >
           <QueryClientProvider client={queryClient}>
             <Stack.Navigator initialRouteName="/" headerMode="none">
-              <Stack.Screen name="/">{() => ui}</Stack.Screen>
+              <Stack.Screen name="/" initialParams={routeParams}>
+                {() => ui}
+              </Stack.Screen>
               {screens.map((screen) => (
                 <Stack.Screen key={screen} name={screen}>
                   {() => (

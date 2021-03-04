@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useAuthState } from './use-auth-state';
 import { AnonymousUser, AuthenticatedUser } from '../../../models/user/user';
-import { userResponseFactory } from '../../../../../test/factory/api/auth';
+import { userResponseFactory } from '../../../../../test/factory/api/auth.factory';
 import { getMe } from '../../../../core/api/user/user.api';
 import { AuthStorageService } from '../../../services/storage/auth-storage.service';
 import { MockedObject } from 'ts-jest/dist/utils/testing';

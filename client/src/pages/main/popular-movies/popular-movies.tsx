@@ -28,6 +28,7 @@ const PopularMovies = () => {
   return (
     <SafeAreaView>
       <FlatList
+        testID="popular-movies-list"
         data={data?.pages.flatMap((page) => page.data)}
         renderItem={({ item }) => (
           <MovieCard

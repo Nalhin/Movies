@@ -3,7 +3,7 @@ import React from 'react';
 import Home from './home';
 import { fireEvent } from '@testing-library/react-native';
 import { ROOT_ROUTES } from '../root.routes';
-import { authenticatedUserFactory } from '../../../test/factory/user/user';
+import { authenticatedUserFactory } from '../../../test/factory/user/user.factory';
 import { AnonymousUser } from '../../shared/models/user/user';
 
 describe('Home Page', () => {

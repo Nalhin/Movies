@@ -2,7 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mocked } from 'ts-jest/utils';
 import { useAuthState } from '../use-auth-state/use-auth-state';
-import { authenticatedUserFactory } from '../../../../../test/factory/user/user';
+import { authenticatedUserFactory } from '../../../../../test/factory/user/user.factory';
 import { AuthProvider } from '../auth-provider/auth-provider';
 import { useUser } from './use-user';
 import { AuthStorageMock } from '../../../../../test/mocks/services/auth-storage.mock';

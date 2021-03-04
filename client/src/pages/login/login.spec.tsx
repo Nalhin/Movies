@@ -3,12 +3,12 @@ import { LoginRequestDto } from '../../core/api/api.types';
 import { renderWithProviders } from '../../../test/render/render-with-providers';
 import React from 'react';
 import Login from './login';
-import { loginUserFactory } from '../../../test/factory/api/auth';
+import { loginUserFactory } from '../../../test/factory/api/auth.factory';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import {
   postLoginErrorApiMock,
   postLoginSuccessApiMock,
-} from '../../../test/mocks/api/auth';
+} from '../../../test/mocks/api/auth.mock';
 
 describe('Login Page', () => {
   const server = setupServer();
