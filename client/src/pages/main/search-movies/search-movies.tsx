@@ -29,7 +29,9 @@ const SearchMovies = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      refetch();
+      if (search) {
+        refetch();
+      }
     }, []),
   );
 

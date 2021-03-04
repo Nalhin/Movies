@@ -37,7 +37,7 @@ const SimilarMovies = ({ movieId, onMoviePress }: Props) => {
           <MovieCardSmall
             title={item.title}
             posterPath={item.posterPath}
-            onPress={() => onMoviePress(movieId)}
+            onPress={() => onMoviePress(item.id)}
           />
         )}
         horizontal
