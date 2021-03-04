@@ -8,7 +8,7 @@
 
 # Movies
 
-Movie data aggregator with hexagonal architecture.
+Movie data aggregator based on the concepts of "Clean Architecture" and "Hexagonal Architecture".
 
 ## Table of contents
 
@@ -148,7 +148,7 @@ domain
 
 ### Client
 
-Client architecture follows modern React trends. React context and React Query is used instead of the global state
+Client architecture closely follows modern React trends. React context and React Query is used instead of the global state
 libraries. Such a design decision reduces clutter and allows the application to be tested with a mock REST API server
 making the tests more reliable and robust.
 
