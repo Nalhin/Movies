@@ -7,7 +7,7 @@ import { renderWithNavigation } from '../../../../test/render/render-with-provid
 import PopularMovies from './popular-movies';
 import React from 'react';
 import { waitFor } from '@testing-library/react-native';
-import { getPopularMoviesPageApiMock } from '../../../../test/mocks/api/movie.mock';
+import { getPopularMoviesPageApiMock } from '../../../../test/mocks/api/movie/movie.mock';
 
 describe('PopularMovies Page', () => {
   const server = setupServer();

@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import {
   LoginRequestDto,
   SignUpRequestDto,
-} from '../../../src/core/api/api.types';
+} from '../../../../src/core/api/api.types';
 
 export const postLoginSuccessApiMock = ({
   token,

@@ -3,7 +3,7 @@ import { movieListResponseFactory } from '../../../../test/factory/api/movie.fac
 import { renderWithBaseProviders } from '../../../../test/render/render-with-providers';
 import { waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { getSimilarMoviesApiMock } from '../../../../test/mocks/api/movie.mock';
+import { getSimilarMoviesApiMock } from '../../../../test/mocks/api/movie/movie.mock';
 import SimilarMovies from './similar-movies';
 
 describe('SimilarMovies component', () => {

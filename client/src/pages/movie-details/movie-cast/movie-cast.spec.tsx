@@ -3,7 +3,7 @@ import { movieCastListResponseFactory } from '../../../../test/factory/api/movie
 import { renderWithBaseProviders } from '../../../../test/render/render-with-providers';
 import { waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { getMovieCastApiMock } from '../../../../test/mocks/api/movie-cast.mock';
+import { getMovieCastApiMock } from '../../../../test/mocks/api/movie/movie-cast.mock';
 import MovieCast from './movie-cast';
 
 describe('MovieCast component', () => {

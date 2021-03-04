@@ -1,4 +1,4 @@
-import { MovieCastListResponseDto } from '../../../src/core/api/api.types';
+import { MovieCastListResponseDto } from '../../../../src/core/api/api.types';
 import { rest } from 'msw';
 
 export const getMovieCastApiMock = (response: MovieCastListResponseDto[]) => {

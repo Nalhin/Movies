@@ -7,7 +7,7 @@ import { renderWithNavigation } from '../../../../test/render/render-with-provid
 import { waitFor } from '@testing-library/react-native';
 import React from 'react';
 import FavouriteMovies from './favourite-movies';
-import { getFavouriteMoviesPageApiMock } from '../../../../test/mocks/api/movie-favourite.mock';
+import { getFavouriteMoviesPageApiMock } from '../../../../test/mocks/api/movie/movie-favourite.mock';
 
 describe('FavouriteMovies Page', () => {
   const server = setupServer();

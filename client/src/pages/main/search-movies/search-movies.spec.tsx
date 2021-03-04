@@ -6,7 +6,7 @@ import {
 import { renderWithNavigation } from '../../../../test/render/render-with-providers';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { getSearchMoviesPageApiMock } from '../../../../test/mocks/api/movie.mock';
+import { getSearchMoviesPageApiMock } from '../../../../test/mocks/api/movie/movie.mock';
 import SearchMovies from './search-movies';
 
 describe('SearchMovies Page', () => {

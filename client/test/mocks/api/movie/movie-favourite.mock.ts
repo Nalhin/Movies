@@ -1,4 +1,4 @@
-import { PaginatedMovieListResponseDto } from '../../../src/core/api/api.types';
+import { PaginatedMovieListResponseDto } from '../../../../src/core/api/api.types';
 import { rest } from 'msw';
 
 export const getFavouriteMoviesPageApiMock = (

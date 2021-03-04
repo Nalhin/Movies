@@ -7,7 +7,7 @@ import { renderWithNavigation } from '../../../../test/render/render-with-provid
 import { waitFor } from '@testing-library/react-native';
 import React from 'react';
 import RatedMovies from './rated-movies';
-import { getRatedMoviesPageApiMock } from '../../../../test/mocks/api/movie-rating.mock';
+import { getRatedMoviesPageApiMock } from '../../../../test/mocks/api/movie/movie-rating.mock';
 
 describe('RatedMovies Page', () => {
   const server = setupServer();

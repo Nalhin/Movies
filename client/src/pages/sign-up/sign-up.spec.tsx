@@ -5,7 +5,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import {
   postSignUpErrorApiMock,
   postSignUpSuccessApiMock,
-} from '../../../test/mocks/api/auth.mock';
+} from '../../../test/mocks/api/auth/auth.mock';
 import { signUpRequestFactory } from '../../../test/factory/api/auth.factory';
 import Login from '../login/login';
 import React from 'react';

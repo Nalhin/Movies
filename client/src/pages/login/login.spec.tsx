@@ -8,7 +8,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import {
   postLoginErrorApiMock,
   postLoginSuccessApiMock,
-} from '../../../test/mocks/api/auth.mock';
+} from '../../../test/mocks/api/auth/auth.mock';
 
 describe('Login Page', () => {
   const server = setupServer();

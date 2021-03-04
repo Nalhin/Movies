@@ -1,4 +1,4 @@
-import { PlotQuestionResponseDto } from '../../../src/core/api/api.types';
+import { PlotQuestionResponseDto } from '../../../../src/core/api/api.types';
 import { rest } from 'msw';
 
 export const getPlotQuestionApiMock = (response: PlotQuestionResponseDto) => {

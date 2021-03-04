@@ -2,7 +2,7 @@ import { setupServer } from 'msw/node';
 import { renderWithBaseProviders } from '../../../../test/render/render-with-providers';
 import PlotQuestionModal from './plot-question-modal';
 import React from 'react';
-import { getPlotQuestionApiMock } from '../../../../test/mocks/api/movie-plot-question.mock';
+import { getPlotQuestionApiMock } from '../../../../test/mocks/api/movie/movie-plot-question.mock';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 
 describe('PlotQuestionModal component', () => {
