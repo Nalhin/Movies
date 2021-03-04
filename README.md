@@ -52,57 +52,57 @@ The service integrates with multiple external data sources such as
 
 ## Presentation
 
-### Overview
+#### Overview
 
 <p align="center">
   <a href="https://youtu.be/f41pEaQxIg0">
-    <img src="screenshots/overview.gif" alt="overview"/>
+    <img src="screenshots/overview.gif" alt="overview" width="400px" />
   </a>
 </p>
 
-### Home
+#### Home
 
 <p align="center">
-    <img src="screenshots/home.png" alt="home"/>
+    <img src="screenshots/home.png" alt="home" width="400px" />
 </p>
 
-### Popular
+#### Popular
 
 <p align="center">
-    <img src="screenshots/popular.png" alt="popular"/>
+    <img src="screenshots/popular.png" alt="popular" width="400px" />
 </p>
 
-### Search
+#### Search
 
 <p align="center">
-    <img src="screenshots/search.png" alt="search"/>
+    <img src="screenshots/search.png" alt="search" width="400px" />
 </p>
 
-### Question
+#### Question
 
 <p align="center">
-    <img src="screenshots/question.png" alt="question"/>
-</p>
-
-
-### Details 
-
-<p align="center">
-    <img src="screenshots/details.png" alt="details"/>
+    <img src="screenshots/question.png" alt="question" width="400px" />
 </p>
 
 
-### Favourite 
+#### Details 
 
 <p align="center">
-    <img src="screenshots/favourite.png" alt="favourite"/>
+    <img src="screenshots/details.png" alt="details" width="400px" />
 </p>
 
 
-### Sign up 
+#### Favourite 
 
 <p align="center">
-    <img src="screenshots/sign-up.png" alt="sign up"/>
+    <img src="screenshots/favourite.png" alt="favourite" width="400px" />
+</p>
+
+
+#### Sign up 
+
+<p align="center">
+    <img src="screenshots/sign-up.png" alt="sign up" width="400px" />
 </p>
 
 ## Technology Stack
