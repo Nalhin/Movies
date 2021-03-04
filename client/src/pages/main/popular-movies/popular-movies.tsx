@@ -8,7 +8,7 @@ import { ROOT_ROUTES } from '../../root.routes';
 
 const PopularMovies = () => {
   const navigation = useNavigation();
-  const { data, fetchNextPage, refetch } = useInfiniteQuery(
+  const { data, fetchNextPage, refetch, isFetched } = useInfiniteQuery(
     'popularMovies',
     async ({ pageParam = 1 }) => {
       return getPopularMoviesPage(pageParam).then((resp) => resp.data);
@@ -21,8 +21,10 @@ const PopularMovies = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      refetch();
-    }, []),
+      if (isFetched) {
+        refetch();
+      }
+    }, [isFetched]),
   );
 
   return (

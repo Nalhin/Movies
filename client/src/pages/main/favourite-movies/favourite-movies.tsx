@@ -8,7 +8,7 @@ import { getFavouriteMoviesPage } from '../../../core/api/movie/movie-favourite.
 
 const FavouriteMovies = () => {
   const navigation = useNavigation();
-  const { data, fetchNextPage, refetch } = useInfiniteQuery(
+  const { data, fetchNextPage, refetch, isFetched } = useInfiniteQuery(
     'favouriteMovies',
     async ({ pageParam = 1 }) => {
       return getFavouriteMoviesPage(pageParam).then((resp) => resp.data);
@@ -21,8 +21,10 @@ const FavouriteMovies = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      refetch();
-    }, []),
+      if (isFetched) {
+        refetch();
+      }
+    }, [isFetched]),
   );
 
   return (

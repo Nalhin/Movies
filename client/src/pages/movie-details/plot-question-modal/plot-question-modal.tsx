@@ -52,7 +52,7 @@ const PlotQuestionModal = ({ movieId, isOpen, onClose }: Props) => {
         {data?.answer && (
           <>
             <Text style={tailwind('font-bold text-lg text-center mt-2')}>
-              Your answer
+              Answer
             </Text>
             <Text style={tailwind('text-sm text-center')}>{data?.answer}</Text>
           </>

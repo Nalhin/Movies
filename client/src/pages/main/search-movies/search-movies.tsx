@@ -32,7 +32,7 @@ const SearchMovies = () => {
       if (search) {
         refetch();
       }
-    }, []),
+    }, [search]),
   );
 
   return (

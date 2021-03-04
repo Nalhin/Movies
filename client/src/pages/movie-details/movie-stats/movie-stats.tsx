@@ -10,11 +10,9 @@ interface Props {
   runtime: number | null;
 }
 
-const formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 0,
-});
+function currencyFormat(num: number) {
+  return '$' + num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
 
 const MovieStats = ({ budget, revenue, releaseDate, runtime }: Props) => {
   return (
@@ -39,13 +37,13 @@ const MovieStats = ({ budget, revenue, releaseDate, runtime }: Props) => {
         <View style={tailwind('flex-1')}>
           <Text style={tailwind('font-bold text-lg text-center')}>Budget</Text>
           <Text style={tailwind('text-sm text-center')}>
-            {formatter.format(budget)}
+            {currencyFormat(budget)}
           </Text>
         </View>
         <View style={tailwind('flex-1')}>
           <Text style={tailwind('font-bold text-lg text-center')}>Revenue</Text>
           <Text style={tailwind('text-sm text-center')}>
-            {formatter.format(revenue)}
+            {currencyFormat(revenue)}
           </Text>
         </View>
       </View>

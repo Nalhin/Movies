@@ -24,20 +24,22 @@ const Home = () => {
       {user.isAuthenticated ? (
         <>
           <Text>Welcome back {user.username}</Text>
-          <Button
-            title="Continue"
-            accessibilityLabel="Continue"
-            type="solid"
-            style={tailwind('w-80 py-1')}
-            onPress={() => navigation.navigate(ROOT_ROUTES.MAIN)}
-          />
-          <Button
-            title="Logout"
-            accessibilityLabel="Logout"
-            type="solid"
-            style={tailwind('w-80 py-1')}
-            onPress={auth.logoutUser}
-          />
+          <View style={tailwind('w-80 my-1')}>
+            <Button
+              title="Continue"
+              accessibilityLabel="Continue"
+              type="solid"
+              onPress={() => navigation.navigate(ROOT_ROUTES.MAIN)}
+            />
+          </View>
+          <View style={tailwind('w-80 my-1')}>
+            <Button
+              title="Logout"
+              accessibilityLabel="Logout"
+              type="solid"
+              onPress={auth.logoutUser}
+            />
+          </View>
         </>
       ) : (
         <>

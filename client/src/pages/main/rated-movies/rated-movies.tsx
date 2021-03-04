@@ -10,7 +10,7 @@ import { getRatedMoviesPage } from '../../../core/api/movie/movie-rating.api';
 
 const RatedMovies = () => {
   const navigation = useNavigation();
-  const { data, fetchNextPage, refetch } = useInfiniteQuery<
+  const { data, fetchNextPage, refetch, isFetched } = useInfiniteQuery<
     PaginatedMovieListResponseDto,
     AxiosError
   >(
@@ -26,8 +26,10 @@ const RatedMovies = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      refetch();
-    }, []),
+      if (isFetched) {
+        refetch();
+      }
+    }, [isFetched]),
   );
 
   return (

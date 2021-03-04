@@ -14,10 +14,12 @@ Movie data aggregator based on the concepts of "Clean Architecture" and "Hexagon
 
 * [Description](#description)
 * [Features](#features)
+* [Presentation](#presentation)
+* [Technology stack](#technology-stack)  
 * [Architecture](#architecture)
 * [REST API specification](#rest-api-specification)
-* [Prerequisites](#prerequisites)
 * [Installation](#installation)
+* [Setup](#setup)
 * [Tests](#tests)
 * [License](#license)
 
@@ -44,7 +46,64 @@ The service integrates with multiple external data sources such as
 * Movie browsing
 * List of favourites
 * User rating system
+* Authentication
+* Cross platform application
 * NLP movie plot question answering
+
+## Presentation
+
+### Overview
+
+<p align="center">
+  <a href="https://youtu.be/f41pEaQxIg0">
+    <img src="screenshots/overview.gif" alt="overview"/>
+  </a>
+</p>
+
+### Home
+
+<p align="center">
+    <img src="screenshots/home.png" alt="home"/>
+</p>
+
+### Popular
+
+<p align="center">
+    <img src="screenshots/popular.png" alt="popular"/>
+</p>
+
+### Search
+
+<p align="center">
+    <img src="screenshots/search.png" alt="search"/>
+</p>
+
+### Question
+
+<p align="center">
+    <img src="screenshots/question.png" alt="question"/>
+</p>
+
+
+### Details 
+
+<p align="center">
+    <img src="screenshots/details.png" alt="details"/>
+</p>
+
+
+### Favourite 
+
+<p align="center">
+    <img src="screenshots/favourite.png" alt="favourite"/>
+</p>
+
+
+### Sign up 
+
+<p align="center">
+    <img src="screenshots/sign-up.png" alt="sign up"/>
+</p>
 
 ## Technology Stack
 
@@ -148,9 +207,9 @@ domain
 
 ### Client
 
-Client architecture closely follows modern React trends. React context and React Query is used instead of the global state
-libraries. Such a design decision reduces clutter and allows the application to be tested with a mock REST API server
-making the tests more reliable and robust.
+Client architecture closely follows modern React trends. React context and React Query is used instead of the global
+state libraries. Such a design decision reduces clutter and allows the application to be tested with a mock REST API
+server making the tests more reliable and robust.
 
 ```
 src
@@ -170,7 +229,7 @@ src
 Swagger API specification is available at [http://localhost:3000/api-docs/](http://localhost:3000/api-docs/). The server
 has to be up and running in for the documentation to be available.
 
-## Prerequisites
+## Installation 
 
 ### Shared
 
@@ -193,7 +252,7 @@ docker --version
 docker-compose --version
 ```
 
-## Installation
+## Setup 
 
 Run the following commands before proceeding to the sections below.
 

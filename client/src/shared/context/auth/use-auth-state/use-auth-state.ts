@@ -8,7 +8,11 @@ import React from 'react';
 import { AuthStorage } from '../../../services/storage/auth-storage.service';
 import { getMe } from '../../../../core/api/user/user.api';
 
-export const useAuthState = (authStorage: AuthStorage, defaultUser: User) => {
+export const useAuthState = (
+  authStorage: AuthStorage,
+  defaultUser: User,
+  onLogout?: (() => void)[],
+) => {
   const [currUser, setCurrUser] = React.useState<User>(defaultUser);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -28,6 +32,7 @@ export const useAuthState = (authStorage: AuthStorage, defaultUser: User) => {
   const logoutUser = React.useCallback(async () => {
     await authStorage.removeAuthToken();
     setCurrUser(new AnonymousUser());
+    onLogout?.forEach((func) => func());
   }, []);
 
   React.useEffect(() => {

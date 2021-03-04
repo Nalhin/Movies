@@ -8,16 +8,19 @@ import { AuthStorage } from '../../../services/storage/auth-storage.service';
 export interface AuthProviderProps {
   defaultUser?: AnonymousUser | AuthenticatedUser;
   authStorage: AuthStorage;
+  onLogout?: (() => void)[];
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({
   authStorage,
   children,
   defaultUser = new AnonymousUser(),
+  onLogout = [],
 }) => {
   const { isLoading, user, authenticateUser, logoutUser } = useAuthState(
     authStorage,
     defaultUser,
+    onLogout,
   );
 
   return (
