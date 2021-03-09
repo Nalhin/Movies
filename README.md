@@ -36,7 +36,7 @@ The API consists of two boundary contexts:
 The service integrates with multiple external data sources such as
 
 * TMDb movie REST API
-* Live Wikipedia web scrapping
+* Wikipedia web scraping
 * SPARQL IMDB id to Wikipedia url resolver
 * NLP question answering model
 * Database persistence (PostgreSQL)
