@@ -28,18 +28,13 @@ Movie data aggregator based on the concepts of "Clean Architecture" and "Hexagon
 Nest.js hexagonal architecture implementation based on "Get Your Hands Dirty on Clean Architecture" by Tom Hombergs
 and "Clean architecture" by Robert C. Martin.
 
-The API consists of two boundary contexts:
-
-* user boundary context is responsible for authentication and authorization
-* movie boundary context is responsible for movie data aggregation
-
-The service integrates with multiple external data sources such as
+The service integrates with multiple external data sources: 
 
 * TMDb movie REST API
 * Wikipedia web scraping
-* SPARQL IMDB id to Wikipedia url resolver
-* NLP question answering model
-* Database persistence (PostgreSQL)
+* Wikidata Query Service
+* NLP question answering pretrained model
+* Persistence layer (PostgreSQL database)
 
 ## Features
 
